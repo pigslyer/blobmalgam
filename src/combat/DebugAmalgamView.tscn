@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3 uid="uid://cgfp336424mu7"]
+
+[ext_resource type="Script" path="res://src/combat/debug_amalgam_view.gd" id="1_vql34"]
+
+[node name="Player" type="VBoxContainer" node_paths=PackedStringArray("_tree", "_ability_list")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+script = ExtResource("1_vql34")
+_tree = NodePath("HBoxContainer/Tree")
+_ability_list = NodePath("AbilityList")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Tree" type="Tree" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 2
+hide_root = true
+
+[node name="Log" type="VBoxContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+
+[node name="AbilityList" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2

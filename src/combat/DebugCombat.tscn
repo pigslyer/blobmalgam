@@ -1,0 +1,48 @@
+[gd_scene load_steps=3 format=3 uid="uid://dkhe650u5e5kg"]
+
+[ext_resource type="Script" path="res://src/combat/debug_combat.gd" id="1_oqmsd"]
+[ext_resource type="PackedScene" uid="uid://cgfp336424mu7" path="res://src/combat/DebugAmalgamView.tscn" id="2_niat5"]
+
+[node name="DebugCombat" type="Control" node_paths=PackedStringArray("player_view")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_oqmsd")
+player_view = NodePath("HBoxContainer/Player")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Player" parent="HBoxContainer" instance=ExtResource("2_niat5")]
+layout_mode = 2
+
+[node name="Buttons" type="VBoxContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="ResetAmalgams" type="Button" parent="HBoxContainer/Buttons"]
+layout_mode = 2
+text = "Reset Amalgams"
+
+[node name="DrawPlayerAbilities" type="Button" parent="HBoxContainer/Buttons"]
+layout_mode = 2
+text = "Draw Player Abilities"
+
+[node name="EndTurn" type="Button" parent="HBoxContainer/Buttons"]
+layout_mode = 2
+text = "End Turn"
+
+[connection signal="pressed" from="HBoxContainer/Buttons/ResetAmalgams" to="." method="reset_amalgams"]
+[connection signal="pressed" from="HBoxContainer/Buttons/DrawPlayerAbilities" to="." method="draw_player_abilities"]
