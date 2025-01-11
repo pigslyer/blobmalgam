@@ -20,6 +20,3 @@ func display_amalgam(amalgam: Amalgam):
 			limb_item.set_text(0, limb.limb.debug_name());
 		
 		idx += 1;
-
-func display_actions(abilities: Array[CombatAction]):
-	pass
