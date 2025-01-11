@@ -6,8 +6,6 @@ func debug_name() -> String:
 
 func tags() -> Dictionary:
 	return {
-		"Normal": 1,
-		"Leg": 1,
-		
-		"Ability": null #?
+		NORMAL : 1,
+		LEG : 1,
 	}
