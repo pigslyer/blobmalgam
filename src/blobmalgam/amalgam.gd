@@ -20,7 +20,8 @@ func get_combat_display_actions(
 		limbs.remove_at(idx);
 	
 	var first_frame := CombatActionFrame.new();
-	first_frame.abilities.append(Limb.bodyslam_ability());
+	first_frame.abilities.append(Ability.exchange(self));
+	first_frame.abilities.append(Ability.bodyslam(self));
 	var frames: Array[CombatActionFrame] = [first_frame];
 	for active_limb in active_limbs:
 		var last_frame: CombatActionFrame = frames[-1];
@@ -30,13 +31,13 @@ func get_combat_display_actions(
 		
 		var any_upgraded := false;
 		for ability in last_frame.abilities:
-			var upgraded_ability := Limb.upgrade_ability(ability, active_tags);
+			var upgraded_ability := Ability.upgrade(ability, active_tags);
 			any_upgraded = any_upgraded || (ability != upgraded_ability);
 			
 			next_frame.abilities.append(upgraded_ability);
 		
 		if !any_upgraded:
-			var new_ability := Limb.upgrade_ability({}, active_tags);
+			var new_ability := Ability.upgrade({}, active_tags);
 			
 			if len(new_ability) > 0:
 				next_frame.abilities.append(new_ability);

@@ -1,11 +1,11 @@
-class_name NormalLeg
+class_name CuteEyes
 extends Limb
 
 func debug_name() -> String:
-	return "Normal Leg";
+	return "Cute Eyes";
 
 func tags() -> Dictionary:
 	return {
-		Ability.NORMAL : 1,
-		Ability.LEG : 1,
+		Ability.CUTE : 1,
+		Ability.EYES : 1,
 	}
