@@ -80,7 +80,7 @@ scale = Vector2(3, 3)
 texture = ExtResource("1_68s6d")
 
 [node name="Limb-Arm" type="RigidBody2D" parent="PlayerAmalgam"]
-position = Vector2(-117, -157)
+position = Vector2(-91, -213)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAmalgam/Limb-Arm"]
 shape = SubResource("CapsuleShape2D_45xii")
@@ -93,12 +93,13 @@ texture = ExtResource("2_cpj3v")
 position = Vector2(-1, 46)
 node_a = NodePath("../../Blob")
 node_b = NodePath("..")
+softness = 5.38
 
 [node name="LimbHandle" type="Sprite2D" parent="PlayerAmalgam/Limb-Arm/PinJoint2D"]
 texture = ExtResource("3_a0xsk")
 
 [node name="Limb-Arm2" type="RigidBody2D" parent="PlayerAmalgam"]
-position = Vector2(118, -164)
+position = Vector2(102, -204)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAmalgam/Limb-Arm2"]
 shape = SubResource("CapsuleShape2D_no6fa")
@@ -111,6 +112,7 @@ texture = ExtResource("2_cpj3v")
 position = Vector2(1, 46)
 node_a = NodePath("../../Blob")
 node_b = NodePath("..")
+softness = 6.7
 
 [node name="LimbHandle" type="Sprite2D" parent="PlayerAmalgam/Limb-Arm2/PinJoint2D2"]
 texture = ExtResource("3_a0xsk")
@@ -150,7 +152,7 @@ node_b = NodePath("..")
 texture = ExtResource("3_a0xsk")
 
 [node name="Limb-Eye" type="RigidBody2D" parent="PlayerAmalgam"]
-position = Vector2(-62, -63)
+position = Vector2(-61, -26)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAmalgam/Limb-Eye"]
 shape = SubResource("CircleShape2D_u37pn")
@@ -168,7 +170,7 @@ node_b = NodePath("..")
 texture = ExtResource("3_a0xsk")
 
 [node name="Limb-Eye2" type="RigidBody2D" parent="PlayerAmalgam"]
-position = Vector2(70, -63)
+position = Vector2(61, -27)
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="PlayerAmalgam/Limb-Eye2"]
 shape = SubResource("CircleShape2D_u37pn")
