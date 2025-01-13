@@ -9,18 +9,35 @@ const ENERGY_COST = "card_energy_cost";
 const DAMAGE = "damage";
 const CAN_REUSE = "allowed_to_reuse";
 
+
 const ARM = "arm";
 const LEG = "leg";
 const EYES = "eyes";
+const MOUTH = "mouth";
 const WINGS = "wings";
 const TAIL = "tail";
 
+
 const NORMAL = "normal";
 const PIXEL = "pixel";
+const MONSTER = "monster";
+const MEDIEVAL = "medieval";
+const CYBER = "cyber";
+const ELDRITCH = "eldritch";
 const CUTE = "cute";
+const ANGELIC = "angelic";
+const PLANT = "plant";
+
+
+const FIRE = "fire_attack";
+const POISON = "poison_attack";
+const STUN = "intimidating_attack";
+const BLEED = "bleed_attack";
+const SCORE_MULT = "score_mult_per_fight";
 
 const BODYSLAM = "bodyslam_ability";
 const EXCHANGE = "exchange_ability";
+const WEAPON = "weapon_ability";
 
 class EffectResolver:
 	func request_blobs(_from_selection: Array[Blob], _count: int) -> Array[Blob]:

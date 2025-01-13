@@ -27,7 +27,7 @@ func get_combat_display_actions(
 		var last_frame: CombatActionFrame = frames[-1];
 		var next_frame := CombatActionFrame.new();
 		
-		var active_tags = active_limb.tags();
+		var active_tags = active_limb.tags;
 		
 		var any_upgraded := false;
 		for ability in last_frame.abilities:
