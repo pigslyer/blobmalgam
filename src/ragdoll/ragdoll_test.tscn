@@ -1,78 +1,212 @@
-[gd_scene load_steps=4 format=3 uid="uid://dr8gqj0fhirmi"]
+[gd_scene load_steps=18 format=3 uid="uid://dr8gqj0fhirmi"]
 
+[ext_resource type="Script" path="res://src/ragdoll/player_amalgam.gd" id="1_3qbmk"]
 [ext_resource type="Texture2D" uid="uid://55tlyu4pohpp" path="res://src/ragdoll/placeholder/blob.png" id="1_68s6d"]
-[ext_resource type="Texture2D" uid="uid://de5owrexu2dyn" path="res://src/ragdoll/placeholder/limb.png" id="2_324do"]
+[ext_resource type="Texture2D" uid="uid://dymh67eesie1i" path="res://src/ragdoll/placeholder/arm.png" id="2_cpj3v"]
 [ext_resource type="Texture2D" uid="uid://b2pele6gfaq5s" path="res://src/ragdoll/placeholder/eye.png" id="3_3yyfd"]
+[ext_resource type="Texture2D" uid="uid://cxbqh3a4jai4r" path="res://src/ragdoll/placeholder/handle.png" id="3_a0xsk"]
+[ext_resource type="Texture2D" uid="uid://j36va0usfkch" path="res://src/ragdoll/placeholder/leg.png" id="4_jqxyt"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r87p4"]
+radius = 175.08
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_45xii"]
+radius = 45.97
+height = 183.18
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_no6fa"]
+radius = 45.97
+height = 183.18
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_c3vt4"]
+radius = 25.69
+height = 120.31
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tagjt"]
+radius = 25.69
+height = 120.31
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_u37pn"]
+radius = 26.96
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ocjks"]
+distance = 13.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_8epwm"]
+normal = Vector2(0, 1)
+distance = 13.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_otwlb"]
+normal = Vector2(-1, 0)
+distance = -992.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_2vbca"]
+normal = Vector2(1, 0)
+distance = 97.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_nhmc6"]
+normal = Vector2(-1, 0)
+distance = 97.0
 
 [node name="RagdollTest" type="Node2D"]
 
 [node name="Background" type="ParallaxBackground" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="Background"]
+light_mask = 2
+visibility_layer = 2
+z_index = -100
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0.630643, 3.85046e-06, 0.403401, 1)
 
 [node name="PlayerAmalgam" type="Node2D" parent="."]
+position = Vector2(328, 322)
+script = ExtResource("1_3qbmk")
 
 [node name="Blob" type="RigidBody2D" parent="PlayerAmalgam"]
-position = Vector2(483, 277)
+position = Vector2(-1, 0)
+input_pickable = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAmalgam/Blob"]
+shape = SubResource("CircleShape2D_r87p4")
 
 [node name="Sprite2D" type="Sprite2D" parent="PlayerAmalgam/Blob"]
 scale = Vector2(3, 3)
 texture = ExtResource("1_68s6d")
 
 [node name="Limb-Arm" type="RigidBody2D" parent="PlayerAmalgam"]
-position = Vector2(328, 175)
+position = Vector2(-117, -157)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAmalgam/Limb-Arm"]
+shape = SubResource("CapsuleShape2D_45xii")
 
 [node name="Sprite2D" type="Sprite2D" parent="PlayerAmalgam/Limb-Arm"]
-texture = ExtResource("2_324do")
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("2_cpj3v")
+
+[node name="PinJoint2D" type="PinJoint2D" parent="PlayerAmalgam/Limb-Arm"]
+position = Vector2(-1, 46)
+node_a = NodePath("../../Blob")
+node_b = NodePath("..")
+
+[node name="LimbHandle" type="Sprite2D" parent="PlayerAmalgam/Limb-Arm/PinJoint2D"]
+texture = ExtResource("3_a0xsk")
 
 [node name="Limb-Arm2" type="RigidBody2D" parent="PlayerAmalgam"]
-position = Vector2(655, 170)
+position = Vector2(118, -164)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAmalgam/Limb-Arm2"]
+shape = SubResource("CapsuleShape2D_no6fa")
 
 [node name="Sprite2D" type="Sprite2D" parent="PlayerAmalgam/Limb-Arm2"]
-texture = ExtResource("2_324do")
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("2_cpj3v")
+
+[node name="PinJoint2D2" type="PinJoint2D" parent="PlayerAmalgam/Limb-Arm2"]
+position = Vector2(1, 46)
+node_a = NodePath("../../Blob")
+node_b = NodePath("..")
+
+[node name="LimbHandle" type="Sprite2D" parent="PlayerAmalgam/Limb-Arm2/PinJoint2D2"]
+texture = ExtResource("3_a0xsk")
 
 [node name="Limb-Leg" type="RigidBody2D" parent="PlayerAmalgam"]
-position = Vector2(568, 472)
+position = Vector2(-109, 139)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAmalgam/Limb-Leg"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="PlayerAmalgam/Limb-Leg"]
+shape = SubResource("CapsuleShape2D_c3vt4")
 
 [node name="Sprite2D" type="Sprite2D" parent="PlayerAmalgam/Limb-Leg"]
-texture = ExtResource("2_324do")
+texture = ExtResource("4_jqxyt")
+
+[node name="PinJoint2D5" type="PinJoint2D" parent="PlayerAmalgam/Limb-Leg"]
+position = Vector2(-1, -44)
+node_a = NodePath("../../Blob")
+node_b = NodePath("..")
+
+[node name="LimbHandle" type="Sprite2D" parent="PlayerAmalgam/Limb-Leg/PinJoint2D5"]
+texture = ExtResource("3_a0xsk")
 
 [node name="Limb-Leg2" type="RigidBody2D" parent="PlayerAmalgam"]
-position = Vector2(381, 468)
+position = Vector2(116, 139)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAmalgam/Limb-Leg2"]
+shape = SubResource("CapsuleShape2D_tagjt")
 
 [node name="Sprite2D" type="Sprite2D" parent="PlayerAmalgam/Limb-Leg2"]
-texture = ExtResource("2_324do")
+texture = ExtResource("4_jqxyt")
+
+[node name="PinJoint2D4" type="PinJoint2D" parent="PlayerAmalgam/Limb-Leg2"]
+position = Vector2(-1, -39)
+node_a = NodePath("../../Blob")
+node_b = NodePath("..")
+
+[node name="LimbHandle" type="Sprite2D" parent="PlayerAmalgam/Limb-Leg2/PinJoint2D4"]
+texture = ExtResource("3_a0xsk")
 
 [node name="Limb-Eye" type="RigidBody2D" parent="PlayerAmalgam"]
-position = Vector2(407, 216)
-scale = Vector2(0.5, 0.5)
+position = Vector2(-62, -63)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAmalgam/Limb-Eye"]
+shape = SubResource("CircleShape2D_u37pn")
 
 [node name="Sprite2D" type="Sprite2D" parent="PlayerAmalgam/Limb-Eye"]
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_3yyfd")
+
+[node name="PinJoint2D6" type="PinJoint2D" parent="PlayerAmalgam/Limb-Eye"]
+position = Vector2(-1, 1)
+node_a = NodePath("../../Blob")
+node_b = NodePath("..")
+
+[node name="LimbHandle" type="Sprite2D" parent="PlayerAmalgam/Limb-Eye/PinJoint2D6"]
+texture = ExtResource("3_a0xsk")
 
 [node name="Limb-Eye2" type="RigidBody2D" parent="PlayerAmalgam"]
-position = Vector2(554, 214)
-scale = Vector2(0.5, 0.5)
+position = Vector2(70, -63)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAmalgam/Limb-Eye2"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="PlayerAmalgam/Limb-Eye2"]
+shape = SubResource("CircleShape2D_u37pn")
 
 [node name="Sprite2D" type="Sprite2D" parent="PlayerAmalgam/Limb-Eye2"]
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_3yyfd")
+
+[node name="PinJoint2D7" type="PinJoint2D" parent="PlayerAmalgam/Limb-Eye2"]
+position = Vector2(1, 1)
+node_a = NodePath("../../Blob")
+node_b = NodePath("..")
+
+[node name="LimbHandle" type="Sprite2D" parent="PlayerAmalgam/Limb-Eye2/PinJoint2D7"]
+texture = ExtResource("3_a0xsk")
+
+[node name="WorldBoundary" type="StaticBody2D" parent="."]
+
+[node name="Bottom" type="CollisionShape2D" parent="WorldBoundary"]
+position = Vector2(574, 584)
+shape = SubResource("WorldBoundaryShape2D_ocjks")
+
+[node name="Top" type="CollisionShape2D" parent="WorldBoundary"]
+position = Vector2(575.5, -4)
+shape = SubResource("WorldBoundaryShape2D_8epwm")
+
+[node name="Right" type="CollisionShape2D" parent="WorldBoundary"]
+position = Vector2(151, 335)
+shape = SubResource("WorldBoundaryShape2D_otwlb")
+
+[node name="Left" type="CollisionShape2D" parent="WorldBoundary"]
+position = Vector2(-86, 335)
+shape = SubResource("WorldBoundaryShape2D_2vbca")
+
+[node name="MiddleSeparator" type="CollisionShape2D" parent="WorldBoundary"]
+position = Vector2(673, 335)
+shape = SubResource("WorldBoundaryShape2D_nhmc6")
+
+[connection signal="input_event" from="PlayerAmalgam/Blob" to="PlayerAmalgam" method="_on_blob_input_event"]
+[connection signal="mouse_entered" from="PlayerAmalgam/Blob" to="PlayerAmalgam" method="_on_blob_mouse_entered"]
+[connection signal="mouse_exited" from="PlayerAmalgam/Blob" to="PlayerAmalgam" method="_on_blob_mouse_exited"]
