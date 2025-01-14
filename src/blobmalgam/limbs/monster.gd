@@ -42,7 +42,7 @@ static func mouth() -> Limb:
 		Ability.DESC : "This'll have to be based on the art",
 		Ability.MONSTER : 1,
 		Ability.MOUTH : 2,
-		Ability.FIRE : 2,
+		Ability.CONSUMING : 3,
 	})
 
 static func tail() -> Limb:

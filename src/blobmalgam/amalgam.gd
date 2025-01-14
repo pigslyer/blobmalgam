@@ -6,6 +6,51 @@ var blobs: Array[Blob] = [];
 class CombatActionFrame:
 	var abilities: Array[Dictionary];
 
+func get_combat_display_actions_simult(
+	rng: RandomNumberGenerator,
+	base_draw_count: int
+) -> Array[Dictionary]:
+	var limbs: Array[Limb] = _get_limbs_flat();
+	
+	var cards: Array[Dictionary] = [Ability.exchange(self), Ability.bodyslam(self)];
+	for limb in limbs:
+		var ability: Dictionary = Ability.craft_ability(limb.tags);
+		
+		if ability == null:
+			push_warning("Did not generate initial card from %s" % limb.tags);
+			continue;
+		
+		cards.append(ability);
+	
+	print("Initial cards:\n%s" % cards);
+	
+	for i in len(cards):
+		var accumulated_tags := { };
+		
+		var cur_card: Dictionary = cards[i];
+		for j in len(cards):
+			if i == j:
+				continue;
+			
+			for tag in cards[j].keys():
+				if !tag in cur_card:
+					continue;
+				
+				var prev_val = cur_card[tag];
+				
+				var is_accumable: bool = prev_val is int || prev_val is float;
+				if !is_accumable:
+					continue;
+				
+				cur_card[tag] += cards[j][tag];
+	
+	print("Accumulated cards:\n%s" % cards);
+	
+	for i in len(cards):
+		cards[i] = Ability.craft_ability(cards[i]);
+	
+	return cards;
+
 func get_combat_display_actions(
 	rng: RandomNumberGenerator, 
 	base_draw_count: int,

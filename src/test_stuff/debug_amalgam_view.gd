@@ -32,8 +32,8 @@ func display_actions(frames: Array[Amalgam.CombatActionFrame]):
 	for child in _ability_list.get_children():
 		child.queue_free();
 	
-	for frame in frames:
-		print(str(frame.abilities));
+	#for frame in frames:
+		#print(str(frame.abilities));
 	
 	var last_frame: Amalgam.CombatActionFrame  = frames[-1];
 	for ability in last_frame.abilities:

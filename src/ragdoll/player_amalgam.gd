@@ -1,5 +1,5 @@
 extends Node2D
-class_name Amalgam
+class_name PlayerAmalgam
 
 var is_dragging: bool = false;
 var dragged_body: RigidBody2D = null;
