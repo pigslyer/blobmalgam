@@ -2,6 +2,8 @@ class_name Blob
 extends RefCounted
 
 var _health: float = 100;
+var _stun: int = 0;
+var _poision: int = 0;
 var limbs: Array[PositionedLimb];
 
 class PositionedLimb:
@@ -17,3 +19,9 @@ func add_limb(limb: Limb):
 
 func health() -> float:
 	return _health;
+
+func stun() -> int:
+	return _stun;
+
+func poison() -> int:
+	return _poision;

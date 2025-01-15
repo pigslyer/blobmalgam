@@ -117,7 +117,7 @@ class PlayerResolver extends Ability.EffectResolver:
 func _on_player_ability_selected(tags: Dictionary) -> void:
 	var rng := RandomNumberGenerator.new();
 	var resolver := PlayerResolver.new(player_amalgam, enemy_amalgam, player_view, enemy_view, confirm_button, confirm_count);
-	var effector := Ability.Effector.new(resolver, player_amalgam, enemy_amalgam, tags, rng);
+	var effector := Ability.Effector.new(resolver, player_amalgam, enemy_amalgam, tags);
 	
 	await tags[Ability.EFFECT].call(effector);
 	await get_tree().process_frame;

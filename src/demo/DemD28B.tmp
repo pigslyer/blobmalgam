@@ -1,11 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://jra3ui6kc8h8"]
+[gd_scene load_steps=2 format=3 uid="uid://jra3ui6kc8h8"]
 
 [ext_resource type="Script" path="res://src/demo/demo_fight.gd" id="1_s2s77"]
 
-[sub_resource type="Theme" id="Theme_xbdwr"]
-default_font_size = 12
-
-[node name="DemoFight" type="Control" node_paths=PackedStringArray("player_view", "enemy_view", "ability_list", "energy_cost_display", "selection_root", "selection_cancel", "selection_confirm", "selection_count", "breakdown_popup", "breakdown_tree")]
+[node name="DemoFight" type="Control" node_paths=PackedStringArray("player_view", "enemy_view", "selection_root", "selection_cancel", "selection_confirm", "selection_count")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,14 +12,10 @@ grow_vertical = 2
 script = ExtResource("1_s2s77")
 player_view = NodePath("Content/Amalgams/Player")
 enemy_view = NodePath("Content/Amalgams/Enemy")
-ability_list = NodePath("Content/Abilities")
-energy_cost_display = NodePath("Content/Header/EnergyWritable")
 selection_root = NodePath("Content/Header/Selection")
 selection_cancel = NodePath("Content/Header/Selection/Cancel")
 selection_confirm = NodePath("Content/Header/Selection/Confirm")
 selection_count = NodePath("Content/Header/Selection/Count")
-breakdown_popup = NodePath("BreakdownPopup")
-breakdown_tree = NodePath("BreakdownPopup/Tree")
 
 [node name="Content" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -68,14 +61,6 @@ custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 text = "5/10"
 
-[node name="EnergyDisplay" type="Label" parent="Content/Header"]
-layout_mode = 2
-text = "Energy: "
-
-[node name="EnergyWritable" type="Label" parent="Content/Header"]
-layout_mode = 2
-text = "0"
-
 [node name="EndTurn" type="Button" parent="Content/Header"]
 layout_mode = 2
 text = "End turn"
@@ -99,24 +84,6 @@ select_mode = 2
 [node name="Abilities" type="HBoxContainer" parent="Content"]
 custom_minimum_size = Vector2(0, 124)
 layout_mode = 2
-theme = SubResource("Theme_xbdwr")
-
-[node name="BreakdownPopup" type="PopupPanel" parent="."]
-title = "Breakdown View"
-position = Vector2i(100, 100)
-size = Vector2i(800, 600)
-unresizable = false
-borderless = false
-force_native = true
-
-[node name="Tree" type="Tree" parent="BreakdownPopup"]
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 796.0
-offset_bottom = 596.0
-columns = 3
-hide_root = true
 
 [connection signal="pressed" from="Content/Header/Regen" to="." method="_on_regen_pressed"]
 [connection signal="pressed" from="Content/Header/Breakdown" to="." method="_on_breakdown_pressed"]
-[connection signal="pressed" from="Content/Header/EndTurn" to="." method="_on_end_turn_pressed"]

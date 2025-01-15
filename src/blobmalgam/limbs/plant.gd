@@ -1,4 +1,4 @@
-class_name Organic
+class_name Plant
 extends Limb
 
 static func tentacle() -> Limb:

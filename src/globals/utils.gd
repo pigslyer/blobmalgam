@@ -11,3 +11,187 @@ static func not_implemented(on: Object) -> void:
 	var script_name: String = script.resource_name;
 	
 	push_warning("%s has not implemented %s!" % [script_name, caller_func]);
+
+const BLOB_META = "BLOB_META";
+const LIMB_META = "LIMB_META";
+static func display_amalgam(tree: Tree, amalgam: Amalgam) -> void:
+	tree.clear();
+	
+	var root := tree.create_item();
+	var idx := 1;
+	for blob in amalgam.blobs:
+		var blob_item := tree.create_item(root);
+		blob_item.set_meta(BLOB_META, blob);
+		
+		var text: String = "Blob %d;   Health: %d" % [idx, blob.health()]
+		if blob.stun() > 0:
+			text += "    Stun: %d" % blob.stun();
+		if blob.poison() > 0:
+			text += "    Poison: %d" % blob.poison();
+		blob_item.set_text(0, text);
+		
+		for limb in blob.limbs:
+			var limb_item := tree.create_item(blob_item);
+			limb_item.set_text(0, limb.limb.tags[Ability.NAME]);
+			limb_item.set_tooltip_text(0, str(limb.limb.tags));
+			limb_item.set_meta(LIMB_META, limb.limb);
+
+const SELECTABLE_META = "SELECTABLE_META";
+const SELECTABLE_SIGNAL_META = "SELECTABLE_SIGNAL";
+static func select_on(tree: Tree, available: Array, on_selected: Callable) -> void:
+	clear_selection(tree);
+	
+	var on_selected_lambda = func(item: TreeItem, _column, _selected):
+		var is_selectable: bool = item.has_meta(SELECTABLE_META);
+		
+		if !is_selectable:
+			item.deselect(0);
+		
+		on_selected.call();
+	
+	tree.set_meta(SELECTABLE_SIGNAL_META, on_selected_lambda);
+	tree.multi_selected.connect(on_selected_lambda);
+	
+	var available_untyped: Array;
+	available_untyped.assign(available);
+	var items: Array[TreeItem] = [tree.get_root()];
+	while len(items) > 0:
+		var cur: TreeItem = items.pop_back();
+		items.append_array(cur.get_children());
+		
+		if cur.has_meta(LIMB_META) && available_untyped.find(cur.get_meta(LIMB_META)) != -1:
+			cur.set_custom_bg_color(0, Color.RED, true);
+			cur.set_meta(SELECTABLE_META, 1);
+		
+		if cur.has_meta(BLOB_META) && available_untyped.find(cur.get_meta(BLOB_META)) != -1:
+			cur.set_custom_bg_color(0, Color.RED, true);
+			cur.set_meta(SELECTABLE_META, 1);
+
+static func total_selection(tree: Tree) -> Array:
+	var arr: Array = [];
+	
+	var cur: TreeItem = tree.get_next_selected(null);
+	while cur != null:
+		if cur.has_meta(BLOB_META):
+			arr.append(cur.get_meta(BLOB_META));
+		if cur.has_meta(LIMB_META):
+			arr.append(cur.get_meta(LIMB_META));
+		
+		cur = tree.get_next_selected(cur);
+	
+	return arr;
+
+static func clear_selection(tree: Tree) -> void:
+	tree.deselect_all();
+	if tree.has_meta(SELECTABLE_SIGNAL_META):
+		tree.multi_selected.disconnect(tree.get_meta(SELECTABLE_SIGNAL_META));
+		tree.remove_meta(SELECTABLE_SIGNAL_META);
+	
+	var items: Array[TreeItem] = [tree.get_root()];
+	while len(items) > 0:
+		var cur: TreeItem = items.pop_back();
+		items.append_array(cur.get_children());
+		
+		cur.clear_custom_bg_color(0);
+		cur.remove_meta(SELECTABLE_META);
+
+class LimbOwner:
+	var owning_blob: Blob;
+	var index_in_blob: int;
+static func limb_owner(sought: Limb, blobs: Array[Blob]) -> LimbOwner:
+	for blob in blobs:
+		var idx := 0;
+		for limb in blob.limbs:
+			if limb.limb == sought:
+				var result := LimbOwner.new();
+				result.owning_blob = blob;
+				result.index_in_blob = idx;
+				return result;
+			
+			idx += 1;
+	
+	return null;
+
+static func display_ability_breakdown(tree: Tree, abilities: Amalgam.SimultResult) -> void:
+	assert(len(abilities.original_cards) == len(abilities.original_limbs));
+	assert(len(abilities.combined) == len(abilities.original_cards));
+	
+	tree.clear();
+	
+	var root := tree.create_item();
+	var desc_row := tree.create_item(root);
+	desc_row.set_text(0, "Org Limbs");
+	desc_row.set_text(1, "Org Cards");
+	desc_row.set_text(2, "Final Cards");
+	
+	for i in len(abilities.combined):
+		var limbs: Dictionary = abilities.original_limbs[i].tags;
+		var org: Dictionary = abilities.original_cards[i];
+		var final: Dictionary = abilities.combined[i];
+		
+		var limb_keys: Array = limbs.keys();
+		var org_keys: Array = org.keys();
+		var final_keys: Array = final.keys();
+		
+		var total_len: int = max(len(limb_keys), len(org_keys), len(final_keys));
+		var ability_root := tree.create_item(root);
+		ability_root.set_text(0, str(i));
+		for j in total_len:
+			var row := tree.create_item(ability_root);
+			
+			if j < len(limb_keys):
+				row.set_text(0, "%s: %s" % [limb_keys[j], limbs[limb_keys[j]]])
+			if j < len(org_keys):
+				row.set_text(1, "%s: %s" % [org_keys[j], org[org_keys[j]]])
+			if j < len(final_keys):
+				row.set_text(2, "%s: %s" % [final_keys[j], final[final_keys[j]]])
+
+
+static func limb_table() -> Array[Limb]:
+	return [
+		Normal.leg(),
+		Normal.arm(),
+		Normal.eyes(),
+		Normal.mouth(),
+		
+		Pixel.leg(),
+		Pixel.arm(),
+		Pixel.eyes(),
+		Pixel.wings(),
+		Pixel.mouth(),
+		
+		Monster.leg(),
+		Monster.arm(),
+		Monster.eyes(),
+		Monster.wings(),
+		Monster.mouth(),
+		Monster.tail(),
+		
+		Medieval.leg(),
+		Medieval.arm(),
+		Medieval.cape(),
+		
+		Cyber.leg(),
+		Cyber.arm(),
+		Cyber.eyes(),
+		Cyber.jetpack(),
+		Cyber.reflex_booster(),
+		
+		Eldritch.tentacle(),
+		Eldritch.eyes(),
+		Eldritch.wings(),
+		Eldritch.mouth(),
+		
+		Cute.arm(),
+		Cute.leg(),
+		Cute.cat_ears(),
+		Cute.eyes(),
+		Cute.wings(),
+		
+		Angelic.wings(),
+		Angelic.eyes(),
+		
+		Plant.tentacle(),
+		Plant.mouth(),
+		Plant.flower(),
+	];
