@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://np4awd214qvb"]
+
+[ext_resource type="Script" path="res://src/fight/amalgam.gd" id="1_vgkrt"]
+
+[node name="Amalgam" type="Node2D"]
+script = ExtResource("1_vgkrt")

@@ -1,0 +1,862 @@
+[gd_scene load_steps=8 format=3 uid="uid://dmdpqvtgjpfae"]
+
+[ext_resource type="Script" path="res://src/fight/screen.gd" id="1_15obj"]
+[ext_resource type="PackedScene" uid="uid://b8pepwnkg674s" path="res://src/fight/Card.tscn" id="1_e7pql"]
+[ext_resource type="Texture2D" uid="uid://c15oryw451pir" path="res://assets/pixel.png" id="2_gv4ll"]
+[ext_resource type="Script" path="res://src/fight/health.gd" id="3_g5crb"]
+[ext_resource type="Texture2D" uid="uid://55tlyu4pohpp" path="res://src/ragdoll/placeholder/blob.png" id="3_k6cpf"]
+[ext_resource type="PackedScene" uid="uid://np4awd214qvb" path="res://src/fight/Amalgam.tscn" id="5_3fo3w"]
+
+[sub_resource type="Theme" id="Theme_h12l4"]
+default_font_size = 12
+
+[node name="Fight" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_h12l4")
+script = ExtResource("1_15obj")
+
+[node name="Cards" type="ReferenceRect" parent="."]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = 16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Player" type="VBoxContainer" parent="Cards"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Card" parent="Cards/Player" instance=ExtResource("1_e7pql")]
+layout_mode = 2
+
+[node name="Card2" parent="Cards/Player" instance=ExtResource("1_e7pql")]
+layout_mode = 2
+
+[node name="Card3" parent="Cards/Player" instance=ExtResource("1_e7pql")]
+layout_mode = 2
+
+[node name="Card4" parent="Cards/Player" instance=ExtResource("1_e7pql")]
+layout_mode = 2
+
+[node name="Card5" parent="Cards/Player" instance=ExtResource("1_e7pql")]
+visible = false
+layout_mode = 2
+
+[node name="Card6" parent="Cards/Player" instance=ExtResource("1_e7pql")]
+visible = false
+layout_mode = 2
+
+[node name="Card7" parent="Cards/Player" instance=ExtResource("1_e7pql")]
+visible = false
+layout_mode = 2
+
+[node name="Card8" parent="Cards/Player" instance=ExtResource("1_e7pql")]
+visible = false
+layout_mode = 2
+
+[node name="Card9" parent="Cards/Player" instance=ExtResource("1_e7pql")]
+visible = false
+layout_mode = 2
+
+[node name="Card10" parent="Cards/Player" instance=ExtResource("1_e7pql")]
+visible = false
+layout_mode = 2
+
+[node name="Enemy" type="VBoxContainer" parent="Cards"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Card" parent="Cards/Enemy" instance=ExtResource("1_e7pql")]
+visible = false
+layout_mode = 2
+
+[node name="Card2" parent="Cards/Enemy" instance=ExtResource("1_e7pql")]
+visible = false
+layout_mode = 2
+
+[node name="Card3" parent="Cards/Enemy" instance=ExtResource("1_e7pql")]
+visible = false
+layout_mode = 2
+
+[node name="Card4" parent="Cards/Enemy" instance=ExtResource("1_e7pql")]
+visible = false
+layout_mode = 2
+
+[node name="Card5" parent="Cards/Enemy" instance=ExtResource("1_e7pql")]
+visible = false
+layout_mode = 2
+
+[node name="Card6" parent="Cards/Enemy" instance=ExtResource("1_e7pql")]
+visible = false
+layout_mode = 2
+
+[node name="Card7" parent="Cards/Enemy" instance=ExtResource("1_e7pql")]
+visible = false
+layout_mode = 2
+
+[node name="Card8" parent="Cards/Enemy" instance=ExtResource("1_e7pql")]
+visible = false
+layout_mode = 2
+
+[node name="Card9" parent="Cards/Enemy" instance=ExtResource("1_e7pql")]
+visible = false
+layout_mode = 2
+
+[node name="Card10" parent="Cards/Enemy" instance=ExtResource("1_e7pql")]
+visible = false
+layout_mode = 2
+
+[node name="PlayerHealth" type="ReferenceRect" parent="." node_paths=PackedStringArray("_global", "_limbs_container")]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.3
+anchor_bottom = 0.7
+offset_left = 8.0
+offset_top = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_g5crb")
+_global = NodePath("Global")
+_limbs_container = NodePath("Limbs/VBoxContainer")
+
+[node name="Global" type="TextureProgressBar" parent="PlayerHealth"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.1
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Global"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Limbs" type="ReferenceRect" parent="PlayerHealth"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.1
+anchor_right = 0.4
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+border_color = Color(0, 0.629083, 0.476686, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PlayerHealth/Limbs"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Blob1" type="TextureProgressBar" parent="PlayerHealth/Limbs/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Limbs/VBoxContainer/Blob1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Blob2" type="TextureProgressBar" parent="PlayerHealth/Limbs/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Limbs/VBoxContainer/Blob2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Blob3" type="TextureProgressBar" parent="PlayerHealth/Limbs/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Limbs/VBoxContainer/Blob3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Blob4" type="TextureProgressBar" parent="PlayerHealth/Limbs/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Limbs/VBoxContainer/Blob4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Blob5" type="TextureProgressBar" parent="PlayerHealth/Limbs/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Limbs/VBoxContainer/Blob5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Blob6" type="TextureProgressBar" parent="PlayerHealth/Limbs/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Limbs/VBoxContainer/Blob6"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Blob7" type="TextureProgressBar" parent="PlayerHealth/Limbs/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Limbs/VBoxContainer/Blob7"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Blob8" type="TextureProgressBar" parent="PlayerHealth/Limbs/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Limbs/VBoxContainer/Blob8"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Blob9" type="TextureProgressBar" parent="PlayerHealth/Limbs/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Limbs/VBoxContainer/Blob9"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Blob10" type="TextureProgressBar" parent="PlayerHealth/Limbs/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Limbs/VBoxContainer/Blob10"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="EnemyHealth" type="ReferenceRect" parent="." node_paths=PackedStringArray("_global", "_limbs_container")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.7
+anchor_right = 1.0
+anchor_bottom = 0.7
+offset_top = 16.0
+offset_right = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_g5crb")
+_global = NodePath("Global")
+_limbs_container = NodePath("Limbs/VBoxContainer")
+
+[node name="Global" type="TextureProgressBar" parent="EnemyHealth"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.1
+step = 0.1
+value = 43.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Global"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Limbs" type="ReferenceRect" parent="EnemyHealth"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.6
+anchor_top = 0.1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+border_color = Color(0, 0.629083, 0.476686, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EnemyHealth/Limbs"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Blob1" type="TextureProgressBar" parent="EnemyHealth/Limbs/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Limbs/VBoxContainer/Blob1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Blob2" type="TextureProgressBar" parent="EnemyHealth/Limbs/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Limbs/VBoxContainer/Blob2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Blob3" type="TextureProgressBar" parent="EnemyHealth/Limbs/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Limbs/VBoxContainer/Blob3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Blob4" type="TextureProgressBar" parent="EnemyHealth/Limbs/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Limbs/VBoxContainer/Blob4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Blob5" type="TextureProgressBar" parent="EnemyHealth/Limbs/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Limbs/VBoxContainer/Blob5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Blob6" type="TextureProgressBar" parent="EnemyHealth/Limbs/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Limbs/VBoxContainer/Blob6"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Blob7" type="TextureProgressBar" parent="EnemyHealth/Limbs/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Limbs/VBoxContainer/Blob7"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Blob8" type="TextureProgressBar" parent="EnemyHealth/Limbs/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Limbs/VBoxContainer/Blob8"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Blob9" type="TextureProgressBar" parent="EnemyHealth/Limbs/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Limbs/VBoxContainer/Blob9"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Blob10" type="TextureProgressBar" parent="EnemyHealth/Limbs/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 1.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_gv4ll")
+texture_progress = ExtResource("2_gv4ll")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Limbs/VBoxContainer/Blob10"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="ExchangeCard" type="ReferenceRect" parent="."]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = -16.0
+grow_vertical = 0
+
+[node name="Card" parent="ExchangeCard" instance=ExtResource("1_e7pql")]
+layout_mode = 0
+anchors_preset = 0
+
+[node name="BodySlamCard" type="ReferenceRect" parent="."]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 168.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = -16.0
+grow_vertical = 0
+
+[node name="Card" parent="BodySlamCard" instance=ExtResource("1_e7pql")]
+layout_mode = 0
+anchors_preset = 0
+
+[node name="SkipTurn" type="Button" parent="."]
+custom_minimum_size = Vector2(240, 120)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -136.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Skip Turn"
+
+[node name="Blob" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(247, 409)
+texture = ExtResource("3_k6cpf")
+
+[node name="Blob2" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(342, 351)
+texture = ExtResource("3_k6cpf")
+
+[node name="Blob3" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(301, 242)
+texture = ExtResource("3_k6cpf")
+
+[node name="Blob4" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(396, 176)
+texture = ExtResource("3_k6cpf")
+
+[node name="Blob5" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(440, 412)
+texture = ExtResource("3_k6cpf")
+
+[node name="Blob6" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(426, 529)
+texture = ExtResource("3_k6cpf")
+
+[node name="Blob7" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(466, 300)
+texture = ExtResource("3_k6cpf")
+
+[node name="Blob8" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(796, 384)
+texture = ExtResource("3_k6cpf")
+
+[node name="Blob9" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(891, 326)
+texture = ExtResource("3_k6cpf")
+
+[node name="Blob10" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(850, 217)
+texture = ExtResource("3_k6cpf")
+
+[node name="Blob11" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(945, 151)
+texture = ExtResource("3_k6cpf")
+
+[node name="Blob12" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(989, 387)
+texture = ExtResource("3_k6cpf")
+
+[node name="Blob13" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(975, 504)
+texture = ExtResource("3_k6cpf")
+
+[node name="Blob14" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(1015, 275)
+texture = ExtResource("3_k6cpf")
+
+[node name="Amalgam" parent="." instance=ExtResource("5_3fo3w")]
+
+[connection signal="pressed" from="SkipTurn" to="." method="_on_skip_turn_pressed"]

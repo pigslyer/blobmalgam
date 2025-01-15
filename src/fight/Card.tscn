@@ -1,0 +1,153 @@
+[gd_scene load_steps=7 format=3 uid="uid://b8pepwnkg674s"]
+
+[ext_resource type="Texture2D" uid="uid://cdorta5gy54ms" path="res://icon.svg" id="1_220gv"]
+[ext_resource type="Script" path="res://src/fight/card.gd" id="2_2hc8x"]
+[ext_resource type="Texture2D" uid="uid://bpopah1qw0hub" path="res://assets/arm_icon.png" id="3_nbwbe"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dm6ap"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q2t45"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_top = 20
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="LabelSettings" id="LabelSettings_ij3bh"]
+font_size = 24
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Card" type="TextureRect" node_paths=PackedStringArray("title", "short_desc", "effects_parent", "art", "damage_icon", "damage_label", "stun_icon", "stun_label", "poison_icon", "poison_label")]
+custom_minimum_size = Vector2(130, 120)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+tooltip_text = "Kick them, kick them harD!"
+texture = ExtResource("1_220gv")
+expand_mode = 1
+script = ExtResource("2_2hc8x")
+title = NodePath("CardName")
+short_desc = NodePath("ShortDesc")
+effects_parent = NodePath("PreviewIcons")
+art = NodePath(".")
+damage_icon = NodePath("PreviewIcons/Damage")
+damage_label = NodePath("PreviewIcons/Damage/Amount")
+stun_icon = NodePath("PreviewIcons/Stun")
+stun_label = NodePath("PreviewIcons/Stun/Amount")
+poison_icon = NodePath("PreviewIcons/Poison")
+poison_label = NodePath("PreviewIcons/Poison/Amount")
+
+[node name="TopBorder" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 4.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/separation = -1
+
+[node name="Black" type="Panel" parent="TopBorder"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dm6ap")
+
+[node name="Fade" type="Panel" parent="TopBorder"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_q2t45")
+
+[node name="CardName" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.9
+offset_bottom = 153.0
+grow_horizontal = 2
+text = "Consecutive Normal Kick"
+autowrap_mode = 3
+
+[node name="ShortDesc" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "A short description!"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="PreviewIcons" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -32.0
+offset_bottom = 32.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="Damage" type="TextureRect" parent="PreviewIcons"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("3_nbwbe")
+expand_mode = 1
+
+[node name="Amount" type="Label" parent="PreviewIcons/Damage"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "5"
+label_settings = SubResource("LabelSettings_ij3bh")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Stun" type="TextureRect" parent="PreviewIcons"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("1_220gv")
+expand_mode = 1
+
+[node name="Amount" type="Label" parent="PreviewIcons/Stun"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "5"
+label_settings = SubResource("LabelSettings_ij3bh")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Poison" type="TextureRect" parent="PreviewIcons"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("1_220gv")
+expand_mode = 1
+
+[node name="Amount" type="Label" parent="PreviewIcons/Poison"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "5"
+label_settings = SubResource("LabelSettings_ij3bh")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

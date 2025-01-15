@@ -2,6 +2,14 @@ class_name Amalgam;
 extends RefCounted
 
 var blobs: Array[Blob] = [];
+var links: Array[Link] = [];
+
+class Link:
+	var from_idx: int;
+	var from_local_pos: Vector2;
+	
+	var to_idx: int;
+	var to_local_pos: Vector2;
 
 func combat_display_actions_simult_flattened(
 	rng: RandomNumberGenerator,
@@ -56,6 +64,18 @@ func combat_display_actions_simult_flattened(
 	
 	return Ability.non_dup_from(combined_tags);
 
+func full_heal() -> void:
+	for blob in blobs:
+		blob._health = Blob.MAX_HEALTH;
+
+func total_global_health() -> float:
+	return len(blobs) * Blob.MAX_HEALTH;
+
+func current_global_health() -> float:
+	var total: float = 0;
+	for blob in blobs:
+		total += blob.health();
+	return total;
 
 func _get_limbs_flat() -> Array[Limb]:
 	var arr: Array[Limb] = [];
