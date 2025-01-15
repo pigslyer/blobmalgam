@@ -3,9 +3,8 @@ class_name Amalgam_test
 
 var is_dragging: bool = false;
 var dragged_body: RigidBody2D = null;
-@export var drag_force_multiplier: float = 50;
-@export var spring_constant: float = 10.0
-@export var damping: float = 5.0
+@export var spring_constant: float = 1000.0;
+@export var damping: float = 5.0;
 
 func _ready() -> void:
 	# get_viewport().set_physics_object_picking_sort(true);
@@ -47,5 +46,5 @@ func _physics_process(delta: float) -> void:
 		var velocity = dragged_body.linear_velocity;
 		var spring_force = distance * spring_constant;
 		var damping_force = -velocity * damping;
-		var total_force = spring_force + damping_force;
+		var total_force = (spring_force + damping_force) * 1000 * delta;
 		dragged_body.apply_force(total_force);
