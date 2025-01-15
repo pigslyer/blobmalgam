@@ -112,41 +112,6 @@ static func limb_owner(sought: Limb, blobs: Array[Blob]) -> LimbOwner:
 	
 	return null;
 
-static func display_ability_breakdown(tree: Tree, abilities: Amalgam.SimultResult) -> void:
-	assert(len(abilities.original_cards) == len(abilities.original_limbs));
-	assert(len(abilities.combined) == len(abilities.original_cards));
-	
-	tree.clear();
-	
-	var root := tree.create_item();
-	var desc_row := tree.create_item(root);
-	desc_row.set_text(0, "Org Limbs");
-	desc_row.set_text(1, "Org Cards");
-	desc_row.set_text(2, "Final Cards");
-	
-	for i in len(abilities.combined):
-		var limbs: Dictionary = abilities.original_limbs[i].tags;
-		var org: Dictionary = abilities.original_cards[i];
-		var final: Dictionary = abilities.combined[i];
-		
-		var limb_keys: Array = limbs.keys();
-		var org_keys: Array = org.keys();
-		var final_keys: Array = final.keys();
-		
-		var total_len: int = max(len(limb_keys), len(org_keys), len(final_keys));
-		var ability_root := tree.create_item(root);
-		ability_root.set_text(0, str(i));
-		for j in total_len:
-			var row := tree.create_item(ability_root);
-			
-			if j < len(limb_keys):
-				row.set_text(0, "%s: %s" % [limb_keys[j], limbs[limb_keys[j]]])
-			if j < len(org_keys):
-				row.set_text(1, "%s: %s" % [org_keys[j], org[org_keys[j]]])
-			if j < len(final_keys):
-				row.set_text(2, "%s: %s" % [final_keys[j], final[final_keys[j]]])
-
-
 static func limb_table() -> Array[Limb]:
 	return [
 		Normal.leg(),

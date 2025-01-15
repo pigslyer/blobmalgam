@@ -3,9 +3,8 @@ extends Control
 const MAX_ENERGY = 3;
 
 var player: Amalgam;
-var player_abilities: Amalgam.SimultResult;
+var player_abilities: Array[Dictionary];
 var enemy: Amalgam;
-var energy: int = 0;
 
 @export var player_view: Tree;
 @export var enemy_view: Tree;
@@ -35,11 +34,9 @@ func _regen() -> void:
 	Utils.display_amalgam(enemy_view, enemy);
 	
 	var rng := RandomNumberGenerator.new();
-	player_abilities = player.get_combat_display_actions_simult(rng, 5);
+	player_abilities = player.combat_display_actions_simult_flattened(rng, 5);
 	
-	display_cards(ability_list, player_abilities.combined, _on_card_pressed);
-	energy = MAX_ENERGY;
-	energy_cost_display.text = str(energy);
+	display_cards(ability_list, player_abilities, _on_card_pressed);
 
 class PlayerResolver extends Ability.EffectResolver:
 	signal selection_finished(selected: Array);
@@ -189,10 +186,8 @@ func _on_card_pressed(ability_idx: int) -> void:
 		_last_resolver = null;
 		await get_tree().process_frame;
 	
-	var ability: Dictionary = player_abilities.combined[ability_idx];
+	var ability: Dictionary = player_abilities[ability_idx];
 	
-	if ability[Ability.ENERGY_COST] > energy:
-		return;
 	
 	var resolver := PlayerResolver.new()
 	_last_resolver = resolver;
@@ -217,33 +212,23 @@ func _on_card_pressed(ability_idx: int) -> void:
 	
 	_last_resolver = null;
 	
-	var is_still_same_card: bool = ability_idx < len(player_abilities.combined) && player_abilities.combined[ability_idx] == ability;
+	var is_still_same_card: bool = ability_idx < len(player_abilities) && player_abilities[ability_idx] == ability;
 	
 	# ability did something
 	if  is_still_same_card && resolver._was_side_effecting:
-		print("removing card at %d" % ability_idx);
-		energy -= ability[Ability.ENERGY_COST];
-		energy_cost_display.text = str(energy);
-		
-		if !Ability.CAN_REUSE in ability:
-			player_abilities.original_limbs.remove_at(ability_idx);
-			player_abilities.original_cards.remove_at(ability_idx);
-			player_abilities.combined.remove_at(ability_idx);
-			display_cards(ability_list, player_abilities.combined, _on_card_pressed);
+		print("ending turn");
+		_on_end_turn_pressed();
 
 func _on_breakdown_pressed() -> void:
-	Utils.display_ability_breakdown(breakdown_tree, player_abilities);
+	#Utils.display_ability_breakdown(breakdown_tree, player_abilities);
 	breakdown_popup.popup();
 
 
 func _on_end_turn_pressed() -> void:
 	var rng := RandomNumberGenerator.new();
-	player_abilities = player.get_combat_display_actions_simult(rng, 5);
+	player_abilities = player.combat_display_actions_simult_flattened(rng, 5);
 	
-	display_cards(ability_list, player_abilities.combined, _on_card_pressed);
-	energy = MAX_ENERGY;
-	energy_cost_display.text = str(energy);
-
+	display_cards(ability_list, player_abilities, _on_card_pressed);
 
 static func generate_player_amalgam() -> Amalgam:
 	var amalgam := Amalgam.new();
@@ -308,7 +293,7 @@ static func display_cards(under_parent: Control, abilities: Array[Dictionary], o
 	var idx := 0;
 	for ability in abilities:
 		var button := Button.new();
-		button.text = "%s\n%s" % [ability[Ability.NAME], ability[Ability.DESC]];
+		button.text = "%s\n%s" % [ability.get(Ability.NAME, "NONE"), ability.get(Ability.DESC, "NONE")];
 		button.set_meta(ABILITY_META, ability);
 		button.pressed.connect(func(): on_pressed.call(idx));
 		
