@@ -1,0 +1,90 @@
+[gd_scene load_steps=2 format=3 uid="uid://bkpkhgsdkcb8b"]
+
+[ext_resource type="Texture2D" uid="uid://c15oryw451pir" path="res://assets/pixel.png" id="1_nbw1n"]
+
+[node name="PlayerHealth" type="ReferenceRect"]
+anchors_preset = -1
+anchor_right = 0.3
+anchor_bottom = 0.7
+offset_left = 8.0
+offset_top = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Global" type="TextureProgressBar" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.1
+step = 0.1
+value = 43.0
+nine_patch_stretch = true
+texture_under = ExtResource("1_nbw1n")
+texture_progress = ExtResource("1_nbw1n")
+tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
+tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+
+[node name="ReferenceRect" type="ReferenceRect" parent="Global"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
+border_width = 4.0
+editor_only = false
+
+[node name="Limbs" type="ReferenceRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.1
+anchor_right = 0.4
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+border_color = Color(0, 0.629083, 0.476686, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Limbs"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Global4" type="TextureProgressBar" parent="Limbs/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+value = 50.0
+nine_patch_stretch = true
+texture_under = ExtResource("1_nbw1n")
+texture_over = ExtResource("1_nbw1n")
+texture_progress = ExtResource("1_nbw1n")
+
+[node name="Global3" type="TextureProgressBar" parent="Limbs/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+value = 50.0
+nine_patch_stretch = true
+texture_under = ExtResource("1_nbw1n")
+texture_over = ExtResource("1_nbw1n")
+texture_progress = ExtResource("1_nbw1n")
+
+[node name="Global2" type="TextureProgressBar" parent="Limbs/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+value = 50.0
+nine_patch_stretch = true
+texture_under = ExtResource("1_nbw1n")
+texture_over = ExtResource("1_nbw1n")
+texture_progress = ExtResource("1_nbw1n")
+
+[node name="Global" type="TextureProgressBar" parent="Limbs/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+value = 50.0
+nine_patch_stretch = true
+texture_under = ExtResource("1_nbw1n")
+texture_over = ExtResource("1_nbw1n")
+texture_progress = ExtResource("1_nbw1n")

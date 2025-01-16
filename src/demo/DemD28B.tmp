@@ -1,0 +1,89 @@
+[gd_scene load_steps=2 format=3 uid="uid://jra3ui6kc8h8"]
+
+[ext_resource type="Script" path="res://src/demo/demo_fight.gd" id="1_s2s77"]
+
+[node name="DemoFight" type="Control" node_paths=PackedStringArray("player_view", "enemy_view", "selection_root", "selection_cancel", "selection_confirm", "selection_count")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_s2s77")
+player_view = NodePath("Content/Amalgams/Player")
+enemy_view = NodePath("Content/Amalgams/Enemy")
+selection_root = NodePath("Content/Header/Selection")
+selection_cancel = NodePath("Content/Header/Selection/Cancel")
+selection_confirm = NodePath("Content/Header/Selection/Confirm")
+selection_count = NodePath("Content/Header/Selection/Count")
+
+[node name="Content" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Header" type="HBoxContainer" parent="Content"]
+layout_mode = 2
+
+[node name="Regen" type="Button" parent="Content/Header"]
+layout_mode = 2
+text = "Regenerate Amalgams"
+
+[node name="Breakdown" type="Button" parent="Content/Header"]
+layout_mode = 2
+text = "Breakdown"
+
+[node name="ReferenceRect" type="ReferenceRect" parent="Content/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Selection" type="HBoxContainer" parent="Content/Header"]
+visible = false
+layout_mode = 2
+
+[node name="Cancel" type="Button" parent="Content/Header/Selection"]
+layout_mode = 2
+text = "Cancel"
+
+[node name="Confirm" type="Button" parent="Content/Header/Selection"]
+layout_mode = 2
+text = "Confirm"
+
+[node name="Count" type="Label" parent="Content/Header/Selection"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "5/10"
+
+[node name="EndTurn" type="Button" parent="Content/Header"]
+layout_mode = 2
+text = "End turn"
+
+[node name="Amalgams" type="HBoxContainer" parent="Content"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Player" type="Tree" parent="Content/Amalgams"]
+layout_mode = 2
+size_flags_horizontal = 3
+hide_root = true
+select_mode = 2
+
+[node name="Enemy" type="Tree" parent="Content/Amalgams"]
+layout_mode = 2
+size_flags_horizontal = 3
+hide_root = true
+select_mode = 2
+
+[node name="Abilities" type="HBoxContainer" parent="Content"]
+custom_minimum_size = Vector2(0, 124)
+layout_mode = 2
+
+[connection signal="pressed" from="Content/Header/Regen" to="." method="_on_regen_pressed"]
+[connection signal="pressed" from="Content/Header/Breakdown" to="." method="_on_breakdown_pressed"]

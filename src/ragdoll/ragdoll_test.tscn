@@ -75,6 +75,7 @@ color = Color(0, 0.34891, 0.34891, 1)
 [node name="PlayerAmalgam" type="Node2D" parent="."]
 position = Vector2(328, 322)
 script = ExtResource("1_3qbmk")
+drag_force_multiplier = 1.2
 
 [node name="Blob" type="RigidBody2D" parent="PlayerAmalgam"]
 position = Vector2(-1, 0)
@@ -101,7 +102,9 @@ texture = ExtResource("2_cpj3v")
 position = Vector2(-1, 46)
 node_a = NodePath("../../Blob")
 node_b = NodePath("..")
-softness = 5.38
+angular_limit_enabled = true
+angular_limit_lower = -0.523599
+angular_limit_upper = 0.523599
 
 [node name="LimbHandle" type="Sprite2D" parent="PlayerAmalgam/Limb-Arm/PinJoint2D"]
 texture = ExtResource("3_a0xsk")

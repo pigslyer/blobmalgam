@@ -2,49 +2,80 @@ class_name Amalgam;
 extends RefCounted
 
 var blobs: Array[Blob] = [];
+var links: Array[Link] = [];
 
-class CombatActionFrame:
-	var abilities: Array[Dictionary];
+class Link:
+	var from_idx: int;
+	var from_local_pos: Vector2;
+	
+	var to_idx: int;
+	var to_local_pos: Vector2;
 
-func get_combat_display_actions(
-	rng: RandomNumberGenerator, 
-	base_draw_count: int,
-) -> Array[CombatActionFrame]:
+func combat_display_actions_simult_flattened(
+	rng: RandomNumberGenerator,
+	draw_count: int
+) -> Array[Dictionary]:
 	var limbs: Array[Limb] = _get_limbs_flat();
 	
-	var active_limbs: Array[Limb];
-	for i in base_draw_count:
-		var idx: int = rng.randi() % len(limbs);
-		
-		active_limbs.append(limbs[idx]);
-		limbs.remove_at(idx);
+	var original_tags: Array[Dictionary] = [Ability.exchange(), Ability.bodyslam()];
 	
-	var first_frame := CombatActionFrame.new();
-	first_frame.abilities.append(Ability.exchange(self));
-	first_frame.abilities.append(Ability.bodyslam(self));
-	var frames: Array[CombatActionFrame] = [first_frame];
-	for active_limb in active_limbs:
-		var last_frame: CombatActionFrame = frames[-1];
-		var next_frame := CombatActionFrame.new();
+	for i in draw_count:
+		var removed_limb_idx := rng.randi() % len(limbs);
+		var removed_limb: Limb = limbs[removed_limb_idx];
+		limbs.remove_at(removed_limb_idx);
 		
-		var active_tags = active_limb.tags();
-		
-		var any_upgraded := false;
-		for ability in last_frame.abilities:
-			var upgraded_ability := Ability.upgrade(ability, active_tags);
-			any_upgraded = any_upgraded || (ability != upgraded_ability);
-			
-			next_frame.abilities.append(upgraded_ability);
-		
-		if !any_upgraded:
-			var new_ability := Ability.upgrade({}, active_tags);
-			
-			if len(new_ability) > 0:
-				next_frame.abilities.append(new_ability);
-		
-		frames.append(next_frame);
+		original_tags.append(removed_limb.tags);
 	
-	return frames;
+	var combined_tags: Array[Dictionary];
+	for i in len(original_tags):
+		var acc: Dictionary = original_tags[i].duplicate(true);
+		
+		for j in len(original_tags):
+			if i == j:
+				continue;
+			
+			var may_merge := false;
+			for tag in original_tags[i].keys():
+				if !tag in original_tags[j]:
+					continue;
+				
+				var prev_val = original_tags[j][tag];
+				var is_accumable: bool = prev_val is int || prev_val is float;
+				if !is_accumable:
+					continue;
+				
+				may_merge = true;
+			
+			if !may_merge:
+				continue;
+			
+			for tag in original_tags[j].keys():
+				var prev_val = original_tags[j][tag];
+				var is_accumable: bool = prev_val is int || prev_val is float;
+				if !is_accumable:
+					continue;
+				
+				if tag in acc:
+					acc[tag] += prev_val;
+				else:
+					acc[tag] = prev_val;
+		
+		combined_tags.append(acc);
+	
+	return Ability.non_dup_from(combined_tags);
+
+func full_heal() -> void:
+	for blob in blobs:
+		blob._health = Blob.MAX_HEALTH;
+
+func total_global_health() -> float:
+	return len(blobs) * Blob.MAX_HEALTH;
+
+func current_global_health() -> float:
+	var total: float = 0;
+	for blob in blobs:
+		total += blob.health();
+	return total;
 
 func _get_limbs_flat() -> Array[Limb]:
 	var arr: Array[Limb] = [];

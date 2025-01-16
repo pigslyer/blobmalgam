@@ -1,13 +1,9 @@
-class_name Limb;
+class_name Limb
 extends RefCounted
 
+var tags: Dictionary;
 
-
-func tags() -> Dictionary:
-	Utils.not_implemented(self);
-	return { };
-
-func debug_name() -> String:
-	Utils.not_implemented(self);
-	
-	return "<none>";
+@warning_ignore("shadowed_variable")
+func _init(tags: Dictionary):
+	self.tags = tags;
+	tags.make_read_only();
