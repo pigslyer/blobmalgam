@@ -26,7 +26,7 @@ func update_health_instant(amalgam: Amalgam) -> void:
 		progress_bar.value = amalgam.blobs[idx].health() / Blob.MAX_HEALTH;
 		progress_bar.show();
 
-func update_health_slow():
+func update_health_slow(amalgam: Amalgam) -> void:
 	pass
 
 func _health_bar_gui_input(event: InputEvent, blob_idx: int):

@@ -46,6 +46,9 @@ const BODYSLAM = "bodyslam_ability";
 const EXCHANGE = "exchange_ability";
 const WEAPON = "weapon_ability";
 
+const ANIM_SLASH = "animation_slash";
+const ANIM_HEAL = "animation_heal";
+
 class EffectResolver:
 	func blobs(_from_selection: Array[Blob], _count: int) -> Array[Blob]:
 		Utils.not_implemented(self);
@@ -90,11 +93,6 @@ class EffectResolver:
 		Utils.not_implemented(self);
 		@warning_ignore("redundant_await")
 		var _discard = await 2 + 2;
-	
-	func confirm_choice(_userdata: Dictionary) -> bool:
-		Utils.not_implemented(self);
-		@warning_ignore("redundant_await")
-		return await false;
 	
 
 class Effector:
@@ -189,8 +187,11 @@ class Effector:
 		
 		await _resolver.swap_limbs(a, b, userdata);
 	
-	func confirm_choice(userdata: Dictionary) -> bool:
-		return await _resolver.confirm_choice(userdata);
+	func confirm_player(_userdata: Dictionary) -> bool:
+		return len(await blobs_on(me, 1)) > 0;
+	
+	func confirm_enemy(_userdata: Dictionary) -> bool:
+		return len(await blobs_on(them, 1)) > 0;
 	
 	func damage_limb_owner(limb: Limb, amount: float, userdata: Dictionary):
 		var found: Blob = null;
@@ -383,7 +384,7 @@ static func _upgrade_crafter(c: Crafter) -> void:
 			STUN_PREVIEW: func(_d: DescBuilder):
 				return "All",
 			EFFECT : func(e: Effector):
-				if !await e.confirm_choice({ }):
+				if !await e.confirm_enemy({ }):
 					return;
 				
 				for enemy_blob in e.them.blobs:
@@ -450,7 +451,7 @@ static func _upgrade_crafter(c: Crafter) -> void:
 			STUN_PREVIEW: func(d: DescBuilder):
 				return str(d.tags[ANGELIC] - 2),
 			EFFECT : func(e: Effector):
-				if !await e.confirm_choice({ }):
+				if !await e.confirm_enemy({ }):
 					return;
 				
 				for blob in e.them.blobs:
@@ -562,7 +563,7 @@ static func _upgrade_crafter(c: Crafter) -> void:
 			NAME : "Adorable Flying Backflip",
 			DESC : TODO,
 			EFFECT : func(e: Effector):
-				if !await e.confirm_choice({ }):
+				if !await e.confirm_enemy({ }):
 					return;
 				
 				for blob in e.me.blobs:
@@ -681,7 +682,7 @@ static func _upgrade_crafter(c: Crafter) -> void:
 			NAME : "Harmless Backflip",
 			DESC : "I don't know what to put here",
 			EFFECT : func(e: Effector):
-				var may_backflip: bool = await e.confirm_choice({ });
+				var may_backflip: bool = await e.confirm_enemy({ });
 				if !may_backflip:
 					return;
 				
