@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dr8gqj0fhirmi"]
+[gd_scene load_steps=19 format=3 uid="uid://dr8gqj0fhirmi"]
 
 [ext_resource type="Script" path="res://src/ragdoll/player_amalgam.gd" id="1_3qbmk"]
 [ext_resource type="Texture2D" uid="uid://55tlyu4pohpp" path="res://src/ragdoll/placeholder/blob.png" id="1_68s6d"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://b2pele6gfaq5s" path="res://src/ragdoll/placeholder/eye.png" id="3_3yyfd"]
 [ext_resource type="Texture2D" uid="uid://cxbqh3a4jai4r" path="res://src/ragdoll/placeholder/handle.png" id="3_a0xsk"]
 [ext_resource type="Texture2D" uid="uid://j36va0usfkch" path="res://src/ragdoll/placeholder/leg.png" id="4_jqxyt"]
+[ext_resource type="Texture2D" uid="uid://eigp6nhy5b5w" path="res://src/ragdoll/placeholder/gBot_pieces.png" id="7_p6htf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_r87p4"]
 radius = 175.08
@@ -72,10 +73,17 @@ offset_bottom = 571.0
 mouse_filter = 2
 color = Color(0, 0.34891, 0.34891, 1)
 
+[node name="DraggableRect2" type="ColorRect" parent="Background"]
+offset_left = 696.0
+offset_top = 8.0
+offset_right = 1258.0
+offset_bottom = 572.0
+mouse_filter = 2
+color = Color(0.314283, 0.000825346, 0.779154, 1)
+
 [node name="PlayerAmalgam" type="Node2D" parent="."]
 position = Vector2(328, 322)
 script = ExtResource("1_3qbmk")
-drag_force_multiplier = 1.2
 
 [node name="Blob" type="RigidBody2D" parent="PlayerAmalgam"]
 position = Vector2(-1, 0)
@@ -197,6 +205,70 @@ node_b = NodePath("..")
 
 [node name="LimbHandle" type="Sprite2D" parent="PlayerAmalgam/Limb-Eye2/PinJoint2D7"]
 texture = ExtResource("3_a0xsk")
+
+[node name="EnemyAmalgam" type="Node2D" parent="."]
+position = Vector2(735, 66)
+
+[node name="polygons" type="Node2D" parent="EnemyAmalgam"]
+
+[node name="arm_left" type="Polygon2D" parent="EnemyAmalgam/polygons"]
+position = Vector2(232, 168)
+texture = ExtResource("7_p6htf")
+polygon = PackedVector2Array(116.362, 20.6578, 59.1562, 42.2688, 48.9864, 178.926, 64.2411, 198.63, 46.4439, 219.606, 51.5288, 346.729, 86.4877, 374.061, 145.6, 372.789, 174.838, 337.83, 145.6, 204.987, 127.167, 192.91, 171.025, 49.8962)
+uv = PackedVector2Array(234.96, 17.0456, 177.754, 38.6565, 167.584, 175.314, 182.839, 195.018, 165.042, 215.994, 196.235, 329.103, 216.539, 357.867, 260.532, 362.097, 293.436, 334.218, 264.198, 201.374, 245.765, 189.298, 289.623, 46.2839)
+
+[node name="leg_left" type="Polygon2D" parent="EnemyAmalgam/polygons"]
+position = Vector2(239, -42)
+texture = ExtResource("7_p6htf")
+polygon = PackedVector2Array(90.3014, 383.595, 123.353, 396.943, 123.353, 428.724, 113.184, 447.792, 112.548, 469.403, 125.896, 484.658, 116.997, 515.167, 111.912, 533.6, 132.252, 587.628, 174.203, 616.866, 174.203, 638.477, 190.093, 672.165, 181.83, 690.598, 26.7398, 687.419, 17.2055, 660.088, 28.6466, 504.998, 55.9781, 464.318, 57.885, 386.137)
+uv = PackedVector2Array(314.038, 386.773, 347.09, 400.121, 347.09, 431.902, 336.921, 450.97, 336.285, 472.581, 349.633, 487.836, 340.734, 518.345, 335.649, 536.778, 355.989, 590.806, 397.94, 620.044, 397.94, 641.655, 413.83, 675.343, 405.567, 693.776, 250.477, 690.598, 240.943, 663.266, 252.384, 508.176, 279.715, 467.496, 281.622, 389.315)
+
+[node name="body" type="Polygon2D" parent="EnemyAmalgam/polygons"]
+position = Vector2(-151, 113)
+texture = ExtResource("7_p6htf")
+polygon = PackedVector2Array(425.271, 16.8441, 464.68, 20.6578, 483.112, 45.4469, 486.926, 79.7702, 509.173, 110.28, 526.334, 156.68, 512.351, 215.792, 478.027, 256.472, 496.46, 274.269, 491.375, 316.855, 446.882, 353.721, 357.896, 331.474, 335.649, 266.006, 371.244, 250.751, 373.786, 231.682, 328.022, 152.23, 359.803, 75.3209, 383.956, 73.414, 405.567, 18.751)
+uv = PackedVector2Array(425.271, 16.8441, 464.68, 20.6578, 483.112, 45.4469, 486.926, 79.7702, 509.173, 110.28, 526.334, 156.68, 512.351, 215.792, 478.027, 256.472, 496.46, 274.269, 491.375, 316.855, 446.882, 353.721, 357.896, 331.474, 335.649, 266.006, 371.244, 250.751, 373.786, 231.682, 328.022, 152.23, 359.803, 75.3209, 383.956, 73.414, 405.567, 18.751)
+
+[node name="head" type="Polygon2D" parent="EnemyAmalgam/polygons"]
+position = Vector2(-405, -321)
+texture = ExtResource("7_p6htf")
+polygon = PackedVector2Array(586.082, 250.115, 704.943, 251.387, 812.997, 311.77, 817.447, 354.992, 814.904, 409.019, 807.912, 501.184, 758.334, 521.524, 689.052, 528.515, 567.649, 536.778, 525.063, 529.151, 492.647, 494.192, 476.756, 420.461, 481.206, 346.093, 536.504, 309.863)
+uv = PackedVector2Array(586.082, 250.115, 704.943, 251.387, 812.997, 311.77, 817.447, 354.992, 814.904, 409.019, 807.912, 501.184, 758.334, 521.524, 689.052, 528.515, 567.649, 536.778, 525.063, 529.151, 492.647, 494.192, 476.756, 420.461, 481.206, 346.093, 536.504, 309.863)
+
+[node name="jaw" type="Polygon2D" parent="EnemyAmalgam/polygons"]
+position = Vector2(-401, -411)
+texture = ExtResource("7_p6htf")
+polygon = PackedVector2Array(488.833, 573.644, 820.625, 565.381, 817.447, 618.137, 785.03, 661.995, 711.299, 687.419, 567.649, 689.326, 506.63, 658.817, 479.934, 609.874)
+uv = PackedVector2Array(488.833, 573.644, 820.625, 565.381, 817.447, 618.137, 785.03, 661.995, 711.299, 687.419, 567.649, 689.326, 506.63, 658.817, 479.934, 609.874)
+
+[node name="leg_right" type="Polygon2D" parent="EnemyAmalgam/polygons"]
+position = Vector2(152, -30)
+texture = ExtResource("7_p6htf")
+polygon = PackedVector2Array(90.3014, 383.595, 123.353, 396.943, 123.353, 428.724, 113.184, 447.792, 112.548, 469.403, 125.896, 484.658, 116.997, 515.167, 111.912, 533.6, 132.252, 587.628, 174.203, 616.866, 174.203, 638.477, 190.093, 672.165, 181.83, 690.598, 26.7398, 687.419, 17.2055, 660.088, 28.6466, 504.998, 55.9781, 464.318, 57.885, 386.137)
+uv = PackedVector2Array(90.3014, 383.595, 123.353, 396.943, 123.353, 428.724, 113.184, 447.792, 112.548, 469.403, 125.896, 484.658, 116.997, 515.167, 111.912, 533.6, 132.252, 587.628, 174.203, 616.866, 174.203, 638.477, 190.093, 672.165, 181.83, 690.598, 26.7398, 687.419, 17.2055, 660.088, 28.6466, 504.998, 55.9781, 464.318, 57.885, 386.137)
+
+[node name="arm_right" type="Polygon2D" parent="EnemyAmalgam/polygons"]
+position = Vector2(125, 176)
+texture = ExtResource("7_p6htf")
+polygon = PackedVector2Array(85.2165, 11.1236, 28.011, 32.7346, 17.8412, 169.392, 33.0959, 189.096, 15.2987, 210.072, 20.3836, 337.195, 55.3425, 364.526, 114.455, 363.255, 143.693, 328.296, 114.455, 195.452, 96.022, 183.376, 139.879, 40.362)
+uv = PackedVector2Array(85.2165, 11.1236, 28.011, 32.7346, 17.8412, 169.392, 33.0959, 189.096, 15.2987, 210.072, 20.3836, 337.195, 55.3425, 364.526, 114.455, 363.255, 143.693, 328.296, 114.455, 195.452, 96.022, 183.376, 139.879, 40.362)
+
+[node name="skeleton" type="Skeleton2D" parent="EnemyAmalgam"]
+
+[node name="hip" type="Bone2D" parent="EnemyAmalgam/skeleton"]
+position = Vector2(287, 421)
+
+[node name="chest" type="Bone2D" parent="EnemyAmalgam/skeleton/hip"]
+position = Vector2(5, -145)
+
+[node name="head" type="Bone2D" parent="EnemyAmalgam/skeleton/hip/chest"]
+position = Vector2(-64, -64)
+
+[node name="jaw" type="Bone2D" parent="EnemyAmalgam/skeleton/hip/chest/head"]
+position = Vector2(102, -3)
+
+[node name="arm_right" type="Bone2D" parent="EnemyAmalgam/skeleton/hip/chest"]
+position = Vector2(-94, -4)
 
 [node name="WorldBoundary" type="StaticBody2D" parent="."]
 
