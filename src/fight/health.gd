@@ -1,5 +1,5 @@
 class_name ExportedAmalgamHealth;
-extends ReferenceRect
+extends Control
 
 signal blob_health_hovered(blob_index: int, state: bool);
 signal blob_health_clicked(blob_index: int);
@@ -26,8 +26,20 @@ func update_health_instant(amalgam: Amalgam) -> void:
 		progress_bar.value = amalgam.blobs[idx].health() / Blob.MAX_HEALTH;
 		progress_bar.show();
 
+const UPDATE_TIME = 0.4;
 func update_health_slow(amalgam: Amalgam) -> void:
-	pass
+	var tween := create_tween().set_parallel();
+	
+	tween.tween_property(_global, "value", amalgam.current_global_health() / amalgam.total_global_health(), UPDATE_TIME);
+	
+	for limb_health in _limbs_container.get_children():
+		limb_health.hide();
+	
+	for idx in len(amalgam.blobs):
+		var progress_bar: TextureProgressBar = _limbs_container.get_child(idx);
+		tween.tween_property(progress_bar, "value", amalgam.blobs[idx].health() / Blob.MAX_HEALTH, UPDATE_TIME);
+		progress_bar.show();
+
 
 func _health_bar_gui_input(event: InputEvent, blob_idx: int):
 	if event is InputEventMouseButton:

@@ -1,6 +1,9 @@
 class_name BattleScreen;
 extends Control
 
+signal player_won;
+signal player_lost;
+
 var player: Amalgam;
 var player_drawn_abilities: Array[Dictionary];
 
@@ -16,6 +19,7 @@ var enemy: Amalgam;
 @onready var bodyslam: ExportedCard = $BodySlamCard/Card;
 
 @onready var player_cards: VBoxContainer = $Cards/Player;
+@onready var enemy_cards: VBoxContainer = $Cards/Enemy;
 @onready var skip: Button = $SkipTurn;
 
 var skip_animations: bool;
@@ -26,18 +30,17 @@ func _ready():
 		
 		player_card.selected.connect(_on_player_card_selected);
 	
+	
 
 @warning_ignore("shadowed_variable")
 func begin_fight(player: Amalgam, enemy: Amalgam) -> void:
 	self.player = player;
 	self.enemy = enemy;
 	
-	player.full_heal();
 	player_health.update_health_instant(player);
 	player_ragdoll.display_amalgam(player);
 	player_ragdoll.idle(PlayerAmalgam.IdleKinds.Standing);
 	
-	enemy.full_heal();
 	enemy_health.update_health_instant(enemy);
 	enemy_ragdoll.display_amalgam(enemy);
 	enemy_ragdoll.idle(PlayerAmalgam.IdleKinds.Standing);
@@ -47,9 +50,12 @@ func begin_fight(player: Amalgam, enemy: Amalgam) -> void:
 func player_turn():
 	skip.show();
 	var rng := RandomNumberGenerator.new();
-	var abilities: Array[Dictionary] = player.combat_display_actions_simult_flattened(rng, 5);
+	var abilities: Array[Dictionary] = player.combat_display_actions_simult_flattened(rng, 5, true);
 	
-	player_drawn_abilities= abilities;
+	player_drawn_abilities = abilities;
+	
+	exchange.show();
+	bodyslam.show();
 	
 	exchange.display_card(abilities[0]);
 	bodyslam.display_card(abilities[1]);
@@ -85,14 +91,13 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 		_is_awaiting = false;
 		return arr;
 	
-	func dice_roll(range: int, _userdata: Dictionary) -> int:
-		var value: int = randi() % range;
+	func dice_roll(r: int, _userdata: Dictionary) -> int:
+		var value: int = randi() % r;
 		print("rolled ", value);
 		_had_side_effects = true;
-		@warning_ignore("redundant_await")
-		return await value;
+		return value;
 	
-	func damage_blob(blob: Blob, amount: float, userdata: Dictionary) -> void:
+	func damage_blob(blob: Blob, amount: float, _userdata: Dictionary) -> void:
 		blob._health -= amount;
 		_had_side_effects = true;
 		
@@ -119,11 +124,10 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 		_had_side_effects = true;
 		
 		await _update_blob(blob, {
-			Ability.ANIM_SLASH : [blob],
+			Ability.ANIM_HEAL : [blob],
 		});
 	
 	func _update_blob(blob: Blob, userdata: Dictionary):
-		var amalgam: Amalgam = _blobs_amalgam(blob);
 		var ragdoll: PlayerAmalgam = _blobs_ragdoll(blob);
 		
 		battle_screen.player_health.update_health_slow(battle_screen.player);
@@ -226,12 +230,8 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 
 var _last_resolver: PlayerEffectResolver;
 func _on_player_card_selected(card: Dictionary):
-	if _last_resolver == null:
-		_last_resolver.cancel_awaits();
-		_last_resolver = null;
-		
-		# maybe
-		#await get_tree().process_frame;
+	print("selecting card!", card);
+	_cancel_active_cast();
 	
 	var card_idx: int = player_drawn_abilities.find(card);
 	assert(card_idx != -1);
@@ -248,6 +248,7 @@ func _on_player_card_selected(card: Dictionary):
 	_last_resolver = null;
 	
 	var is_same_ability: bool = card_idx == player_drawn_abilities.find(card);
+	print("wrapping up ability ", card)
 	if is_same_ability && _last_resolver.had_side_effects():
 		_end_player_turn();
 
@@ -268,62 +269,161 @@ func _end_player_turn() -> void:
 	
 	player_drawn_abilities = [];
 	
-	enemy_turn();
+	var player_died := player.current_global_health() <= 0;
+	var enemy_died := enemy.current_global_health() <= 0;
+	
+	if player_died:
+		_player_lost();
+	
+	if enemy_died:
+		_enemy_lost();
+	
+	if !player_died && !enemy_died:
+		enemy_turn();
 
 class EnemyResolver extends Ability.EffectResolver:
 	var battle_screen: BattleScreen;
 	var rng: RandomNumberGenerator;
 	
-	func blobs(_from_selection: Array[Blob], _count: int) -> Array[Blob]:
-		Utils.not_implemented(self);
-		var arr: Array[Blob];
-		@warning_ignore("redundant_await")
-		return await arr;
+	func blobs(from_selection: Array[Blob], count: int) -> Array[Blob]:
+		if count <= len(from_selection):
+			return from_selection;
+		
+		var ret: Array[Blob];
+		for _i in count:
+			var idx := rng.randi() % len(from_selection);
+			ret.append(from_selection[idx]);
+			from_selection.remove_at(idx);
+		
+		return ret;
 	
-	func limbs(_from_selection: Array[Limb], _count: int) -> Array[Limb]:
-		Utils.not_implemented(self);
-		var arr: Array[Limb];
-		@warning_ignore("redundant_await")
-		return await arr;
+	func limbs(from_selection: Array[Limb], count: int) -> Array[Limb]:
+		if count <= len(from_selection):
+			return from_selection;
+		
+		var ret: Array[Limb];
+		for _i in count:
+			var idx := rng.randi() % len(from_selection);
+			ret.append(from_selection[idx]);
+			from_selection.remove_at(idx);
+		
+		return ret;
 	
-	func dice_roll(_range: int, _userdata: Dictionary) -> int:
-		Utils.not_implemented(self);
-		@warning_ignore("redundant_await")
-		return await 0;
+	func dice_roll(r: int, _userdata: Dictionary) -> int:
+		var value := rng.randi() % r;
+		print("rolled ", value);
+		return value;
 	
-	func damage_blob(_blob: Blob, _amount: float, _userdata: Dictionary) -> void:
-		Utils.not_implemented(self);
-		# fake to make linter aware this is an async method
-		@warning_ignore("redundant_await")
-		var _discard = await 2 + 2;
+	func damage_blob(blob: Blob, amount: float, userdata: Dictionary) -> void:
+		blob._health -= amount;
+		
+		_update_blob(blob, userdata);
 	
-	func stun_blob(_blob: Blob, _turn_count: int, _userdata: Dictionary) -> void:
-		Utils.not_implemented(self);
-		@warning_ignore("redundant_await")
-		var _discard = await 2 + 2;
+	func stun_blob(blob: Blob, turn_count: int, userdata: Dictionary) -> void:
+		blob._stun += turn_count;
+		
+		_update_blob(blob, userdata);
 	
-	func poison_blob(_blob: Blob, _amount: int, _userdata: Dictionary) -> void:
-		Utils.not_implemented(self);
-		@warning_ignore("redundant_await")
-		var _discard = await 2 + 2;
+	func poison_blob(blob: Blob, amount: int, userdata: Dictionary) -> void:
+		blob._poision += amount;
+		
+		_update_blob(blob, userdata);
 	
-	func heal_blob(_blob: Blob, _amount: float, _userdata: Dictionary) -> void:
-		Utils.not_implemented(self);
-		@warning_ignore("redundant_await")
-		var _discard = await 2 + 2;
+	func heal_blob(blob: Blob, amount: float, userdata: Dictionary) -> void:
+		blob._health += amount;
+		
+		_update_blob(blob, userdata);
 	
+	func _update_blob(blob: Blob, userdata: Dictionary):
+		var ragdoll: PlayerAmalgam = _blobs_ragdoll(blob);
+		
+		battle_screen.player_health.update_health_slow(battle_screen.player);
+		battle_screen.enemy_health.update_health_slow(battle_screen.enemy);
+		
+		if len(userdata) > 0:
+			ragdoll.play_animation(userdata);
+			
+			if !battle_screen.skip_animations:
+				await ragdoll.animation_finished;
 	
-	func swap_limbs(_a: Limb, _b: Limb, _userdata: Dictionary) -> void:
-		Utils.not_implemented(self);
-		@warning_ignore("redundant_await")
-		var _discard = await 2 + 2;
+	func _blobs_ragdoll(blob: Blob) -> PlayerAmalgam:
+		var is_player_blob: int = battle_screen.player.blobs.find(blob) != -1;
+		var is_enemy_blob: int = battle_screen.enemy.blobs.find(blob) != -1;
+		assert(is_player_blob ^ is_enemy_blob);
+		
+		if is_player_blob:
+			return battle_screen.player_ragdoll;
+		else:
+			return battle_screen.enemy_ragdoll;
+	
+	func swap_limbs(a: Limb, b: Limb, _userdata: Dictionary) -> void:
+		var all_blobs: Array[Blob] = battle_screen.player.blobs + battle_screen.enemy.blobs;
+		var a_owner: Utils.LimbOwner = Utils.limb_owner(a, all_blobs);
+		var b_owner: Utils.LimbOwner = Utils.limb_owner(b, all_blobs);
+		assert(a_owner != null && b_owner != null);
+		
+		a_owner.owning_blob.limbs[a_owner.index_in_blob].limb = b;
+		b_owner.owning_blob.limbs[b_owner.index_in_blob].limb = a;
+		
+		battle_screen.player_ragdoll.display_amalgam(battle_screen.player);
+		battle_screen.enemy_ragdoll.display_amalgam(battle_screen.enemy);
+	
 
-func enemy_turn():
-	pass
-
+func enemy_turn() -> void:
+	var rng := RandomNumberGenerator.new();
+	var abilities: Array[Dictionary] = enemy.combat_display_actions_simult_flattened(rng, 5, false);
+	
+	for i in len(abilities):
+		var shown_card: ExportedCard = enemy_cards.get_child(i);
+		shown_card.display_card(abilities[i]);
+		shown_card.show();
+	
+	await get_tree().create_timer(1).timeout;
+	
+	var chosen: int = rng.randi() % len(abilities);
+	var card: ExportedCard = enemy_cards.get_child(chosen);
+	
+	card.modulate = Color.RED;
+	await get_tree().create_timer(0.3).timeout;
+	
+	var resolver := EnemyResolver.new();
+	resolver.battle_screen = self;
+	resolver.rng = rng;
+	
+	var effector := Ability.Effector.new(resolver, enemy, player, abilities[chosen]);
+	await abilities[chosen][Ability.EFFECT].call(effector);
+	
+	for child in enemy_cards.get_children():
+		child.hide();
+	
+	var player_died := player.current_global_health() <= 0;
+	var enemy_died := enemy.current_global_health() <= 0;
+	
+	if player_died:
+		_player_lost();
+	
+	if enemy_died:
+		_enemy_lost();
+	
+	if !player_died && !enemy_died:
+		player_turn();
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.pressed && event.button_index == MOUSE_BUTTON_LEFT:
-			# deselect currently active card
-			pass
+			_cancel_active_cast();
+
+func _cancel_active_cast() -> void:
+	if _last_resolver != null:
+		_last_resolver.cancel_awaits();
+		_last_resolver = null;
+		
+		# maybe
+		#await get_tree().process_frame
+
+func _player_lost() -> void:
+	player_lost.emit();
+
+
+func _enemy_lost() -> void:
+	player_won.emit();

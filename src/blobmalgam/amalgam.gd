@@ -13,11 +13,15 @@ class Link:
 
 func combat_display_actions_simult_flattened(
 	rng: RandomNumberGenerator,
-	draw_count: int
+	draw_count: int,
+	include_base: bool,
 ) -> Array[Dictionary]:
 	var limbs: Array[Limb] = _get_limbs_flat();
 	
-	var original_tags: Array[Dictionary] = [Ability.exchange(), Ability.bodyslam()];
+	var original_tags: Array[Dictionary];
+	if include_base:
+		original_tags.append(Ability.exchange());
+		original_tags.append(Ability.bodyslam());
 	
 	for i in draw_count:
 		var removed_limb_idx := rng.randi() % len(limbs);

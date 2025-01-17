@@ -160,3 +160,17 @@ static func limb_table() -> Array[Limb]:
 		Plant.mouth(),
 		Plant.flower(),
 	];
+
+static func default_amalgam() -> Amalgam:
+	var ret := Amalgam.new();
+	var blob := Blob.new();
+	ret.blobs.append(blob);
+	
+	blob.add_limb(Normal.leg());
+	blob.add_limb(Normal.leg());
+	blob.add_limb(Normal.arm());
+	blob.add_limb(Normal.arm());
+	blob.add_limb(Normal.eyes());
+	blob.add_limb(Normal.mouth());
+	
+	return ret;

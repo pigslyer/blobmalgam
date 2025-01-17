@@ -5,6 +5,8 @@ static func tentacle() -> Limb:
 	return Limb.new({
 		Ability.NAME : "Tentacle",
 		Ability.DESC : "Appendage",
+		Ability.IMAGE : preload("res://assets/eldritch_tentacle.png"),
+		
 		Ability.ELDRITCH : 1,
 		Ability.STUN : 6,
 		Ability.THROW : 6,
@@ -17,6 +19,8 @@ static func eyes() -> Limb:
 	return Limb.new({
 		Ability.NAME : "Hole in the World",
 		Ability.DESC : "Gaze not into the abyss.",
+		Ability.IMAGE : preload("res://assets/eldritch_eyes.png"),
+		
 		Ability.ELDRITCH : 2,
 		Ability.EYES : 4,
 		Ability.STUN : 6,
@@ -34,6 +38,10 @@ static func mouth() -> Limb:
 	return Limb.new({
 		Ability.NAME : "Consuming Mouth",
 		Ability.DESC : "Consumes all.",
+		Ability.IMAGE : [
+			preload("res://assets/eldritch_mouth.png"),
+		],
+		
 		Ability.ELDRITCH : 1,
 		Ability.CONSUMING : 1,
 		Ability.MOUTH : 4,

@@ -26,10 +26,10 @@ func display_card(def: Dictionary) -> void:
 	title.text = def.get(Ability.NAME, "<missing name>");
 	short_desc.text = def.get(Ability.DESC_SHORT, "");
 	tooltip_text = def.get(Ability.DESC, "");
-	art.texture = def.get(Ability.PORTRAIT, null);
+	art.texture = def.get(Ability.IMAGE, null);
 	
-	damage_icon.visible = Ability.DAMAGE_PREVIEW in def;
-	damage_label.text = def.get(Ability.DAMAGE_PREVIEW, "");
+	damage_icon.visible = Ability.DAMAGE_PREVIEW in def; # these are callables
+	damage_label.text = def.get(Ability.DAMAGE_PREVIEW);
 
 	stun_icon.visible = Ability.STUN_PREVIEW in def;
 	stun_label.text = def.get(Ability.STUN_PREVIEW, "");

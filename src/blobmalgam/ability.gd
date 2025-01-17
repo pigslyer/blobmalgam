@@ -4,7 +4,7 @@ extends Object
 const NAME = "display_name";
 const DESC_SHORT = "desc_short";
 const DESC = "desc";
-const PORTRAIT = "portrait_tex";
+const IMAGE = "blob_images";
 const EFFECT = "card_effect";
 
 const DAMAGE_PREVIEW = "damage_preview";
