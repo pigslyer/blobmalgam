@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c6w4ard1mqbdy"
-path="res://.godot/imported/cute_mouth.png-83ec29104201b5362879ec3d1e225a67.ctex"
+uid="uid://cqwctc77q0wp5"
+path="res://.godot/imported/angelic_wings.png-826299173cac250bbe80d925678fb3d9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cute_mouth.png"
-dest_files=["res://.godot/imported/cute_mouth.png-83ec29104201b5362879ec3d1e225a67.ctex"]
+source_file="res://assets/angelic_wings.png"
+dest_files=["res://.godot/imported/angelic_wings.png-826299173cac250bbe80d925678fb3d9.ctex"]
 
 [params]
 

@@ -1,7 +1,11 @@
 extends Control
 
+const FIGHTS_UNTIL_BOSS = 7;
+
 var player: Amalgam;
 var boss: Amalgam;
+var fight_progression: int;
+var rng := RandomNumberGenerator.new();
 
 @onready var main_menu: Control = $MainMenu;
 @onready var fight: BattleScreen = $Fight;
@@ -17,11 +21,14 @@ func _ready():
 	_apply_volume_to_bus("Effects", 1);
 	_apply_volume_to_bus("Music", 1);
 
+var show_anims: bool = false;
+
 func _on_start_pressed() -> void:
+	fight_progression = 0;
 	player = Utils.default_amalgam();
-	boss = Utils.default_amalgam();
+	boss = Utils.generate_enemy(Utils.EnemyStrength.Boss, rng);
 	
-	if false:
+	if show_anims:
 		main_menu.hide();
 		await _opening_animation();
 		await _shift_backgrounds(preload("res://assets/ozadje3.png"));
@@ -37,7 +44,7 @@ func _on_start_pressed() -> void:
 	main_menu.hide();
 	fight.show();
 	
-	if false:
+	if show_anims:
 		var tween := create_tween();
 		
 		const FADE_IN_TIME = 0.2;
@@ -45,14 +52,22 @@ func _on_start_pressed() -> void:
 		await tween.finished;
 		fade.hide();
 	
+	var current_fight: Amalgam;
+	if fight_progression < FIGHTS_UNTIL_BOSS:
+		current_fight = Utils.generate_enemy(_enemy_strength(fight_progression, rng), rng);
+	else:
+		current_fight = boss;
+	
 	fight.player_won.connect(_player_won);
 	fight.player_lost.connect(_player_lost);
-	fight.begin_fight(player, boss);
+	fight.begin_fight(player, current_fight);
 
 func _player_won() -> void:
 	fight.player_won.disconnect(_player_won);
 	fight.player_lost.disconnect(_player_lost);
 	
+	player.full_heal();
+	fight_progression += 1;
 	print("you won!");
 
 func _player_lost() -> void:
@@ -145,3 +160,13 @@ func _opening_animation() -> void:
 		boss_ragdoll.scale = Vector2.ONE;
 		boss_ragdoll.rotation = 0;
 	);
+
+static func _enemy_strength(won_count: int, _rng: RandomNumberGenerator) -> Utils.EnemyStrength:
+	if won_count < 1:
+		return Utils.EnemyStrength.Weak;
+	if won_count < 3:
+		return Utils.EnemyStrength.Average;
+	if won_count < 6:
+		return Utils.EnemyStrength.Strong;
+	
+	return Utils.EnemyStrength.Boss;

@@ -5,7 +5,7 @@ static func tentacle() -> Limb:
 	return Limb.new({
 		Ability.NAME : "Tentacle",
 		Ability.DESC : "Appendage",
-		Ability.IMAGE : preload("res://assets/eldritch_tentacle.png"),
+		Ability.IMAGE : preload("res://assets/eldritch_armleg.png"),
 		
 		Ability.ELDRITCH : 1,
 		Ability.STUN : 6,

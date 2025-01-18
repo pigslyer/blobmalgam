@@ -9,6 +9,7 @@ const EFFECT = "card_effect";
 
 const DAMAGE_PREVIEW = "damage_preview";
 const STUN_PREVIEW = "stun_preview";
+const HEAL_PREVIEW = "heal_preview";
 const POISON_PREVIEW = "poison_preview";
 
 const ARM = "arm";
@@ -67,7 +68,7 @@ class EffectResolver:
 		@warning_ignore("redundant_await")
 		return await 0;
 	
-	func damage_blob(_blob: Blob, _amount: float, _userdata: Dictionary) -> void:
+	func damage_blobs(_blob: Array[Blob], _amount: float, _userdata: Dictionary) -> void:
 		Utils.not_implemented(self);
 		# fake to make linter aware this is an async method
 		@warning_ignore("redundant_await")
@@ -83,7 +84,7 @@ class EffectResolver:
 		@warning_ignore("redundant_await")
 		var _discard = await 2 + 2;
 	
-	func heal_blob(_blob: Blob, _amount: float, _userdata: Dictionary) -> void:
+	func heal_blobs(_blob: Array[Blob], _amount: float, _userdata: Dictionary) -> void:
 		Utils.not_implemented(self);
 		@warning_ignore("redundant_await")
 		var _discard = await 2 + 2;
@@ -160,7 +161,14 @@ class Effector:
 			push_warning("Attempted to damage null blob, probably from a cancelled cast.");
 			return;
 		
-		await _resolver.damage_blob(blob, amount, userdata);
+		await _resolver.damage_blobs([blob], amount, userdata);
+	
+	func damage_blobs(blobs: Array[Blob], amount: float, userdata: Dictionary = { }):
+		if (len(blobs) == 0):
+			push_warning("Attempted to damage no blobs, probably from a cancelled cast.");
+			return;
+		
+		await _resolver.damage_blobs(blobs, amount, userdata);
 	
 	
 	func stun_blob(blob: Blob, turn_count: int, userdata: Dictionary) -> void:
@@ -179,7 +187,13 @@ class Effector:
 		if blob == null:
 			return;
 		
-		await _resolver.heal_blob(blob, amount, userdata);
+		await _resolver.heal_blobs([blob], amount, userdata);
+	
+	func heal_blobs(blobs: Array[Blob], amount: float, userdata: Dictionary) -> void:
+		if len(blobs) == null:
+			return;
+		
+		await _resolver.heal_blobs(blobs, amount, userdata);
 	
 	func swap_limbs(a: Limb, b: Limb, userdata: Dictionary) -> void:
 		if a == null || b == null:
@@ -344,8 +358,7 @@ static func _upgrade_crafter(c: Crafter) -> void:
 			],
 			{
 				NAME : "Shakedown",
-				DESC : TODO,
-				DESC_SHORT: "Swap limbs and damage blob!",
+				DESC: "Swap limbs and damage blob by GRABBY * 20.",
 				DAMAGE_PREVIEW: func(d: DescBuilder):
 					return "%d" % (d.tags[GRABBY] * 20),
 				EFFECT : func(e: Effector):
@@ -366,13 +379,14 @@ static func _upgrade_crafter(c: Crafter) -> void:
 				WINGS, 1
 			],
 			{
-			NAME : "Flying Bodyslam",
-			DESC : TODO,
-			DAMAGE_PREVIEW: func(d: DescBuilder):
-				return str(len(d.me.blobs) * 20 + d.tags[WINGS] * 10),
-			EFFECT : func(e: Effector):
-				await e.damage_blob(await e.blob_on(e.them), len(e.me.blobs) * 20 + e.tags[WINGS] * 10);
-		});
+				NAME : "Flying Bodyslam",
+				DESC : "Deals BLOB_COUNT * 20 + WINGS * 10 damage.",
+				DAMAGE_PREVIEW: func(d: DescBuilder):
+					return str(len(d.me.blobs) * 20 + d.tags[WINGS] * 10),
+				EFFECT : func(e: Effector):
+					await e.damage_blob(await e.blob_on(e.them), len(e.me.blobs) * 20 + e.tags[WINGS] * 10),
+			}
+		);
 		
 		c.ability([BODYSLAM, null], bodyslam());
 	
@@ -380,7 +394,7 @@ static func _upgrade_crafter(c: Crafter) -> void:
 		[CYBER, 3],
 		{
 			NAME : "Overcharge",
-			DESC : TODO,
+			DESC : "Stun all enemy blobs for CYBER.",
 			STUN_PREVIEW: func(_d: DescBuilder):
 				return "All",
 			EFFECT : func(e: Effector):
@@ -388,7 +402,7 @@ static func _upgrade_crafter(c: Crafter) -> void:
 					return;
 				
 				for enemy_blob in e.them.blobs:
-					await e.stun_blob(enemy_blob, 1, { }),
+					await e.stun_blob(enemy_blob, e.tags[CYBER], { }),
 		}
 	)
 	
@@ -420,7 +434,7 @@ static func _upgrade_crafter(c: Crafter) -> void:
 		],
 		{
 			NAME : "Poison Spit",
-			DESC : TODO,
+			DESC : "Spit POISON * 10 at a blob.",
 			POISON_PREVIEW: func(d: DescBuilder):
 				return str(d.tags[POISON] * 10),
 			EFFECT : func(e: Effector):
@@ -434,37 +448,41 @@ static func _upgrade_crafter(c: Crafter) -> void:
 		],
 		{
 			NAME : "The Gaze",
-			DESC : TODO,
+			DESC : "Stun all enemy blobs for ELDRITCH * 2",
 			STUN_PREVIEW: func(d: DescBuilder):
 				return str(d.tags[ELDRITCH]),
 			EFFECT : func(e: Effector):
-				await e.stun_blob(await e.blob_on(e.them), e.tags[ELDRITCH], { });
+				await e.stun_blob(await e.blob_on(e.them), e.tags[ELDRITCH] * 2, { });
 	})
 	
 	c.ability(
 		[
-			ANGELIC, 3
+			ANGELIC, 1
 		],
 		{
 			NAME : "Light of God",
-			DESC : TODO,
+			DESC : "Shine. ANGELIC * 4.",
 			STUN_PREVIEW: func(d: DescBuilder):
-				return str(d.tags[ANGELIC] - 2),
+				return str(d.tags[ANGELIC]),
 			EFFECT : func(e: Effector):
 				if !await e.confirm_enemy({ }):
 					return;
 				
 				for blob in e.them.blobs:
-					await e.stun_blob(blob, e.tags[ANGELIC] - 2, { }),
+					await e.stun_blob(blob, e.tags[ANGELIC] * 4, { }),
 		}
 	)
+	
+	
+	
 	c.ability(
 		[
-			ARM, 8
+			ARM, 8,
+			REFLEX, 1,
 		],
 		{
 			NAME : "Platinum Punches",
-			DESC : TODO,
+			DESC : "With impossible speed, perform ARM consecutive punches, each dealing 15.",
 			DAMAGE_PREVIEW : func(d: DescBuilder):
 				return "%dx%d" % [d.tags[ARM], 15],
 			EFFECT : func(e: Effector):
@@ -486,9 +504,10 @@ static func _upgrade_crafter(c: Crafter) -> void:
 		],
 		{
 			NAME : "Cute Hug",
-			DESC : TODO,
+			DESC : "Stun (stop activating limbs on a blob X times) for CUTE.",
 			STUN_PREVIEW: func(d: DescBuilder):
 				return str(d.tags[CUTE]),
+			
 			EFFECT : func(e: Effector):
 				await e.stun_blob(await e.blob_on(e.them), e.tags[CUTE], { }),
 		}
@@ -501,7 +520,7 @@ static func _upgrade_crafter(c: Crafter) -> void:
 		],
 		{
 			NAME : "Triple Frontflip Kick",
-			DESC : TODO,
+			DESC : "Use your flight strength to deal LEG * 12 * 3 damage.",
 			DAMAGE_PREVIEW: func(d: DescBuilder):
 				return "3x%d" % (d.tags[LEG] * 12),
 			EFFECT : func(e: Effector):
@@ -519,17 +538,21 @@ static func _upgrade_crafter(c: Crafter) -> void:
 		],
 		{
 			NAME : "Consume",
-			DESC : TODO,
+			DESC : "Take a big bite out of your enemy, equal to MOUTH * CONSUMING * 6.",
+			DAMAGE_PREVIEW : func(d: DescBuilder):
+				return str(d.tags[MOUTH] * d.tags[CONSUMING] * 6),
+			HEAL_PREVIEW : func(d: DescBuilder):
+				return str(d.tags[MOUTH] * d.tags[CONSUMING] * 6),
+			
 			EFFECT : func(e: Effector):
-				var damage: float = e.tags[CONSUMING] * 6;
+				var damage: float =  e.tags[MOUTH] * e.tags[CONSUMING] * 6;
 				var target: Blob = await e.blob_on(e.them);
 				if target == null:
 					return;
 				
-				await e.damage_blob(target, damage);
-				
-				for mouth in range(e.tags[MOUTH] - 1):
-					await e.damage_blob(await e.blob_on(e.them), damage),
+				var damage_dealt: int = min(damage, target.health());
+				await e.damage_blob(target, damage_dealt, { });
+				await e.heal_blobs(e.me.blobs, damage_dealt, { }),
 		}
 	)
 	
@@ -540,7 +563,10 @@ static func _upgrade_crafter(c: Crafter) -> void:
 		],
 		{
 		NAME : "Healing Kiss",
-		DESC : TODO,
+		DESC : "For every point of MOUTH, heal a blob by CUTE.",
+		HEAL_PREVIEW: func(d: DescBuilder):
+			return "%dx%d" % [d.tags[MOUTH], d.tags[CUTE]],
+		
 		EFFECT : func(e: Effector):
 			var damage: float = e.tags[CUTE] * 6;
 			var target: Blob = await e.blob_on(e.me);
@@ -561,7 +587,12 @@ static func _upgrade_crafter(c: Crafter) -> void:
 		],
 		{
 			NAME : "Adorable Flying Backflip",
-			DESC : TODO,
+			DESC : "Heal all my blobs by CUTE * 4 and stun every enemy blob by 1.",
+			HEAL_PREVIEW : func(d: DescBuilder):
+				return str(d.tags[CUTE] * 4),
+			STUN_PREVIEW: func(_d: DescBuilder):
+				return "1",
+			
 			EFFECT : func(e: Effector):
 				if !await e.confirm_enemy({ }):
 					return;
@@ -580,7 +611,9 @@ static func _upgrade_crafter(c: Crafter) -> void:
 		{
 			NAME : func(d: DescBuilder):
 				return "%s Handed Swing" % d.tags[ARM],
-			DESC : TODO,
+			DAMAGE_PREVIEW: func(d: DescBuilder):
+				return str(d.tags[WEAPON] * d.tags[ARM] * 4),
+			
 			EFFECT : func(e: Effector):
 				await e.damage_blob(await e.blob_on(e.them), e.tags[WEAPON] * 4 * e.tags[ARM]),
 		}
@@ -593,17 +626,18 @@ static func _upgrade_crafter(c: Crafter) -> void:
 		],
 		{
 			NAME : "Sucker Punch",
-			DESC : TODO,
+			DAMAGE_PREVIEW: func(d: DescBuilder):
+				return str(d.tags[ARM] * 4),
+			STUN_PREVIEW: func(d: DescBuilder):
+				return str(d.tags[STUN]),
+			
 			EFFECT : func(e: Effector):
 				var target: Blob = await e.blob_on(e.them);
 				if target == null:
 					return;
 				
 				await e.damage_blob(target, e.tags[ARM] * 4, { });
-				
-				var stunned: bool = await e.d20(e.tags[STUN], 14, { });
-				if stunned:
-					await e.stun_blob(target, 1, { }),
+				await e.stun_blob(target, 1, { }),
 		}
 	)
 	
@@ -613,9 +647,12 @@ static func _upgrade_crafter(c: Crafter) -> void:
 		],
 		{
 			NAME : "Consecutive Punch",
-			DESC : TODO,
+			DESC : "Punch with 10 damage per arm.",
+			DAMAGE_PREVIEW: func(d: DescBuilder):
+				return str(d.tags[ARM] * 10),
+				
 			EFFECT : func(e: Effector):
-				await e.damage_blob(await e.blob_on(e.them), e.tags[ARM] * 5, { }),
+				await e.damage_blob(await e.blob_on(e.them), e.tags[ARM] * 10, { }),
 		}
 	)
 	
@@ -641,52 +678,15 @@ static func _upgrade_crafter(c: Crafter) -> void:
 		],
 		{
 			NAME : "Insult",
-			DESC : TODO,
+			DESC : "Deal 1 stun (disable 1 limb on blob) for every mouth.",
+			STUN_PREVIEW: func(d: DescBuilder):
+				return str(d.tags[MOUTH]),
 			EFFECT : func(e: Effector):
 				var target: Blob = await e.blob_on(e.them);
 				if target == null:
 					return;
 				
-				var stuns: bool = await e.d20(e.tags[MOUTH], 16, { });
-				if !stuns:
-					return;
-				
-				await e.stun_blob(target, 1, { });
-	})
-	
-	c.ability(
-		[
-			EYES, 1
-		],
-		{
-			NAME : "Hard stare",
-			DESC : "grr",
-			EFFECT : func(e: Effector):
-				var target: Blob = await e.blob_on(e.them);
-				if target == null:
-					return;
-				
-				var stuns: bool = await e.d20(e.tags[EYES] / 2, 18, { });
-				if !stuns:
-					return;
-				
-				await e.stun_blob(target, 1, { });
-	})
-	
-	# i still don't know what to do here
-	c.ability(
-		[
-			WINGS, 1
-		],
-		{
-			NAME : "Harmless Backflip",
-			DESC : "I don't know what to put here",
-			EFFECT : func(e: Effector):
-				var may_backflip: bool = await e.confirm_enemy({ });
-				if !may_backflip:
-					return;
-				
-				await e.heal_blob(e.me.blobs[0], 1, { }),
+				await e.stun_blob(target, e.tags[MOUTH], { });
 	})
 	
 	c.ability(
@@ -695,7 +695,9 @@ static func _upgrade_crafter(c: Crafter) -> void:
 		],
 		{
 			NAME : "Punch",
-			DESC : TODO,
+			DESC : "Deal 5 damage per arm to a blob.",
+			DAMAGE_PREVIEW: func(d: DescBuilder):
+				return str(d.tags[ARM] * 5),
 			EFFECT : func(e: Effector):
 				await e.damage_blob(await e.blob_on(e.them), e.tags[ARM] * 5),
 		}
@@ -707,13 +709,46 @@ static func _upgrade_crafter(c: Crafter) -> void:
 		],
 		{
 			NAME : "Kick",
-			DESC : "Deal 5 damage per leg.",
+			DESC : "Deal 5 damage per leg to a blob.",
 			DAMAGE_PREVIEW: func(d: DescBuilder):
 				return str(d.tags[LEG] * 5),
 			EFFECT : func(e: Effector):
 				await e.damage_blob(await e.blob_on(e.them), e.tags[LEG] * 5),
 		}
 	);
+	
+	c.ability(
+		[
+			EYES, 1
+		],
+		{
+			NAME : "Hard stare",
+			DESC : "Stare at the enemy amalgam, dealing 2 psychic damage per eye to every blob.",
+			DAMAGE_PREVIEW: func(d: DescBuilder):
+				return d.tags[EYES] * 2,
+			EFFECT : func(e: Effector):
+				var may_continue: bool = await e.confirm_enemy({ });
+				if may_continue:
+					return;
+				
+				await e.damage_blobs(e.them.blobs, e.tags[EYES] * 2, { });
+	})
+	
+	# i still don't know what to do here
+	#c.ability(
+		#[
+			#WINGS, 1
+		#],
+		#{
+			#NAME : "Harmless Backflip",
+			#DESC : "I don't know what to put here",
+			#EFFECT : func(e: Effector):
+				#var may_backflip: bool = await e.confirm_enemy({ });
+				#if !may_backflip:
+					#return;
+				#
+				#await e.heal_blob(e.me.blobs[0], 1, { }),
+	#})
 
 class MergeResult:
 	var merged: Dictionary;

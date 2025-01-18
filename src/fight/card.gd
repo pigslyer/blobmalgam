@@ -19,23 +19,30 @@ signal selected(ability: Dictionary);
 
 var _content: Dictionary;
 
-func display_card(def: Dictionary) -> void:
+func display_card(def: Dictionary, caster: Amalgam, enemy: Amalgam) -> void:
 	_content = def.duplicate();
 	_content.make_read_only();
 	
 	title.text = def.get(Ability.NAME, "<missing name>");
 	short_desc.text = def.get(Ability.DESC_SHORT, "");
 	tooltip_text = def.get(Ability.DESC, "");
-	art.texture = def.get(Ability.IMAGE, null);
+	#art.texture = def.get(Ability.IMAGE, null);
+	
+	var desc := Ability.DescBuilder.new();
+	desc.tags = def;
+	desc.me = caster;
+	desc.them = enemy;
+	
+	var no_op = func(d: Ability.DescBuilder): return "";
 	
 	damage_icon.visible = Ability.DAMAGE_PREVIEW in def; # these are callables
-	damage_label.text = def.get(Ability.DAMAGE_PREVIEW);
+	damage_label.text = str(def.get(Ability.DAMAGE_PREVIEW, no_op).call(desc));
 
 	stun_icon.visible = Ability.STUN_PREVIEW in def;
-	stun_label.text = def.get(Ability.STUN_PREVIEW, "");
+	stun_label.text = str(def.get(Ability.STUN_PREVIEW, no_op).call(desc));
 	
 	poison_icon.visible = Ability.POISON_PREVIEW in def;
-	poison_label.text = def.get(Ability.POISON_PREVIEW, "");
+	poison_label.text = str(def.get(Ability.POISON_PREVIEW, no_op).call(desc));
 
 
 func _on_gui_input(event: InputEvent) -> void:

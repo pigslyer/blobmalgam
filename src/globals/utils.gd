@@ -174,3 +174,136 @@ static func default_amalgam() -> Amalgam:
 	blob.add_limb(Normal.mouth());
 	
 	return ret;
+
+
+
+enum EnemyStrength {
+	Weak = 0,
+	Average = 1,
+	Strong = 2,
+	Boss = 3,
+};
+
+static func generate_enemy(str: EnemyStrength, rng: RandomNumberGenerator) -> Amalgam:
+	var amalgam := Amalgam.new();
+	var blob_count_range: Array = blob_count()[str];
+	var blob_count: int = rng.randi_range(blob_count_range[0], blob_count_range[1]);
+	
+	# for 0, they're all weak. for average, 1 is weak. for strong, 2 are average. for boss, 3 are strong.
+	var weaken_blob_after: int = blob_count - str;
+	for blob in blob_count:
+		var generated_blob := Blob.new();
+		
+		var blob_str: int = str;
+		if weaken_blob_after < blob:
+			blob_str -= 1;
+		
+		var limb_count_range: Array = limb_count()[blob_str];
+		var limb_count: int = rng.randi_range(limb_count_range[0], limb_count_range[1]);
+		
+		var weaken_limb_after: int = limb_count - str;
+		for limb in limb_count:
+			var limb_str: int = str;
+			if weaken_limb_after < limb:
+				limb_str -= 1;
+			
+			var limb_tier: Array = limb_tiers()[limb_str];
+			var chosen_limb: Limb = limb_tier[rng.randi() % len(limb_tier)];
+			
+			generated_blob.add_limb(chosen_limb);
+		
+		amalgam.blobs.append(generated_blob);
+	
+	return amalgam;
+
+static func blob_count() -> Dictionary:
+	return {
+		EnemyStrength.Weak : [1, 1],
+		EnemyStrength.Average : [1, 3],
+		EnemyStrength.Strong : [2, 5],
+		EnemyStrength.Boss : [4, 6],
+	}
+
+static func limb_count() -> Dictionary:
+	return {
+		EnemyStrength.Weak : [1, 2],
+		EnemyStrength.Average : [2, 4],
+		EnemyStrength.Strong : [4, 6],
+		EnemyStrength.Boss : [6, 6],
+	}
+
+static func limb_tiers() -> Dictionary:
+	return {
+		EnemyStrength.Weak : [
+			Normal.leg(), Normal.leg(), Normal.leg(), Normal.leg(),
+			Normal.arm(), Normal.arm(), Normal.arm(), Normal.arm(),
+			Normal.eyes(), Normal.eyes(),
+			Normal.mouth(), Normal.mouth(),
+			
+			Pixel.arm(), Pixel.arm(),
+			Pixel.leg(), Pixel.leg(),
+			Pixel.eyes(),
+			Pixel.wings(),
+			Pixel.mouth(),
+			
+			Cute.eyes(),
+			Cute.wings(),
+			Cute.arm(),
+			Cute.cat_ears(),
+		],
+		
+		EnemyStrength.Average : [
+			Cute.eyes(),
+			Cute.wings(),
+			Cute.arm(),
+			Cute.cat_ears(),
+			Cute.leg(),
+			
+			Plant.flower(), Plant.flower(),
+			Plant.mouth(), Plant.mouth(),
+			Plant.tentacle(), Plant.tentacle(),
+			
+			Monster.arm(), Monster.arm(), Monster.arm(), Monster.arm(),
+			Monster.eyes(), Monster.eyes(),
+			Monster.leg(), Monster.leg(),
+			Monster.wings(), Monster.wings(),
+			Monster.tail(), Monster.tail(),
+			
+			Medieval.arm(), Medieval.arm(),
+			Medieval.leg(), Medieval.leg(),
+			Medieval.cape(),
+		],
+		
+		EnemyStrength.Strong : [
+			Cyber.arm(),
+			Cyber.arm(),
+			Cyber.leg(),
+			Cyber.leg(),
+			Cyber.eyes(),
+			Cyber.eyes(),
+			Cyber.jetpack(),
+			Cyber.jetpack(),
+			Cyber.reflex_booster(),
+			Cyber.reflex_booster(),
+			
+			Eldritch.tentacle(), Eldritch.tentacle(),
+			Eldritch.mouth(), Eldritch.mouth(),
+			Eldritch.wings(), Eldritch.wings(),
+			
+			Angelic.eyes(),
+			Angelic.wings(),
+		],
+		
+		EnemyStrength.Boss : [
+			Eldritch.tentacle(), Eldritch.tentacle(),
+			Eldritch.mouth(), Eldritch.mouth(),
+			Eldritch.wings(), Eldritch.wings(),
+			
+			Angelic.eyes(),
+			Angelic.wings(),
+			Angelic.eyes(),
+			Angelic.wings(),
+			Angelic.eyes(),
+			Angelic.wings(),
+		]
+	}

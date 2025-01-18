@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c6w4ard1mqbdy"
-path="res://.godot/imported/cute_mouth.png-83ec29104201b5362879ec3d1e225a67.ctex"
+uid="uid://dfs4t21wn1gjr"
+path="res://.godot/imported/pixel_arm.png-c03fe48d7d4e8047e815d9c0b9f3e3bb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cute_mouth.png"
-dest_files=["res://.godot/imported/cute_mouth.png-83ec29104201b5362879ec3d1e225a67.ctex"]
+source_file="res://assets/pixel_arm.png"
+dest_files=["res://.godot/imported/pixel_arm.png-c03fe48d7d4e8047e815d9c0b9f3e3bb.ctex"]
 
 [params]
 

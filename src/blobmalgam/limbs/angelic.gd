@@ -19,6 +19,8 @@ static func wings() -> Limb:
 	return Limb.new({
 		Ability.NAME : "Angelic Wings",
 		Ability.DESC : "God's Wrath is coming, fast.",
+		Ability.IMAGE : preload("res://assets/angelic_wings.png"),
+		
 		Ability.ANGELIC : 1,
 		Ability.WINGS : 10,
 		Ability.STUN : 10,
