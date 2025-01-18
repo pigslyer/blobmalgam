@@ -1,11 +1,12 @@
-[gd_scene load_steps=20 format=3 uid="uid://dr8gqj0fhirmi"]
+[gd_scene load_steps=21 format=3 uid="uid://dr8gqj0fhirmi"]
 
 [ext_resource type="Script" path="res://src/ragdoll/player_amalgam.gd" id="1_3qbmk"]
 [ext_resource type="Texture2D" uid="uid://55tlyu4pohpp" path="res://src/ragdoll/placeholder/blob.png" id="1_68s6d"]
 [ext_resource type="Texture2D" uid="uid://dymh67eesie1i" path="res://src/ragdoll/placeholder/arm.png" id="2_cpj3v"]
-[ext_resource type="Script" path="res://src/ragdoll/blob.gd" id="2_kqg3u"]
+[ext_resource type="Script" path="res://src/ragdoll/blob_display/blob_display.gd" id="2_h62kq"]
 [ext_resource type="Texture2D" uid="uid://b2pele6gfaq5s" path="res://src/ragdoll/placeholder/eye.png" id="3_3yyfd"]
 [ext_resource type="Texture2D" uid="uid://cxbqh3a4jai4r" path="res://src/ragdoll/placeholder/handle.png" id="3_a0xsk"]
+[ext_resource type="Script" path="res://src/ragdoll/limb_display/limb_display.gd" id="4_fgkdw"]
 [ext_resource type="Texture2D" uid="uid://j36va0usfkch" path="res://src/ragdoll/placeholder/leg.png" id="4_jqxyt"]
 [ext_resource type="Texture2D" uid="uid://eigp6nhy5b5w" path="res://src/ragdoll/placeholder/gBot_pieces.png" id="7_p6htf"]
 
@@ -86,20 +87,21 @@ color = Color(0.314283, 0.000825346, 0.779154, 1)
 position = Vector2(328, 322)
 script = ExtResource("1_3qbmk")
 
-[node name="Blob" type="RigidBody2D" parent="PlayerAmalgam"]
+[node name="Blob1" type="RigidBody2D" parent="PlayerAmalgam"]
 position = Vector2(-1, 0)
 input_pickable = true
-script = ExtResource("2_kqg3u")
+script = ExtResource("2_h62kq")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAmalgam/Blob"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAmalgam/Blob1"]
 shape = SubResource("CircleShape2D_r87p4")
 
-[node name="Sprite2D" type="Sprite2D" parent="PlayerAmalgam/Blob"]
+[node name="Sprite2D" type="Sprite2D" parent="PlayerAmalgam/Blob1"]
 scale = Vector2(3, 3)
 texture = ExtResource("1_68s6d")
 
 [node name="Limb-Arm" type="RigidBody2D" parent="PlayerAmalgam"]
 position = Vector2(-91, -213)
+script = ExtResource("4_fgkdw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAmalgam/Limb-Arm"]
 shape = SubResource("CapsuleShape2D_45xii")
@@ -110,7 +112,7 @@ texture = ExtResource("2_cpj3v")
 
 [node name="PinJoint2D" type="PinJoint2D" parent="PlayerAmalgam/Limb-Arm"]
 position = Vector2(-1, 46)
-node_a = NodePath("../../Blob")
+node_a = NodePath("../../Blob1")
 node_b = NodePath("..")
 angular_limit_enabled = true
 angular_limit_lower = -0.523599
@@ -121,6 +123,7 @@ texture = ExtResource("3_a0xsk")
 
 [node name="Limb-Arm2" type="RigidBody2D" parent="PlayerAmalgam"]
 position = Vector2(102, -204)
+script = ExtResource("4_fgkdw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAmalgam/Limb-Arm2"]
 shape = SubResource("CapsuleShape2D_no6fa")
@@ -131,7 +134,7 @@ texture = ExtResource("2_cpj3v")
 
 [node name="PinJoint2D2" type="PinJoint2D" parent="PlayerAmalgam/Limb-Arm2"]
 position = Vector2(1, 46)
-node_a = NodePath("../../Blob")
+node_a = NodePath("../../Blob1")
 node_b = NodePath("..")
 softness = 6.7
 
@@ -140,6 +143,7 @@ texture = ExtResource("3_a0xsk")
 
 [node name="Limb-Leg" type="RigidBody2D" parent="PlayerAmalgam"]
 position = Vector2(-109, 139)
+script = ExtResource("4_fgkdw")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="PlayerAmalgam/Limb-Leg"]
 shape = SubResource("CapsuleShape2D_c3vt4")
@@ -149,7 +153,7 @@ texture = ExtResource("4_jqxyt")
 
 [node name="PinJoint2D5" type="PinJoint2D" parent="PlayerAmalgam/Limb-Leg"]
 position = Vector2(-1, -44)
-node_a = NodePath("../../Blob")
+node_a = NodePath("../../Blob1")
 node_b = NodePath("..")
 
 [node name="LimbHandle" type="Sprite2D" parent="PlayerAmalgam/Limb-Leg/PinJoint2D5"]
@@ -157,6 +161,7 @@ texture = ExtResource("3_a0xsk")
 
 [node name="Limb-Leg2" type="RigidBody2D" parent="PlayerAmalgam"]
 position = Vector2(116, 139)
+script = ExtResource("4_fgkdw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAmalgam/Limb-Leg2"]
 shape = SubResource("CapsuleShape2D_tagjt")
@@ -166,7 +171,7 @@ texture = ExtResource("4_jqxyt")
 
 [node name="PinJoint2D4" type="PinJoint2D" parent="PlayerAmalgam/Limb-Leg2"]
 position = Vector2(-1, -39)
-node_a = NodePath("../../Blob")
+node_a = NodePath("../../Blob1")
 node_b = NodePath("..")
 
 [node name="LimbHandle" type="Sprite2D" parent="PlayerAmalgam/Limb-Leg2/PinJoint2D4"]
@@ -174,6 +179,7 @@ texture = ExtResource("3_a0xsk")
 
 [node name="Limb-Eye" type="RigidBody2D" parent="PlayerAmalgam"]
 position = Vector2(-61, -26)
+script = ExtResource("4_fgkdw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAmalgam/Limb-Eye"]
 shape = SubResource("CircleShape2D_u37pn")
@@ -184,7 +190,7 @@ texture = ExtResource("3_3yyfd")
 
 [node name="PinJoint2D6" type="PinJoint2D" parent="PlayerAmalgam/Limb-Eye"]
 position = Vector2(-1, 1)
-node_a = NodePath("../../Blob")
+node_a = NodePath("../../Blob1")
 node_b = NodePath("..")
 
 [node name="LimbHandle" type="Sprite2D" parent="PlayerAmalgam/Limb-Eye/PinJoint2D6"]
@@ -192,6 +198,7 @@ texture = ExtResource("3_a0xsk")
 
 [node name="Limb-Eye2" type="RigidBody2D" parent="PlayerAmalgam"]
 position = Vector2(61, -27)
+script = ExtResource("4_fgkdw")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="PlayerAmalgam/Limb-Eye2"]
 shape = SubResource("CircleShape2D_u37pn")
@@ -202,7 +209,7 @@ texture = ExtResource("3_3yyfd")
 
 [node name="PinJoint2D7" type="PinJoint2D" parent="PlayerAmalgam/Limb-Eye2"]
 position = Vector2(1, 1)
-node_a = NodePath("../../Blob")
+node_a = NodePath("../../Blob1")
 node_b = NodePath("..")
 
 [node name="LimbHandle" type="Sprite2D" parent="PlayerAmalgam/Limb-Eye2/PinJoint2D7"]
@@ -327,6 +334,6 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Add limb"
 
-[connection signal="input_event" from="PlayerAmalgam/Blob" to="PlayerAmalgam/Blob" method="_on_input_event"]
-[connection signal="mouse_entered" from="PlayerAmalgam/Blob" to="PlayerAmalgam" method="_on_blob_mouse_entered"]
-[connection signal="mouse_exited" from="PlayerAmalgam/Blob" to="PlayerAmalgam" method="_on_blob_mouse_exited"]
+[connection signal="input_event" from="PlayerAmalgam/Blob1" to="PlayerAmalgam/Blob1" method="_on_input_event"]
+[connection signal="mouse_entered" from="PlayerAmalgam/Blob1" to="PlayerAmalgam/Blob1" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="PlayerAmalgam/Blob1" to="PlayerAmalgam/Blob1" method="_on_mouse_exited"]
