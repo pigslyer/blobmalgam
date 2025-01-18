@@ -3,8 +3,8 @@
 [ext_resource type="FontFile" uid="uid://r38d3q1uv1mb" path="res://assets/Chewy-Regular.ttf" id="1_egax4"]
 [ext_resource type="PackedScene" uid="uid://dmdpqvtgjpfae" path="res://src/fight/Screen.tscn" id="1_i02bh"]
 [ext_resource type="Script" path="res://src/meta/screen.gd" id="2_n53bu"]
+[ext_resource type="PackedScene" uid="uid://b8mvfuh8hjqau" path="res://src/ragdoll/AmalgamRagdoll.tscn" id="4_1oi42"]
 [ext_resource type="Texture2D" uid="uid://cdorta5gy54ms" path="res://icon.svg" id="4_20d7b"]
-[ext_resource type="PackedScene" uid="uid://uw564dostwoo" path="res://src/ragdoll/amalgam_display/amalgam_display.tscn" id="4_81d8e"]
 [ext_resource type="PackedScene" uid="uid://dhv7m5l6snwf7" path="res://src/upgrade/Screen.tscn" id="5_5k88p"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hem84"]
@@ -109,14 +109,14 @@ position = Vector2(273, 485)
 [node name="BossEnd" type="Marker2D" parent="Opening"]
 position = Vector2(938, 404)
 
-[node name="Player" parent="Opening" instance=ExtResource("4_81d8e")]
+[node name="Player" parent="Opening" instance=ExtResource("4_1oi42")]
 position = Vector2(262, 1096)
 
 [node name="Sprite2D" type="Sprite2D" parent="Opening/Player"]
 texture = ExtResource("4_20d7b")
 offset = Vector2(0, -64)
 
-[node name="Boss" parent="Opening" instance=ExtResource("4_81d8e")]
+[node name="Boss" parent="Opening" instance=ExtResource("4_1oi42")]
 position = Vector2(938, -212)
 
 [node name="Sprite2D2" type="Sprite2D" parent="Opening/Boss"]
@@ -244,11 +244,6 @@ offset_bottom = 13.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "You are... dead."
-
-[node name="Music" type="Node" parent="."]
-
-[node name="ActiveTrack" type="AudioStreamPlayer" parent="Music"]
-bus = &"Music"
 
 [connection signal="pressed" from="MainMenu/PanelContainer/MarginContainer/Content/Start" to="." method="_on_start_pressed"]
 [connection signal="value_changed" from="MainMenu/PanelContainer/MarginContainer/Content/VolumeControls/MasterSlider" to="." method="_on_master_slider_value_changed"]

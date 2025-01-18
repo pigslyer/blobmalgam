@@ -12,8 +12,8 @@ var enemy: Amalgam;
 @onready var player_health: ExportedAmalgamHealth = $PlayerHealth;
 @onready var enemy_health: ExportedAmalgamHealth = $EnemyHealth;
 
-@onready var player_ragdoll: PlayerAmalgam = $PlayerRagdollArea/Origin/AmalgamRagdoll;
-@onready var enemy_ragdoll: PlayerAmalgam = $EnemyRagdollArea/Origin/AmalgamRagdoll;
+@onready var player_ragdoll: AmalgamDisplay = $PlayerRagdollArea/Origin/AmalgamRagdoll;
+@onready var enemy_ragdoll: AmalgamDisplay = $EnemyRagdollArea/Origin/AmalgamRagdoll;
 
 @onready var exchange: ExportedCard = $ExchangeCard/Card;
 @onready var bodyslam: ExportedCard = $BodySlamCard/Card;
@@ -39,11 +39,11 @@ func begin_fight(player: Amalgam, enemy: Amalgam) -> void:
 	
 	player_health.update_health_instant(player);
 	player_ragdoll.display_amalgam(player);
-	player_ragdoll.idle(PlayerAmalgam.IdleKinds.Standing);
+	player_ragdoll.idle(AmalgamDisplay.IdleKinds.Standing);
 	
 	enemy_health.update_health_instant(enemy);
 	enemy_ragdoll.display_amalgam(enemy);
-	enemy_ragdoll.idle(PlayerAmalgam.IdleKinds.Standing);
+	enemy_ragdoll.idle(AmalgamDisplay.IdleKinds.Standing);
 	
 	player_turn();
 
@@ -90,10 +90,10 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 		battle_screen.enemy_ragdoll.blob_pressed.disconnect(_on_ragdoll_selection);
 		battle_screen.enemy_ragdoll.limb_pressed.disconnect(_on_ragdoll_selection);
 		
-		battle_screen.player_ragdoll.effect(PlayerAmalgam.EffectKind.Selected, []);
-		battle_screen.player_ragdoll.effect(PlayerAmalgam.EffectKind.Selectable, []);
-		battle_screen.enemy_ragdoll.effect(PlayerAmalgam.EffectKind.Selected, []);
-		battle_screen.enemy_ragdoll.effect(PlayerAmalgam.EffectKind.Selectable, []);
+		battle_screen.player_ragdoll.effect(AmalgamDisplay.EffectKind.Selected, []);
+		battle_screen.player_ragdoll.effect(AmalgamDisplay.EffectKind.Selectable, []);
+		battle_screen.enemy_ragdoll.effect(AmalgamDisplay.EffectKind.Selected, []);
+		battle_screen.enemy_ragdoll.effect(AmalgamDisplay.EffectKind.Selectable, []);
 		
 		return arr;
 	
@@ -110,10 +110,10 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 		battle_screen.enemy_ragdoll.blob_pressed.disconnect(_on_ragdoll_selection);
 		battle_screen.enemy_ragdoll.limb_pressed.disconnect(_on_ragdoll_selection);
 		
-		battle_screen.player_ragdoll.effect(PlayerAmalgam.EffectKind.Selected, []);
-		battle_screen.player_ragdoll.effect(PlayerAmalgam.EffectKind.Selectable, []);
-		battle_screen.enemy_ragdoll.effect(PlayerAmalgam.EffectKind.Selected, []);
-		battle_screen.enemy_ragdoll.effect(PlayerAmalgam.EffectKind.Selectable, []);
+		battle_screen.player_ragdoll.effect(AmalgamDisplay.EffectKind.Selected, []);
+		battle_screen.player_ragdoll.effect(AmalgamDisplay.EffectKind.Selectable, []);
+		battle_screen.enemy_ragdoll.effect(AmalgamDisplay.EffectKind.Selected, []);
+		battle_screen.enemy_ragdoll.effect(AmalgamDisplay.EffectKind.Selectable, []);
 		
 		return arr;
 	
@@ -157,7 +157,7 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 				Ability.ANIM_SLASH : blobs,
 			});
 	
-	func _update_blob(ragdoll: Amalgam, userdata: Dictionary):
+	func _update_blob(ragdoll: AmalgamDisplay, userdata: Dictionary):
 		battle_screen.player_health.update_health_slow(battle_screen.player);
 		battle_screen.enemy_health.update_health_slow(battle_screen.enemy);
 		
@@ -167,18 +167,18 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 			if !battle_screen.skip_animations:
 				await ragdoll.animation_finished;
 	
-	func _blobs_amalgam(blob: Blob) -> Amalgam:
+	func _blobs_amalgam(blob: Blob) -> AmalgamDisplay:
 		var is_player_blob: int = battle_screen.player.blobs.find(blob) != -1;
 		var is_enemy_blob: int = battle_screen.enemy.blobs.find(blob) != -1;
 		assert(is_player_blob ^ is_enemy_blob);
 		
 		if is_player_blob:
-			return battle_screen.player;
+			return battle_screen.player_ragdoll;
 		else:
-			return battle_screen.enemy;
+			return battle_screen.enemy_ragdoll;
 	
 	
-	func _blobs_ragdoll(blob: Blob) -> PlayerAmalgam:
+	func _blobs_ragdoll(blob: Blob) -> AmalgamDisplay:
 		var is_player_blob: int = battle_screen.player.blobs.find(blob) != -1;
 		var is_enemy_blob: int = battle_screen.enemy.blobs.find(blob) != -1;
 		assert(is_player_blob ^ is_enemy_blob);
@@ -207,8 +207,8 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 	func _begin_selection(selectable: Array, count: int) -> void:
 		print_stack();
 		
-		battle_screen.player_ragdoll.effect(PlayerAmalgam.EffectKind.Selectable, selectable);
-		battle_screen.enemy_ragdoll.effect(PlayerAmalgam.EffectKind.Selectable, selectable);
+		battle_screen.player_ragdoll.effect(AmalgamDisplay.EffectKind.Selectable, selectable);
+		battle_screen.enemy_ragdoll.effect(AmalgamDisplay.EffectKind.Selectable, selectable);
 		
 		_valid_selection = selectable;
 		_currently_selected.clear();
@@ -230,8 +230,8 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 			else:
 				_currently_selected.remove_at(idx);
 			
-			battle_screen.player_ragdoll.effect(PlayerAmalgam.EffectKind.Selected, _currently_selected);
-			battle_screen.enemy_ragdoll.effect(PlayerAmalgam.EffectKind.Selected, _currently_selected);
+			battle_screen.player_ragdoll.effect(AmalgamDisplay.EffectKind.Selected, _currently_selected);
+			battle_screen.enemy_ragdoll.effect(AmalgamDisplay.EffectKind.Selected, _currently_selected);
 		
 		var is_finished: bool = len(_currently_selected) <= _required_count;
 		if is_finished:
@@ -276,7 +276,7 @@ func _on_skip_turn_pressed() -> void:
 	_end_player_turn();
 
 func _end_player_turn() -> void:
-	if _last_resolver == null:
+	if _last_resolver != null:
 		_last_resolver.cancel_awaits();
 		_last_resolver = null;
 	
@@ -358,7 +358,7 @@ class EnemyResolver extends Ability.EffectResolver:
 		if len(blobs) > 0:
 			_update_blob(_blobs_ragdoll(blobs[0]), userdata);
 	
-	func _update_blob(ragdoll: PlayerAmalgam, userdata: Dictionary):
+	func _update_blob(ragdoll: AmalgamDisplay, userdata: Dictionary):
 		battle_screen.player_health.update_health_slow(battle_screen.player);
 		battle_screen.enemy_health.update_health_slow(battle_screen.enemy);
 		
@@ -368,7 +368,7 @@ class EnemyResolver extends Ability.EffectResolver:
 			if !battle_screen.skip_animations:
 				await ragdoll.animation_finished;
 	
-	func _blobs_ragdoll(blob: Blob) -> PlayerAmalgam:
+	func _blobs_ragdoll(blob: Blob) -> AmalgamDisplay:
 		var is_player_blob: int = battle_screen.player.blobs.find(blob) != -1;
 		var is_enemy_blob: int = battle_screen.enemy.blobs.find(blob) != -1;
 		assert(is_player_blob ^ is_enemy_blob);
@@ -420,6 +420,7 @@ func enemy_turn() -> void:
 		
 		for child in enemy_cards.get_children():
 			child.hide();
+			child.modulate = Color.WHITE;
 	
 	var player_died := player.current_global_health() <= 0;
 	var enemy_died := enemy.current_global_health() <= 0;
@@ -433,7 +434,7 @@ func enemy_turn() -> void:
 	if !player_died && !enemy_died:
 		player_turn();
 
-func _apply_start_of_turn(on: Amalgam, displayed_on: PlayerAmalgam) -> void:
+func _apply_start_of_turn(on: Amalgam, displayed_on: AmalgamDisplay) -> void:
 	
 	
 	pass

@@ -1,8 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://b8pepwnkg674s"]
+[gd_scene load_steps=10 format=3 uid="uid://b8pepwnkg674s"]
 
 [ext_resource type="Texture2D" uid="uid://cdorta5gy54ms" path="res://icon.svg" id="1_220gv"]
 [ext_resource type="Script" path="res://src/fight/card.gd" id="2_2hc8x"]
-[ext_resource type="Texture2D" uid="uid://bpopah1qw0hub" path="res://assets/arm_icon.png" id="3_nbwbe"]
+[ext_resource type="Texture2D" uid="uid://c0r1bvw6y0srd" path="res://assets/dmg2.png" id="3_1gegx"]
+[ext_resource type="Texture2D" uid="uid://2qnlecsebhc6" path="res://assets/stun.png" id="4_ctxxv"]
+[ext_resource type="Texture2D" uid="uid://c6d3rfk70k2m0" path="res://assets/poison.png" id="5_goou6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dm6ap"]
 bg_color = Color(0, 0, 0, 1)
@@ -71,6 +73,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_q2t45")
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.9
+offset_left = 4.0
+offset_top = 4.0
 offset_bottom = 153.0
 grow_horizontal = 2
 text = "Consecutive Normal Kick"
@@ -106,7 +110,7 @@ mouse_filter = 2
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("3_nbwbe")
+texture = ExtResource("3_1gegx")
 expand_mode = 1
 
 [node name="Amount" type="Label" parent="PreviewIcons/Damage"]
@@ -125,7 +129,7 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_220gv")
+texture = ExtResource("4_ctxxv")
 expand_mode = 1
 
 [node name="Amount" type="Label" parent="PreviewIcons/Stun"]
@@ -144,7 +148,7 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("1_220gv")
+texture = ExtResource("5_goou6")
 expand_mode = 1
 
 [node name="Amount" type="Label" parent="PreviewIcons/Poison"]

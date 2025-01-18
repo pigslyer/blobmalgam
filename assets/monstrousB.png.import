@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c2n6p4pnnw7ky"
-path="res://.godot/imported/monster_leg.png-4a396d9d3552a0e056b90e8a1217389b.ctex"
+uid="uid://c8gol6vpurydm"
+path="res://.godot/imported/monstrousB.png-127b213e6506bcb9872e4076fe1c93b0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/monster_leg.png"
-dest_files=["res://.godot/imported/monster_leg.png-4a396d9d3552a0e056b90e8a1217389b.ctex"]
+source_file="res://assets/monstrousB.png"
+dest_files=["res://.godot/imported/monstrousB.png-127b213e6506bcb9872e4076fe1c93b0.ctex"]
 
 [params]
 

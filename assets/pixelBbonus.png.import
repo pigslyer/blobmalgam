@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cdwsax5r48oka"
-path="res://.godot/imported/medieval_leg_plate_temp.png-163ec9219261f8a27fccc85ce095214d.ctex"
+uid="uid://djo1clmogf51u"
+path="res://.godot/imported/pixelBbonus.png-96623ee747e95110ccd87e009369a7f4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/medieval_leg_plate_temp.png"
-dest_files=["res://.godot/imported/medieval_leg_plate_temp.png-163ec9219261f8a27fccc85ce095214d.ctex"]
+source_file="res://assets/pixelBbonus.png"
+dest_files=["res://.godot/imported/pixelBbonus.png-96623ee747e95110ccd87e009369a7f4.ctex"]
 
 [params]
 

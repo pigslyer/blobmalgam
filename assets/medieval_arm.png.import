@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cs453v8qeqafk"
-path="res://.godot/imported/monster_tail.png-0c17ced9e26a2aaa32499405fd13c76d.ctex"
+uid="uid://boke1wpcqltbs"
+path="res://.godot/imported/medieval_arm.png-d98ab96320d0ae56c51955553bed859f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/monster_tail.png"
-dest_files=["res://.godot/imported/monster_tail.png-0c17ced9e26a2aaa32499405fd13c76d.ctex"]
+source_file="res://assets/medieval_arm.png"
+dest_files=["res://.godot/imported/medieval_arm.png-d98ab96320d0ae56c51955553bed859f.ctex"]
 
 [params]
 

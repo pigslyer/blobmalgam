@@ -23,7 +23,7 @@ func combat_display_actions_simult_flattened(
 		original_tags.append(Ability.exchange());
 		original_tags.append(Ability.bodyslam());
 	
-	for i in draw_count:
+	for i in min(len(limbs), draw_count):
 		var removed_limb_idx := rng.randi() % len(limbs);
 		var removed_limb: Limb = limbs[removed_limb_idx];
 		limbs.remove_at(removed_limb_idx);

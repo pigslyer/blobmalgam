@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c0eag30dt2tvc"
-path="res://.godot/imported/medieval_arm_plate_temp.png-e4f963aca8130057f459bb5d9ea2ef15.ctex"
+uid="uid://d08sqqcu2nr4u"
+path="res://.godot/imported/monstrous_blobpng.png-13285a82390a1d027245c9ab685b0e41.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/medieval_arm_plate_temp.png"
-dest_files=["res://.godot/imported/medieval_arm_plate_temp.png-e4f963aca8130057f459bb5d9ea2ef15.ctex"]
+source_file="res://assets/monstrous_blobpng.png"
+dest_files=["res://.godot/imported/monstrous_blobpng.png-13285a82390a1d027245c9ab685b0e41.ctex"]
 
 [params]
 

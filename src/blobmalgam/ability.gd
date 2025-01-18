@@ -289,7 +289,7 @@ static func non_dup_from(tag_aggregations: Array[Dictionary]) -> Array[Dictionar
 			chosen_ability[i].merge(tag_aggregations[i]);
 			break;
 	
-	return chosen_ability;
+	return chosen_ability.filter(func(e): return len(e) > 0);
 
 static func _merge_deduped(arr: Array[Array]) -> Array:
 	var existing: Dictionary;
@@ -391,7 +391,9 @@ static func _upgrade_crafter(c: Crafter) -> void:
 		c.ability([BODYSLAM, null], bodyslam());
 	
 	c.ability(
-		[CYBER, 3],
+		[
+			CYBER, 3,
+		],
 		{
 			NAME : "Overcharge",
 			DESC : "Stun all enemy blobs for CYBER.",
@@ -407,7 +409,23 @@ static func _upgrade_crafter(c: Crafter) -> void:
 	)
 	
 	c.ability(
-		[GRABBY, 1],
+		[
+			ELDRITCH, 4,
+		],
+		{
+			NAME : "Subsume",
+			DESC : "Remove a blob.",
+			DAMAGE_PREVIEW: func(_d: DescBuilder):
+				return "∞",
+			EFFECT : func(e: Effector):
+				await e.damage_blob(await e.blob_on(e.them), INF, { }),
+		}
+	)
+	
+	c.ability(
+		[
+			GRABBY, 1
+		],
 		{
 			NAME : "Tentacle slap",
 			DESC : TODO,
@@ -457,13 +475,16 @@ static func _upgrade_crafter(c: Crafter) -> void:
 	
 	c.ability(
 		[
-			ANGELIC, 1
+			ANGELIC, 1,
+			WINGS, 1
 		],
 		{
-			NAME : "Light of God",
-			DESC : "Shine. ANGELIC * 4.",
+			NAME : "Come Down from Heaven",
+			DESC : "ANGELIC * WINGS * 4 damage. ANGELIC * 4 stun.",
+			DAMAGE_PREVIEW: func(d: DescBuilder):
+				return str(d.tags[ANGELIC] * d.tags[WINGS] * 4),
 			STUN_PREVIEW: func(d: DescBuilder):
-				return str(d.tags[ANGELIC]),
+				return str(d.tags[ANGELIC] * 4),
 			EFFECT : func(e: Effector):
 				if !await e.confirm_enemy({ }):
 					return;
@@ -473,12 +494,27 @@ static func _upgrade_crafter(c: Crafter) -> void:
 		}
 	)
 	
-	
+	c.ability(
+		[
+			ARM, 4,
+			WINGS, 5,
+			CYBER, 1,
+		],
+		{
+			NAME : "ROCKET PUNCH",
+			DESC_SHORT : "(You are the rocket)",
+			DESC : "Punch for (ARM * WINGS)^CYBER",
+			DAMAGE_PREVIEW : func(d: DescBuilder):
+				return str(pow(d.tags[ARM] * d.tags[WINGS], d.tags[CYBER])),
+			EFFECT : func(e: Effector):
+				await e.damage_blob(await e.blob_on(e.them), pow(e.tags[ARM] * e.tags[WINGS], e.tags[CYBER]), { }),
+		}
+	)
 	
 	c.ability(
 		[
 			ARM, 8,
-			REFLEX, 1,
+			CYBER, 1,
 		],
 		{
 			NAME : "Platinum Punches",

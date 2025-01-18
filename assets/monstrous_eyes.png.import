@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c7nfxee7wbe0k"
-path="res://.godot/imported/monster_arm.png-9e5d6b213c9da6e892845e7f5c05fe36.ctex"
+uid="uid://1df7ph01dnci"
+path="res://.godot/imported/monstrous_eyes.png-fa3abb3dda3265303ceae394a09923b8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/monster_arm.png"
-dest_files=["res://.godot/imported/monster_arm.png-9e5d6b213c9da6e892845e7f5c05fe36.ctex"]
+source_file="res://assets/monstrous_eyes.png"
+dest_files=["res://.godot/imported/monstrous_eyes.png-fa3abb3dda3265303ceae394a09923b8.ctex"]
 
 [params]
 

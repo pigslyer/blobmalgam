@@ -21,7 +21,7 @@ func _ready():
 	_apply_volume_to_bus("Effects", 1);
 	_apply_volume_to_bus("Music", 1);
 
-var show_anims: bool = false;
+var show_anims: bool = true;
 
 func _on_start_pressed() -> void:
 	fight_progression = 0;
@@ -33,24 +33,30 @@ func _on_start_pressed() -> void:
 		await _opening_animation();
 		await _shift_backgrounds(preload("res://assets/ozadje3.png"));
 		
-		fade.show();
-		fade_text.text = "";
-		
-		const FADE_OUT_TIME = 0.2;
-		var tween := create_tween();
-		tween.tween_property(fade, "modulate", Color.WHITE, FADE_OUT_TIME);
-		await tween.finished;
+		#fade.show();
+		#fade_text.text = "";
+		#
+		#const FADE_OUT_TIME = 0.2;
+		#var tween := create_tween();
+		#tween.tween_property(fade, "modulate", Color.WHITE, FADE_OUT_TIME);
+		#await tween.finished;
 		
 	main_menu.hide();
 	fight.show();
 	
 	if show_anims:
-		var tween := create_tween();
+		fight.modulate = Color.TRANSPARENT;
 		
-		const FADE_IN_TIME = 0.2;
-		tween.tween_property(fade, "modulate", Color.TRANSPARENT, FADE_IN_TIME);
-		await tween.finished;
-		fade.hide();
+		var tween := create_tween().set_parallel().set_trans(Tween.TRANS_CUBIC);
+		const MOVE_IN_TIME = 0.6;
+		tween.tween_property(fight, "anchor_top", 0.0, MOVE_IN_TIME).from(1.0);
+		tween.tween_property(fight, "anchor_bottom", 1.0, MOVE_IN_TIME).from(2.0);
+		tween.tween_property(fight, "modulate", Color.WHITE, MOVE_IN_TIME).from(Color.TRANSPARENT);
+		
+		#const FADE_IN_TIME = 0.2;
+		#tween.tween_property(fade, "modulate", Color.TRANSPARENT, FADE_IN_TIME);
+		#await tween.finished;
+		#fade.hide();
 	
 	var current_fight: Amalgam;
 	if fight_progression < FIGHTS_UNTIL_BOSS:
@@ -75,6 +81,12 @@ func _player_lost() -> void:
 	fight.player_lost.disconnect(_player_lost);
 	
 	print("you lost!");
+
+func _next_fight() -> void:
+	pass
+
+func _game_over() -> void:
+	pass
 
 func _on_master_slider_value_changed(value: float) -> void:
 	_apply_volume_to_bus("Master", value);
@@ -112,8 +124,8 @@ func _opening_animation() -> void:
 	const PLAYER_RAISE_TIME = 0.5;
 	const BOSS_RAISE_TIME = 1.4;
 	
-	var player_ragdoll: PlayerAmalgam = $Opening/Player;
-	var boss_ragdoll: PlayerAmalgam = $Opening/Boss;
+	var player_ragdoll: AmalgamDisplay = $Opening/Player;
+	var boss_ragdoll: AmalgamDisplay = $Opening/Boss;
 	var player_start: Vector2 = player_ragdoll.position;
 	var boss_start: Vector2 = boss_ragdoll.position;
 	var player_end: Vector2 = $Opening/PlayerEnd.position;
@@ -124,8 +136,8 @@ func _opening_animation() -> void:
 	
 	player_ragdoll.display_amalgam(player);
 	boss_ragdoll.display_amalgam(boss);
-	player_ragdoll.idle(PlayerAmalgam.IdleKinds.None);
-	boss_ragdoll.idle(PlayerAmalgam.IdleKinds.None);
+	player_ragdoll.idle(AmalgamDisplay.IdleKinds.None);
+	boss_ragdoll.idle(AmalgamDisplay.IdleKinds.None);
 	
 	var tween := create_tween().set_trans(Tween.TRANS_CUBIC);
 	

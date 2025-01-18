@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfbuv4u78fscu"
-path="res://.godot/imported/monster_wing.png-b942ae59e0a6285d1e11f94e5b4983f4.ctex"
+uid="uid://bfmii0lw2gg4i"
+path="res://.godot/imported/plant_thorns.png-d2c97d484ae00dbfcaff23bd4c9c36f1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/monster_wing.png"
-dest_files=["res://.godot/imported/monster_wing.png-b942ae59e0a6285d1e11f94e5b4983f4.ctex"]
+source_file="res://assets/plant_thorns.png"
+dest_files=["res://.godot/imported/plant_thorns.png-d2c97d484ae00dbfcaff23bd4c9c36f1.ctex"]
 
 [params]
 

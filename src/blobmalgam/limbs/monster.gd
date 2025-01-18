@@ -5,7 +5,7 @@ static func leg() -> Limb:
 	return Limb.new({
 		Ability.NAME : "Monsterous Leg",
 		Ability.DESC : "This'll have to be based on the art",
-		Ability.IMAGE : preload("res://assets/monster_leg.png"),
+		Ability.IMAGE : preload("res://assets/monstrous_leg.png"),
 		
 		Ability.MONSTER : 1,
 		Ability.LEG : 3,
@@ -16,7 +16,7 @@ static func arm() -> Limb:
 	return Limb.new({
 		Ability.NAME : "Monster Arm",
 		Ability.DESC : "This'll have to be based on the art",
-		Ability.IMAGE : preload("res://assets/monster_arm.png"),
+		Ability.IMAGE : preload("res://assets/monstrous_arm.png"),
 		
 		Ability.MONSTER : 1,
 		Ability.ARM : 3,
@@ -27,7 +27,7 @@ static func eyes() -> Limb:
 	return Limb.new({
 		Ability.NAME : "Monster Eyes",
 		Ability.DESC : "They glow in the dark.",
-		Ability.IMAGE : preload("res://assets/monster_eyes.png"),
+		Ability.IMAGE : preload("res://assets/monstrous_eyes.png"),
 		
 		Ability.MONSTER : 1,
 		Ability.EYES : 4,
@@ -38,7 +38,7 @@ static func wings() -> Limb:
 	return Limb.new({
 		Ability.NAME : "Monsterous Wings",
 		Ability.DESC : "This'll have to be based on the art",
-		Ability.IMAGE : preload("res://assets/monster_wing.png"),
+		Ability.IMAGE : preload("res://assets/monstrous_wings.png"),
 		
 		Ability.MONSTER : 1,
 		Ability.WINGS : 4,
@@ -48,6 +48,7 @@ static func mouth() -> Limb:
 	return Limb.new({
 		Ability.NAME : "Monster Mouth",
 		Ability.DESC : "This'll have to be based on the art",
+		Ability.IMAGE : preload("res://assets/monstrous_mouth.png"),
 		
 		Ability.MONSTER : 1,
 		Ability.MOUTH : 2,
@@ -58,7 +59,7 @@ static func tail() -> Limb:
 	return Limb.new({
 		Ability.NAME : "Monster Tail",
 		Ability.DESC : "This'll have to be based on the art",
-		Ability.IMAGE : preload("res://assets/monster_tail.png"),
+		Ability.IMAGE : preload("res://assets/monstrous_tail.png"),
 		
 		Ability.MONSTER : 1,
 		Ability.POISON : 5,

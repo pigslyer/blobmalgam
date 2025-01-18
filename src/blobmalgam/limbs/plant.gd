@@ -24,6 +24,7 @@ static func mouth() -> Limb:
 		Ability.PLANT : 1,
 		Ability.MOUTH : 4,
 		Ability.POISON : 6,
+		Ability.CONSUMING : 4,
 	})
 
 static func flower() -> Limb:
