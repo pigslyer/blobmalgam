@@ -12,8 +12,8 @@ var enemy: Amalgam;
 @onready var player_health: ExportedAmalgamHealth = $PlayerHealth;
 @onready var enemy_health: ExportedAmalgamHealth = $EnemyHealth;
 
-@onready var player_ragdoll: AmalgamDisplay = $PlayerRagdollArea/Origin/AmalgamRagdoll;
-@onready var enemy_ragdoll: AmalgamDisplay = $EnemyRagdollArea/Origin/AmalgamRagdoll;
+@onready var player_ragdoll: AmalgamDisplay = %PlayerAmalgam;
+@onready var enemy_ragdoll: AmalgamDisplay = %EnemyAmalgam;
 
 @onready var exchange: ExportedCard = $ExchangeCard/Card;
 @onready var bodyslam: ExportedCard = $BodySlamCard/Card;
