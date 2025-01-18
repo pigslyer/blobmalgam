@@ -2,6 +2,7 @@ class_name AmalgamDisplay
 extends Node2D
 
 @onready var card: Amalgam = null;
+@onready var blob_scene := preload("res://src/ragdoll/blob_display/blob_display.tscn");
 
 signal animation_finished;
 signal blob_pressed(which: Blob);
@@ -31,23 +32,29 @@ func _ready() -> void:
 func connect_blob_signals(blob_display: BlobDisplay, amalgam_display: AmalgamDisplay = self) -> void:
 	blob_display.connect("blob_pressed", Callable(amalgam_display, "_on_blob_pressed"));
 	blob_display.connect("blob_hovered", Callable(amalgam_display, "_on_blob_hovered"));
-	blob_display.connect("limb_pressed", Callable(amalgam_display, "_on_limb_pressed"));
 
 func connect_limb_signals(limb_display: LimbDisplay, amalgam_display: AmalgamDisplay = self) -> void:
 	limb_display.connect("limb_pressed", Callable(amalgam_display, "_on_limb_pressed"));
 
+func _init_blob(blob: Blob) -> BlobDisplay:
+	var blob_display := blob_scene.instantiate();
+	blob_display.name = name + "_blob_" + str(blob.get_instance_id());
+	# blob_display.image = preload("res://src/ragdoll/placeholder/blob.png");
+	blob_display.card = blob;
+	# blob_display.position
+	return blob_display;
+
 # Called when redraw needed (state change, e.g. blob has died, limb has changed)
 func display_amalgam(amalgam: Amalgam) -> void:
 	print_debug("display_amalgam called on ", name);
+	card = amalgam;
 	for child in get_children():
 		child.queue_free();
 
 	for blob in amalgam.blobs:
-		var blob_display := BlobDisplay.new();
+		var blob_display := _init_blob(blob);
 		add_child(blob_display);
 		connect_blob_signals(blob_display);
-		blob_display.name = name + "_blob_" + str(blob.get_instance_id());
-		blob_display.card = blob;
 
 		for positioned_limb in blob.limbs:
 			var limb_display := LimbDisplay.new();
