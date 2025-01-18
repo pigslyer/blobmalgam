@@ -7,11 +7,6 @@ class_name PlayerAmalgam
 ## emitted when one of the animations request to play has finished
 signal animation_finished;
 
-# these should be emitted on all blobs, even dead ones
-signal blob_pressed(which: Blob);
-signal blob_hovered(which: Blob, state: bool);
-
-signal limb_pressed(which: Limb);
 
 ## amalgam should grow up and left/right
 ## this will also be called when the amalgam's state changes and i want it to update
@@ -54,7 +49,10 @@ func effect(kind: EffectKind, limbs_or_blobs: Array) -> void:
 
 
 ###########################
-
+# these should be emitted on all blobs, even dead ones
+signal blob_pressed(which: Blob);
+signal blob_hovered(which: Blob, state: bool);
+signal limb_pressed(which: Limb);
 
 var is_dragging: bool = false;
 var dragged_body: RigidBody2D = null;
