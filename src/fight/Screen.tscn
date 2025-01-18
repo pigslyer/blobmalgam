@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://b8pepwnkg674s" path="res://src/fight/Card.tscn" id="1_e7pql"]
 [ext_resource type="Texture2D" uid="uid://c15oryw451pir" path="res://assets/pixel.png" id="2_gv4ll"]
 [ext_resource type="Script" path="res://src/fight/health.gd" id="3_g5crb"]
-[ext_resource type="PackedScene" uid="uid://b8mvfuh8hjqau" path="res://src/ragdoll/AmalgamRagdoll.tscn" id="5_dhwgp"]
+[ext_resource type="PackedScene" uid="uid://uw564dostwoo" path="res://src/ragdoll/amalgam_display/amalgam_display.tscn" id="5_vdmff"]
 
 [sub_resource type="Theme" id="Theme_wupdr"]
 default_font_size = 12
@@ -830,7 +830,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="AmalgamRagdoll" parent="PlayerRagdollArea/Origin" instance=ExtResource("5_dhwgp")]
+[node name="PlayerAmalgam" parent="PlayerRagdollArea/Origin" instance=ExtResource("5_vdmff")]
+unique_name_in_owner = true
 
 [node name="EnemyRagdollArea" type="ReferenceRect" parent="."]
 layout_mode = 1
@@ -850,7 +851,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="AmalgamRagdoll" parent="EnemyRagdollArea/Origin" instance=ExtResource("5_dhwgp")]
+[node name="EnemyAmalgam" parent="EnemyRagdollArea/Origin" instance=ExtResource("5_vdmff")]
+unique_name_in_owner = true
 
 [connection signal="selected" from="ExchangeCard/Card" to="." method="_on_player_card_selected"]
 [connection signal="selected" from="BodySlamCard/Card" to="." method="_on_player_card_selected"]

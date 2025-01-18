@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b16tbptxmgkat"]
+[gd_scene load_steps=10 format=3 uid="uid://b16tbptxmgkat"]
 
 [ext_resource type="FontFile" uid="uid://r38d3q1uv1mb" path="res://assets/Chewy-Regular.ttf" id="1_egax4"]
 [ext_resource type="PackedScene" uid="uid://dmdpqvtgjpfae" path="res://src/fight/Screen.tscn" id="1_i02bh"]
@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://b8mvfuh8hjqau" path="res://src/ragdoll/AmalgamRagdoll.tscn" id="4_1oi42"]
 [ext_resource type="Texture2D" uid="uid://cdorta5gy54ms" path="res://icon.svg" id="4_20d7b"]
 [ext_resource type="PackedScene" uid="uid://dhv7m5l6snwf7" path="res://src/upgrade/Screen.tscn" id="5_5k88p"]
-[ext_resource type="PackedScene" uid="uid://26ti8gxn2db1" path="res://src/fight/Screen_kris.tscn" id="6_lamf1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hem84"]
 bg_color = Color(0.482353, 0.0235294, 0.180392, 0.917647)
@@ -215,10 +214,7 @@ value = 1.0
 [node name="Fight" parent="." instance=ExtResource("1_i02bh")]
 visible = false
 layout_mode = 1
-
-[node name="FightKris" parent="." instance=ExtResource("6_lamf1")]
-visible = false
-layout_mode = 1
+mouse_filter = 0
 
 [node name="Upgrade" parent="." instance=ExtResource("5_5k88p")]
 visible = false

@@ -8,7 +8,7 @@ var fight_progression: int;
 var rng := RandomNumberGenerator.new();
 
 @onready var main_menu: Control = $MainMenu;
-@onready var fight: BattleScreenKris = $FightKris;
+@onready var fight: BattleScreen = $Fight;
 
 @onready var fade: ColorRect = $FadeOut;
 @onready var fade_text: Label = $FadeOut/Label;
