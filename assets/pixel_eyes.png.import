@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dsincoapp1tem"
-path="res://.godot/imported/nomal_blob.png-09b7047f2abd7d52e98b4ecfbb318465.ctex"
+uid="uid://ccw5v1oowasv5"
+path="res://.godot/imported/pixel_eyes.png-8f2cb1d9511d5cd424fa85e36aa5222b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/nomal_blob.png"
-dest_files=["res://.godot/imported/nomal_blob.png-09b7047f2abd7d52e98b4ecfbb318465.ctex"]
+source_file="res://assets/pixel_eyes.png"
+dest_files=["res://.godot/imported/pixel_eyes.png-8f2cb1d9511d5cd424fa85e36aa5222b.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c4qyr0humdrok"
-path="res://.godot/imported/eldritch_tentacle.png-c90b38cacbb35a110d99873561d75d81.ctex"
+uid="uid://d04cvn0gmxuso"
+path="res://.godot/imported/cute_wing.png-eb269fc29550cff3e6dbb1c18e615bd3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/eldritch_tentacle.png"
-dest_files=["res://.godot/imported/eldritch_tentacle.png-c90b38cacbb35a110d99873561d75d81.ctex"]
+source_file="res://assets/cute_wing.png"
+dest_files=["res://.godot/imported/cute_wing.png-eb269fc29550cff3e6dbb1c18e615bd3.ctex"]
 
 [params]
 

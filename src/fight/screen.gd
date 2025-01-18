@@ -57,12 +57,16 @@ func player_turn():
 	exchange.show();
 	bodyslam.show();
 	
-	exchange.display_card(abilities[0]);
-	bodyslam.display_card(abilities[1]);
+	exchange.display_card(abilities[0], player, enemy);
+	bodyslam.display_card(abilities[1], player, enemy);
 	
 	for i in range(2, len(abilities)):
+		if !Ability.EFFECT in abilities[i]:
+			push_warning("No effect found in card ", abilities[i]);
+			continue;
+		
 		var card: ExportedCard = player_cards.get_child(i - 2);
-		card.display_card(abilities[i]);
+		card.display_card(abilities[i], player, enemy);
 		card.show();
 
 
@@ -80,6 +84,17 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 		_is_awaiting = true;
 		arr.assign(await selection_finished);
 		_is_awaiting = false;
+		
+		battle_screen.player_ragdoll.blob_pressed.disconnect(_on_ragdoll_selection);
+		battle_screen.player_ragdoll.limb_pressed.disconnect(_on_ragdoll_selection);
+		battle_screen.enemy_ragdoll.blob_pressed.disconnect(_on_ragdoll_selection);
+		battle_screen.enemy_ragdoll.limb_pressed.disconnect(_on_ragdoll_selection);
+		
+		battle_screen.player_ragdoll.effect(PlayerAmalgam.EffectKind.Selected, []);
+		battle_screen.player_ragdoll.effect(PlayerAmalgam.EffectKind.Selectable, []);
+		battle_screen.enemy_ragdoll.effect(PlayerAmalgam.EffectKind.Selected, []);
+		battle_screen.enemy_ragdoll.effect(PlayerAmalgam.EffectKind.Selectable, []);
+		
 		return arr;
 	
 	func limbs(from_selection: Array[Limb], count: int) -> Array[Limb]:
@@ -89,6 +104,17 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 		_is_awaiting = true;
 		arr.assign(await selection_finished);
 		_is_awaiting = false;
+		
+		battle_screen.player_ragdoll.blob_pressed.disconnect(_on_ragdoll_selection);
+		battle_screen.player_ragdoll.limb_pressed.disconnect(_on_ragdoll_selection);
+		battle_screen.enemy_ragdoll.blob_pressed.disconnect(_on_ragdoll_selection);
+		battle_screen.enemy_ragdoll.limb_pressed.disconnect(_on_ragdoll_selection);
+		
+		battle_screen.player_ragdoll.effect(PlayerAmalgam.EffectKind.Selected, []);
+		battle_screen.player_ragdoll.effect(PlayerAmalgam.EffectKind.Selectable, []);
+		battle_screen.enemy_ragdoll.effect(PlayerAmalgam.EffectKind.Selected, []);
+		battle_screen.enemy_ragdoll.effect(PlayerAmalgam.EffectKind.Selectable, []);
+		
 		return arr;
 	
 	func dice_roll(r: int, _userdata: Dictionary) -> int:
@@ -97,39 +123,41 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 		_had_side_effects = true;
 		return value;
 	
-	func damage_blob(blob: Blob, amount: float, _userdata: Dictionary) -> void:
-		blob._health -= amount;
-		_had_side_effects = true;
+	func damage_blobs(blobs: Array[Blob], amount: float, _userdata: Dictionary) -> void:
+		for blob in blobs:
+			blob._health -= amount;
+			_had_side_effects = true;
 		
-		await _update_blob(blob, {
-			Ability.ANIM_SLASH : [blob],
-		});
+		if len(blobs) > 0:
+			await _update_blob(_blobs_amalgam(blobs[0]), {
+				Ability.ANIM_SLASH : blobs,
+			});
 	
 	func stun_blob(blob: Blob, turn_count: int, _userdata: Dictionary) -> void:
 		blob._stun += turn_count;
 		_had_side_effects = true;
 		
-		await _update_blob(blob, { });
+		await _update_blob(_blobs_amalgam(blob), { });
 	
 	func poison_blob(blob: Blob, amount: int, _userdata: Dictionary) -> void:
 		blob._poison = amount;
 		_had_side_effects = true;
 		
-		await _update_blob(blob, {
+		await _update_blob(_blobs_amalgam(blob), {
 			Ability.ANIM_SLASH : [blob],
 		});
 	
-	func heal_blob(blob: Blob, amount: float, _userdata: Dictionary) -> void:
-		blob._health += amount;
-		_had_side_effects = true;
+	func heal_blobs(blobs: Array[Blob], amount: float, _userdata: Dictionary) -> void:
+		for blob in blobs:
+			blob._health += amount;
+			_had_side_effects = true;
 		
-		await _update_blob(blob, {
-			Ability.ANIM_HEAL : [blob],
-		});
+		if len(blobs) > 0:
+			await _update_blob(_blobs_amalgam(blobs[0]), {
+				Ability.ANIM_SLASH : blobs,
+			});
 	
-	func _update_blob(blob: Blob, userdata: Dictionary):
-		var ragdoll: PlayerAmalgam = _blobs_ragdoll(blob);
-		
+	func _update_blob(ragdoll: Amalgam, userdata: Dictionary):
 		battle_screen.player_health.update_health_slow(battle_screen.player);
 		battle_screen.enemy_health.update_health_slow(battle_screen.enemy);
 		
@@ -177,6 +205,8 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 	var _currently_selected: Array;
 	var _required_count: int;
 	func _begin_selection(selectable: Array, count: int) -> void:
+		print_stack();
+		
 		battle_screen.player_ragdoll.effect(PlayerAmalgam.EffectKind.Selectable, selectable);
 		battle_screen.enemy_ragdoll.effect(PlayerAmalgam.EffectKind.Selectable, selectable);
 		
@@ -205,16 +235,6 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 		
 		var is_finished: bool = len(_currently_selected) <= _required_count;
 		if is_finished:
-			battle_screen.player_ragdoll.effect(PlayerAmalgam.EffectKind.Selected, []);
-			battle_screen.player_ragdoll.effect(PlayerAmalgam.EffectKind.Selectable, []);
-			battle_screen.enemy_ragdoll.effect(PlayerAmalgam.EffectKind.Selected, []);
-			battle_screen.enemy_ragdoll.effect(PlayerAmalgam.EffectKind.Selectable, []);
-			
-			battle_screen.player_ragdoll.blob_pressed.disconnect(_on_ragdoll_selection);
-			battle_screen.player_ragdoll.limb_pressed.disconnect(_on_ragdoll_selection);
-			battle_screen.enemy_ragdoll.blob_pressed.disconnect(_on_ragdoll_selection);
-			battle_screen.enemy_ragdoll.limb_pressed.disconnect(_on_ragdoll_selection);
-			
 			var selected: Array = _currently_selected;
 			_currently_selected = [];
 			_valid_selection.clear();
@@ -249,7 +269,7 @@ func _on_player_card_selected(card: Dictionary):
 	
 	var is_same_ability: bool = card_idx == player_drawn_abilities.find(card);
 	print("wrapping up ability ", card)
-	if is_same_ability && _last_resolver.had_side_effects():
+	if is_same_ability && resolver.had_side_effects():
 		_end_player_turn();
 
 func _on_skip_turn_pressed() -> void:
@@ -314,29 +334,31 @@ class EnemyResolver extends Ability.EffectResolver:
 		print("rolled ", value);
 		return value;
 	
-	func damage_blob(blob: Blob, amount: float, userdata: Dictionary) -> void:
-		blob._health -= amount;
-		
-		_update_blob(blob, userdata);
+	func damage_blobs(blobs: Array[Blob], amount: float, userdata: Dictionary) -> void:
+		for blob in blobs:
+			blob._health -= amount;
+			
+		if len(blobs) > 0:
+			_update_blob(_blobs_ragdoll(blobs[0]), userdata);
 	
 	func stun_blob(blob: Blob, turn_count: int, userdata: Dictionary) -> void:
 		blob._stun += turn_count;
 		
-		_update_blob(blob, userdata);
+		_update_blob(_blobs_ragdoll(blob), userdata);
 	
 	func poison_blob(blob: Blob, amount: int, userdata: Dictionary) -> void:
 		blob._poision += amount;
 		
-		_update_blob(blob, userdata);
+		_update_blob(_blobs_ragdoll(blob), userdata);
 	
-	func heal_blob(blob: Blob, amount: float, userdata: Dictionary) -> void:
-		blob._health += amount;
-		
-		_update_blob(blob, userdata);
+	func heal_blobs(blobs: Array[Blob], amount: float, userdata: Dictionary) -> void:
+		for blob in blobs:
+			blob._health += amount;
+			
+		if len(blobs) > 0:
+			_update_blob(_blobs_ragdoll(blobs[0]), userdata);
 	
-	func _update_blob(blob: Blob, userdata: Dictionary):
-		var ragdoll: PlayerAmalgam = _blobs_ragdoll(blob);
-		
+	func _update_blob(ragdoll: PlayerAmalgam, userdata: Dictionary):
 		battle_screen.player_health.update_health_slow(battle_screen.player);
 		battle_screen.enemy_health.update_health_slow(battle_screen.enemy);
 		
@@ -370,31 +392,34 @@ class EnemyResolver extends Ability.EffectResolver:
 	
 
 func enemy_turn() -> void:
-	var rng := RandomNumberGenerator.new();
-	var abilities: Array[Dictionary] = enemy.combat_display_actions_simult_flattened(rng, 5, false);
+	_apply_start_of_turn(enemy, enemy_ragdoll);
 	
-	for i in len(abilities):
-		var shown_card: ExportedCard = enemy_cards.get_child(i);
-		shown_card.display_card(abilities[i]);
-		shown_card.show();
-	
-	await get_tree().create_timer(1).timeout;
-	
-	var chosen: int = rng.randi() % len(abilities);
-	var card: ExportedCard = enemy_cards.get_child(chosen);
-	
-	card.modulate = Color.RED;
-	await get_tree().create_timer(0.3).timeout;
-	
-	var resolver := EnemyResolver.new();
-	resolver.battle_screen = self;
-	resolver.rng = rng;
-	
-	var effector := Ability.Effector.new(resolver, enemy, player, abilities[chosen]);
-	await abilities[chosen][Ability.EFFECT].call(effector);
-	
-	for child in enemy_cards.get_children():
-		child.hide();
+	if enemy.total_global_health() > 0:
+		var rng := RandomNumberGenerator.new();
+		var abilities: Array[Dictionary] = enemy.combat_display_actions_simult_flattened(rng, 5, false);
+		
+		for i in len(abilities):
+			var shown_card: ExportedCard = enemy_cards.get_child(i);
+			shown_card.display_card(abilities[i], enemy, player);
+			shown_card.show();
+		
+		await get_tree().create_timer(1).timeout;
+		
+		var chosen: int = rng.randi() % len(abilities);
+		var card: ExportedCard = enemy_cards.get_child(chosen);
+		
+		card.modulate = Color.RED;
+		await get_tree().create_timer(0.3).timeout;
+		
+		var resolver := EnemyResolver.new();
+		resolver.battle_screen = self;
+		resolver.rng = rng;
+		
+		var effector := Ability.Effector.new(resolver, enemy, player, abilities[chosen]);
+		await abilities[chosen][Ability.EFFECT].call(effector);
+		
+		for child in enemy_cards.get_children():
+			child.hide();
 	
 	var player_died := player.current_global_health() <= 0;
 	var enemy_died := enemy.current_global_health() <= 0;
@@ -407,6 +432,11 @@ func enemy_turn() -> void:
 	
 	if !player_died && !enemy_died:
 		player_turn();
+
+func _apply_start_of_turn(on: Amalgam, displayed_on: PlayerAmalgam) -> void:
+	
+	
+	pass
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:

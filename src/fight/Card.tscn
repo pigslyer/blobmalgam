@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://b8pepwnkg674s"]
+[gd_scene load_steps=8 format=3 uid="uid://b8pepwnkg674s"]
 
 [ext_resource type="Texture2D" uid="uid://cdorta5gy54ms" path="res://icon.svg" id="1_220gv"]
 [ext_resource type="Script" path="res://src/fight/card.gd" id="2_2hc8x"]
@@ -13,6 +13,10 @@ border_width_top = 20
 border_color = Color(0, 0, 0, 1)
 border_blend = true
 
+[sub_resource type="LabelSettings" id="LabelSettings_8odsm"]
+outline_size = 1
+outline_color = Color(0, 0, 0, 1)
+
 [sub_resource type="LabelSettings" id="LabelSettings_ij3bh"]
 font_size = 24
 outline_size = 2
@@ -26,6 +30,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 tooltip_text = "Kick them, kick them harD!"
+mouse_filter = 0
+mouse_default_cursor_shape = 2
 texture = ExtResource("1_220gv")
 expand_mode = 1
 script = ExtResource("2_2hc8x")
@@ -72,14 +78,17 @@ autowrap_mode = 3
 
 [node name="ShortDesc" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 12
+anchors_preset = -1
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -23.0
+offset_left = 6.0
+offset_right = -6.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 0
 text = "A short description!"
+label_settings = SubResource("LabelSettings_8odsm")
 horizontal_alignment = 1
 autowrap_mode = 3
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c6w4ard1mqbdy"
-path="res://.godot/imported/cute_mouth.png-83ec29104201b5362879ec3d1e225a67.ctex"
+uid="uid://cjkax146bxtfk"
+path="res://.godot/imported/cute_ears.png-503046db89654561c817220396f3c800.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cute_mouth.png"
-dest_files=["res://.godot/imported/cute_mouth.png-83ec29104201b5362879ec3d1e225a67.ctex"]
+source_file="res://assets/cute_ears.png"
+dest_files=["res://.godot/imported/cute_ears.png-503046db89654561c817220396f3c800.ctex"]
 
 [params]
 
