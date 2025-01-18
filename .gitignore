@@ -1,3 +1,7 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+settings.json
+
+# for now
+godot-jolt/
