@@ -3,15 +3,10 @@ extends RefCounted
 
 const MAX_HEALTH: float = 100;
 
-
 var _health: float = MAX_HEALTH;
 var _stun: int = 0;
 var _poision: int = 0;
 var limbs: Array[PositionedLimb];
-
-class PositionedLimb:
-	var position: Vector2;
-	var limb: Limb;
 
 func add_limb(limb: Limb):
 	var pos_limb := PositionedLimb.new();

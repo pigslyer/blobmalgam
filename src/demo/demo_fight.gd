@@ -34,7 +34,7 @@ func _regen() -> void:
 	Utils.display_amalgam(enemy_view, enemy);
 	
 	var rng := RandomNumberGenerator.new();
-	player_abilities = player.combat_display_actions_simult_flattened(rng, 5);
+	player_abilities = player.combat_display_actions_simult_flattened(rng, 5, true);
 	
 	display_cards(ability_list, player_abilities, _on_card_pressed);
 
@@ -226,7 +226,7 @@ func _on_breakdown_pressed() -> void:
 
 func _on_end_turn_pressed() -> void:
 	var rng := RandomNumberGenerator.new();
-	player_abilities = player.combat_display_actions_simult_flattened(rng, 5);
+	player_abilities = player.combat_display_actions_simult_flattened(rng, 5, true);
 	
 	display_cards(ability_list, player_abilities, _on_card_pressed);
 

@@ -2,6 +2,7 @@
 .godot/
 /android/
 settings.json
+*.tmp
 
 # for now
 godot-jolt/

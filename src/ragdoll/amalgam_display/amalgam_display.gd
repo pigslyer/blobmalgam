@@ -2,6 +2,8 @@ class_name AmalgamDisplay
 extends Node2D
 
 @onready var card: Amalgam = null;
+@onready var blob_scene := preload("res://src/ragdoll/blob_display/blob_display.tscn");
+@onready var limb_scene := preload("res://src/ragdoll/limb_display/limb_display.tscn");
 
 signal animation_finished;
 signal blob_pressed(which: Blob);
@@ -28,9 +30,47 @@ func _on_limb_pressed(limb: Limb) -> void:
 func _ready() -> void:
 	pass ;
 
+func connect_blob_signals(blob_display: BlobDisplay, amalgam_display: AmalgamDisplay = self) -> void:
+	blob_display.connect("blob_pressed", Callable(amalgam_display, "_on_blob_pressed"));
+	blob_display.connect("blob_hovered", Callable(amalgam_display, "_on_blob_hovered"));
+
+func connect_limb_signals(limb_display: LimbDisplay, amalgam_display: AmalgamDisplay = self) -> void:
+	limb_display.connect("limb_pressed", Callable(amalgam_display, "_on_limb_pressed"));
+
+func _init_blob(blob: Blob) -> BlobDisplay:
+	var blob_display := blob_scene.instantiate();
+	blob_display.name = name + "_blob_" + str(blob.get_instance_id());
+	# blob_display.image = preload("res://src/ragdoll/placeholder/blob.png");
+	blob_display.card = blob;
+	# blob_display.position
+	return blob_display;
+
+func _init_limb(limb: PositionedLimb) -> LimbDisplay:
+	var limb_display := limb_scene.instantiate();
+	limb_display.name = name + "_limb_" + str(limb.get_instance_id());
+	limb_display.card = limb.limb;
+	limb_display.position = limb.position;
+	limb_display.image = limb.limb.tags["blob_images"];
+	return limb_display;
+
 # Called when redraw needed (state change, e.g. blob has died, limb has changed)
 func display_amalgam(amalgam: Amalgam) -> void:
-	pass ;
+	print_debug("display_amalgam called on ", name);
+	card = amalgam;
+	for child in get_children():
+		child.queue_free();
+
+	for blob in amalgam.blobs:
+		var blob_display := _init_blob(blob);
+		add_child(blob_display);
+		connect_blob_signals(blob_display);
+
+		var limbs_node = blob_display.get_node("Limbs");
+		for positioned_limb in blob.limbs:
+			var limb_display := _init_limb(positioned_limb);
+			limbs_node.add_child(limb_display);
+			connect_limb_signals(limb_display);
+
 
 func idle(kind: IdleKinds) -> void:
 	pass ;

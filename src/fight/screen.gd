@@ -31,7 +31,6 @@ func _ready():
 		player_card.selected.connect(_on_player_card_selected);
 	
 	
-
 @warning_ignore("shadowed_variable")
 func begin_fight(player: Amalgam, enemy: Amalgam) -> void:
 	self.player = player;
@@ -63,7 +62,7 @@ func player_turn():
 	for i in range(2, len(abilities)):
 		if !Ability.EFFECT in abilities[i]:
 			push_warning("No effect found in card ", abilities[i]);
-			continue;
+			continue ;
 		
 		var card: ExportedCard = player_cards.get_child(i - 2);
 		card.display_card(abilities[i], player, enemy);
@@ -130,21 +129,21 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 		
 		if len(blobs) > 0:
 			await _update_blob(_blobs_amalgam(blobs[0]), {
-				Ability.ANIM_SLASH : blobs,
+				Ability.ANIM_SLASH: blobs,
 			});
 	
 	func stun_blob(blob: Blob, turn_count: int, _userdata: Dictionary) -> void:
 		blob._stun += turn_count;
 		_had_side_effects = true;
 		
-		await _update_blob(_blobs_amalgam(blob), { });
+		await _update_blob(_blobs_amalgam(blob), {});
 	
 	func poison_blob(blob: Blob, amount: int, _userdata: Dictionary) -> void:
 		blob._poison = amount;
 		_had_side_effects = true;
 		
 		await _update_blob(_blobs_amalgam(blob), {
-			Ability.ANIM_SLASH : [blob],
+			Ability.ANIM_SLASH: [blob],
 		});
 	
 	func heal_blobs(blobs: Array[Blob], amount: float, _userdata: Dictionary) -> void:
@@ -154,7 +153,7 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 		
 		if len(blobs) > 0:
 			await _update_blob(_blobs_amalgam(blobs[0]), {
-				Ability.ANIM_SLASH : blobs,
+				Ability.ANIM_SLASH: blobs,
 			});
 	
 	func _update_blob(ragdoll: AmalgamDisplay, userdata: Dictionary):

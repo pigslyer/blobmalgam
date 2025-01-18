@@ -214,6 +214,7 @@ value = 1.0
 [node name="Fight" parent="." instance=ExtResource("1_i02bh")]
 visible = false
 layout_mode = 1
+mouse_filter = 0
 
 [node name="Upgrade" parent="." instance=ExtResource("5_5k88p")]
 visible = false

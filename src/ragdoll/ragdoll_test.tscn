@@ -346,3 +346,6 @@ unique_name_in_owner = true
 [connection signal="input_event" from="testamalgam/Blob1" to="testamalgam/Blob1" method="_on_input_event"]
 [connection signal="mouse_entered" from="testamalgam/Blob1" to="testamalgam/Blob1" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="testamalgam/Blob1" to="testamalgam/Blob1" method="_on_mouse_exited"]
+[connection signal="pressed" from="DebugMenu/ActionsRect/VBoxContainer/SpawnDefaultButton" to="." method="_on_spawn_default_button_pressed"]
+[connection signal="pressed" from="DebugMenu/ActionsRect/VBoxContainer/AddBlobButton" to="." method="_on_add_blob_button_pressed"]
+[connection signal="pressed" from="DebugMenu/ActionsRect/VBoxContainer/AddLimbButton" to="." method="_on_add_limb_button_pressed"]
