@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dmdpqvtgjpfae"]
+[gd_scene load_steps=11 format=3 uid="uid://dmdpqvtgjpfae"]
 
 [ext_resource type="Script" path="res://src/fight/screen.gd" id="1_15obj"]
 [ext_resource type="PackedScene" uid="uid://b8pepwnkg674s" path="res://src/fight/Card.tscn" id="1_e7pql"]
@@ -8,6 +8,21 @@
 
 [sub_resource type="Theme" id="Theme_wupdr"]
 default_font_size = 12
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_yq31k"]
+distance = 13.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ua62e"]
+normal = Vector2(0, 1)
+distance = 13.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_gaxeo"]
+normal = Vector2(-1, 0)
+distance = -992.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_3il1s"]
+normal = Vector2(1, 0)
+distance = 97.0
 
 [node name="Fight" type="Control"]
 layout_mode = 3
@@ -819,18 +834,41 @@ anchor_left = 0.1
 anchor_top = 0.15
 anchor_right = 0.4
 anchor_bottom = 0.78
+editor_only = false
 
-[node name="Origin" type="Control" parent="PlayerRagdollArea"]
-layout_mode = 1
+[node name="StaticBody2D" type="StaticBody2D" parent="PlayerRagdollArea"]
+
+[node name="Bottom" type="CollisionShape2D" parent="PlayerRagdollArea/StaticBody2D"]
+position = Vector2(195, 466)
+shape = SubResource("WorldBoundaryShape2D_yq31k")
+
+[node name="Top" type="CollisionShape2D" parent="PlayerRagdollArea/StaticBody2D"]
+position = Vector2(183, -13)
+shape = SubResource("WorldBoundaryShape2D_ua62e")
+
+[node name="Right" type="CollisionShape2D" parent="PlayerRagdollArea/StaticBody2D"]
+position = Vector2(-608, 298)
+shape = SubResource("WorldBoundaryShape2D_gaxeo")
+
+[node name="Left" type="CollisionShape2D" parent="PlayerRagdollArea/StaticBody2D"]
+position = Vector2(-97, 334)
+shape = SubResource("WorldBoundaryShape2D_3il1s")
+
+[node name="Origin" type="Control" parent="PlayerRagdollArea/StaticBody2D"]
+layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
+offset_left = 194.0
+offset_top = 206.0
+offset_right = 194.0
+offset_bottom = 206.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="PlayerAmalgam" parent="PlayerRagdollArea/Origin" instance=ExtResource("5_vdmff")]
+[node name="PlayerAmalgam" parent="PlayerRagdollArea/StaticBody2D/Origin" instance=ExtResource("5_vdmff")]
 unique_name_in_owner = true
 
 [node name="EnemyRagdollArea" type="ReferenceRect" parent="."]
@@ -841,17 +879,39 @@ anchor_top = 0.15
 anchor_right = 0.9
 anchor_bottom = 0.78
 
-[node name="Origin" type="Control" parent="EnemyRagdollArea"]
-layout_mode = 1
+[node name="StaticBody2D" type="StaticBody2D" parent="EnemyRagdollArea"]
+
+[node name="Bottom" type="CollisionShape2D" parent="EnemyRagdollArea/StaticBody2D"]
+position = Vector2(195, 466)
+shape = SubResource("WorldBoundaryShape2D_yq31k")
+
+[node name="Top" type="CollisionShape2D" parent="EnemyRagdollArea/StaticBody2D"]
+position = Vector2(183, -13)
+shape = SubResource("WorldBoundaryShape2D_ua62e")
+
+[node name="Right" type="CollisionShape2D" parent="EnemyRagdollArea/StaticBody2D"]
+position = Vector2(-608, 298)
+shape = SubResource("WorldBoundaryShape2D_gaxeo")
+
+[node name="Left" type="CollisionShape2D" parent="EnemyRagdollArea/StaticBody2D"]
+position = Vector2(-97, 334)
+shape = SubResource("WorldBoundaryShape2D_3il1s")
+
+[node name="Origin" type="Control" parent="EnemyRagdollArea/StaticBody2D"]
+layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
+offset_left = 192.0
+offset_top = 453.6
+offset_right = 192.0
+offset_bottom = 453.6
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="EnemyAmalgam" parent="EnemyRagdollArea/Origin" instance=ExtResource("5_vdmff")]
+[node name="EnemyAmalgam" parent="EnemyRagdollArea/StaticBody2D/Origin" instance=ExtResource("5_vdmff")]
 unique_name_in_owner = true
 
 [connection signal="selected" from="ExchangeCard/Card" to="." method="_on_player_card_selected"]

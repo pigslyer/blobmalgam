@@ -3,6 +3,7 @@ extends Node2D
 
 @onready var card: Amalgam = null;
 @onready var blob_scene := preload("res://src/ragdoll/blob_display/blob_display.tscn");
+@onready var limb_scene := preload("res://src/ragdoll/limb_display/limb_display.tscn");
 
 signal animation_finished;
 signal blob_pressed(which: Blob);
@@ -44,6 +45,14 @@ func _init_blob(blob: Blob) -> BlobDisplay:
 	# blob_display.position
 	return blob_display;
 
+func _init_limb(limb: PositionedLimb) -> LimbDisplay:
+	var limb_display := limb_scene.instantiate();
+	limb_display.name = name + "_limb_" + str(limb.get_instance_id());
+	limb_display.card = limb.limb;
+	limb_display.position = limb.position;
+	limb_display.image = limb.limb.tags["blob_images"];
+	return limb_display;
+
 # Called when redraw needed (state change, e.g. blob has died, limb has changed)
 func display_amalgam(amalgam: Amalgam) -> void:
 	print_debug("display_amalgam called on ", name);
@@ -56,13 +65,11 @@ func display_amalgam(amalgam: Amalgam) -> void:
 		add_child(blob_display);
 		connect_blob_signals(blob_display);
 
+		var limbs_node = blob_display.get_node("Limbs");
 		for positioned_limb in blob.limbs:
-			var limb_display := LimbDisplay.new();
-			blob_display.add_child(limb_display);
+			var limb_display := _init_limb(positioned_limb);
+			limbs_node.add_child(limb_display);
 			connect_limb_signals(limb_display);
-			limb_display.name = name + "_limb_" + str(positioned_limb.limb.get_instance_id());
-			limb_display.position = positioned_limb.position;
-			limb_display.card = positioned_limb.limb;
 
 
 func idle(kind: IdleKinds) -> void:

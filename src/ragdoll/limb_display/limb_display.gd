@@ -1,9 +1,16 @@
 class_name LimbDisplay
 extends RigidBody2D
 
-@onready var card: Limb = null;
+var card: Limb = null;
+var image: CompressedTexture2D = null;
 
 signal limb_pressed(which: Limb);
+
+func _enter_tree() -> void:
+	if image == null:
+		push_warning("BlobDisplay image is null, setting to placeholder");
+		return ;
+	get_node("Sprite2D").texture = image;
 
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton:

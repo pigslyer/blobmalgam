@@ -27,9 +27,9 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 
 func _on_mouse_entered() -> void:
 	# Emitted on all blobs (even dead)
-	print_debug("Mouse START hovering over blob: ", self.name);
+	print_debug("Emitting blob_hovered (state: true) with blob: ", self.name);
 	emit_signal("blob_hovered", card, true);
 
 func _on_mouse_exited() -> void:
-	print_debug("Mouse STOP hovering over blob: ", self.name);
+	print_debug("Emitting blob_hovered (state: false) with blob: ", self.name);
 	emit_signal("blob_hovered", card, false);
