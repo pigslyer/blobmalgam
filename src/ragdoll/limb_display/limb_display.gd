@@ -1,7 +1,9 @@
 class_name LimbDisplay
 extends RigidBody2D
 
-var card: Limb = null;
+@onready var limb: Limb = null;
+
+signal limb_pressed(which: Limb);
 
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton:

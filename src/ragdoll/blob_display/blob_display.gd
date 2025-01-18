@@ -1,7 +1,7 @@
 class_name BlobDisplay
 extends RigidBody2D
 
-var card: Blob = null;
+@onready var card: Blob = null;
 
 signal blob_pressed(which: Blob);
 signal blob_hovered(which: Blob, state: bool);

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://uw564dostwoo"]
+
+[ext_resource type="Script" path="res://src/ragdoll/amalgam_display/amalgam_display.gd" id="1_sc120"]
+
+[node name="AmalgamDisplay" type="Node2D"]
+script = ExtResource("1_sc120")
