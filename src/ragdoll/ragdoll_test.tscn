@@ -1,8 +1,9 @@
-[gd_scene load_steps=19 format=3 uid="uid://dr8gqj0fhirmi"]
+[gd_scene load_steps=20 format=3 uid="uid://dr8gqj0fhirmi"]
 
 [ext_resource type="Script" path="res://src/ragdoll/player_amalgam.gd" id="1_3qbmk"]
 [ext_resource type="Texture2D" uid="uid://55tlyu4pohpp" path="res://src/ragdoll/placeholder/blob.png" id="1_68s6d"]
 [ext_resource type="Texture2D" uid="uid://dymh67eesie1i" path="res://src/ragdoll/placeholder/arm.png" id="2_cpj3v"]
+[ext_resource type="Script" path="res://src/ragdoll/blob.gd" id="2_kqg3u"]
 [ext_resource type="Texture2D" uid="uid://b2pele6gfaq5s" path="res://src/ragdoll/placeholder/eye.png" id="3_3yyfd"]
 [ext_resource type="Texture2D" uid="uid://cxbqh3a4jai4r" path="res://src/ragdoll/placeholder/handle.png" id="3_a0xsk"]
 [ext_resource type="Texture2D" uid="uid://j36va0usfkch" path="res://src/ragdoll/placeholder/leg.png" id="4_jqxyt"]
@@ -88,6 +89,7 @@ script = ExtResource("1_3qbmk")
 [node name="Blob" type="RigidBody2D" parent="PlayerAmalgam"]
 position = Vector2(-1, 0)
 input_pickable = true
+script = ExtResource("2_kqg3u")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAmalgam/Blob"]
 shape = SubResource("CircleShape2D_r87p4")
@@ -292,6 +294,39 @@ shape = SubResource("WorldBoundaryShape2D_2vbca")
 position = Vector2(673, 335)
 shape = SubResource("WorldBoundaryShape2D_nhmc6")
 
-[connection signal="input_event" from="PlayerAmalgam/Blob" to="PlayerAmalgam" method="_on_blob_input_event"]
+[node name="DebugMenu" type="CanvasLayer" parent="."]
+
+[node name="ActionsRect" type="ColorRect" parent="DebugMenu"]
+offset_left = 12.0
+offset_top = 14.0
+offset_right = 176.0
+offset_bottom = 160.0
+color = Color(1, 1, 1, 0.203922)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DebugMenu/ActionsRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="SpawnDefaultButton" type="Button" parent="DebugMenu/ActionsRect/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Default amalgam"
+
+[node name="AddBlobButton" type="Button" parent="DebugMenu/ActionsRect/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Add blob"
+
+[node name="AddLimbButton" type="Button" parent="DebugMenu/ActionsRect/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Add limb"
+
+[connection signal="input_event" from="PlayerAmalgam/Blob" to="PlayerAmalgam/Blob" method="_on_input_event"]
 [connection signal="mouse_entered" from="PlayerAmalgam/Blob" to="PlayerAmalgam" method="_on_blob_mouse_entered"]
 [connection signal="mouse_exited" from="PlayerAmalgam/Blob" to="PlayerAmalgam" method="_on_blob_mouse_exited"]
