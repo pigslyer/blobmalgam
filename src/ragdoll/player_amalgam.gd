@@ -1,3 +1,5 @@
+# will get replaced by AmalgamDisplay
+class_name PlayerAmalgam
 extends Node2D
 
 ###########################
