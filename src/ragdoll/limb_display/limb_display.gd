@@ -1,7 +1,7 @@
 class_name LimbDisplay
 extends RigidBody2D
 
-@onready var limb: Limb = null;
+@onready var card: Limb = null;
 
 signal limb_pressed(which: Limb);
 

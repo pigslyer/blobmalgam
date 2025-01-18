@@ -4,3 +4,8 @@
 
 [node name="AmalgamDisplay" type="Node2D"]
 script = ExtResource("1_sc120")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(1, 0, 1, 1)
