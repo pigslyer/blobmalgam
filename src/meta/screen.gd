@@ -4,7 +4,7 @@ var player: Amalgam;
 var boss: Amalgam;
 
 @onready var main_menu: Control = $MainMenu;
-@onready var fight: BattleScreen = $Fight;
+@onready var fight: BattleScreenKris = $FightKris;
 
 @onready var fade: ColorRect = $FadeOut;
 @onready var fade_text: Label = $FadeOut/Label;

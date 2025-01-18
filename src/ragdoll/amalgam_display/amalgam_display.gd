@@ -30,7 +30,7 @@ func _ready() -> void:
 
 # Called when redraw needed (state change, e.g. blob has died, limb has changed)
 func display_amalgam(amalgam: Amalgam) -> void:
-	pass ;
+	print_debug("display_amalgam called, will redraw: ", amalgam);
 
 func idle(kind: IdleKinds) -> void:
 	pass ;

@@ -65,3 +65,16 @@ func _ready():
 	_player.display_amalgam(_default_player_data);
 	var _default_enemy_data: Amalgam = _generate_enemy_amalgam();
 	_enemy.display_amalgam(_default_enemy_data);
+
+
+func _on_add_limb_button_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_add_blob_button_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_spawn_default_button_pressed() -> void:
+	var _default_player_data: Amalgam = _generate_player_amalgam();
+	_player.display_amalgam(_default_player_data);
