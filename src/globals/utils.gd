@@ -219,7 +219,7 @@ static func generate_enemy(str: EnemyStrength, rng: RandomNumberGenerator) -> Am
 		if blob == 0:
 			continue ;
 
-		var angle := rng.randf_range(-PI, 0);
+		var angle := rng.randf_range(-PI + PI / 8, -PI / 8);
 		var direction = Vector2(cos(angle), sin(angle)).normalized();
 		current_blob_pos = previous_blob_pos + direction * (AmalgamDisplay.BLOB_RADIUS * 2);
 
@@ -240,7 +240,7 @@ static func generate_enemy(str: EnemyStrength, rng: RandomNumberGenerator) -> Am
 
 static func blob_count() -> Dictionary:
 	return {
-		EnemyStrength.Weak: [2, 2],
+		EnemyStrength.Weak: [1, 1],
 		EnemyStrength.Average: [1, 3],
 		EnemyStrength.Strong: [2, 5],
 		EnemyStrength.Boss: [4, 6],

@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://src/fight/screen.gd" id="1_15obj"]
 [ext_resource type="PackedScene" uid="uid://b8pepwnkg674s" path="res://src/fight/Card.tscn" id="1_e7pql"]
 [ext_resource type="Script" path="res://src/fight/health.gd" id="3_g5crb"]
-[ext_resource type="PackedScene" uid="uid://bxtfxhv5poscb" path="res://src/fight/HealthBar.tscn" id="5_ityqo"]
+[ext_resource type="PackedScene" path="res://src/fight/HealthBar.tscn" id="5_ityqo"]
 [ext_resource type="PackedScene" uid="uid://uw564dostwoo" path="res://src/ragdoll/amalgam_display/amalgam_display.tscn" id="5_vdmff"]
 
 [sub_resource type="Theme" id="Theme_wupdr"]
@@ -373,6 +373,7 @@ theme_override_font_sizes/font_size = 36
 text = "Skip Turn"
 
 [node name="WorldBoundaries" type="StaticBody2D" parent="."]
+visible = false
 position = Vector2(128, 108)
 
 [node name="CollisionShape2D5" type="CollisionShape2D" parent="WorldBoundaries"]
@@ -427,6 +428,8 @@ mouse_filter = 1
 
 [node name="PlayerAmalgam" parent="PlayerRagdollArea/Origin" instance=ExtResource("5_vdmff")]
 unique_name_in_owner = true
+offset_top = -80.0
+offset_bottom = -80.0
 
 [node name="EnemyRagdollArea" type="ReferenceRect" parent="."]
 layout_mode = 1

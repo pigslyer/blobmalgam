@@ -1,7 +1,7 @@
 class_name AmalgamDisplay
 extends Control
 
-const OVERLAP_DISTANCE = 20;
+const OVERLAP_DISTANCE = 50;
 const BLOB_RADIUS = 80;
 
 @onready var card: Amalgam = null;
@@ -220,7 +220,7 @@ func _play_slash_sfx(userdata: Dictionary) -> void:
 
 func _play_heal_sfx(userdata: Dictionary) -> void:
 	if !Ability.ANIM_HEAL in userdata:
-		return;
+		return ;
 	
 	for _i in len(userdata[Ability.ANIM_SLASH]):
 		Utils.play_sfx(_slash_anims().pick_random());
