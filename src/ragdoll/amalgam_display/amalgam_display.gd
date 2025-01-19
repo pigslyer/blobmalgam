@@ -69,22 +69,58 @@ func display_amalgam(amalgam: Amalgam) -> void:
 	for child in get_children():
 		child.queue_free();
 
-	var blob_y_offset := 0;
-	for blob in amalgam.blobs:
+	var traversed_blobs := [];
+	var blob_positions := {};
+	var ix_stack := [0]
+
+
+	# First blob will always be at origin
+	# Get position of other blobs based on their links (DFS)
+
+	# assert(amalgam.blobs.size() == amalgam.links.size() + 1, "Amalgam blobs and links size mismatch");
+	while ix_stack.size() > 0:
+		var blob_ix = ix_stack.pop_back();
+		var blob: Blob = amalgam.blobs[blob_ix];
 		var blob_display := _init_blob(blob);
-		blob_y_offset -= blob_display.get_node("Sprite2D").texture.get_height() * blob_display.get_node("Sprite2D").scale.y / 2; # assuming circle
 		add_child(blob_display);
 		connect_blob_signals(blob_display);
-		blob_display.position = Vector2(0, blob_y_offset);
-		blob_y_offset -= blob_display.get_node("Sprite2D").texture.get_height() * blob_display.get_node("Sprite2D").scale.y / 2; # add own radius to make space for next one
+
+		traversed_blobs.append(blob_ix);
 
 		var limbs_node = blob_display.get_node("Limbs");
 		for positioned_limb in blob.limbs:
 			var limb_display := _init_limb(positioned_limb);
 			limbs_node.add_child(limb_display);
 			connect_limb_signals(limb_display);
-			
 
+		for link in amalgam.links:
+			if link.from_idx == blob_ix and not link.to_idx in traversed_blobs:
+				ix_stack.append(link.to_idx);
+			elif link.to_idx == blob_ix and not link.from_idx in traversed_blobs:
+				ix_stack.append(link.from_idx);
+
+	# while (traversed_blobs.length() < amalgam.blobs.length()):
+	# 	var blob := amalgam.blobs[blob_ix];
+	# 	if blob in traversed_blobs:
+	# 		blob_ix += 1;
+	# 		continue;
+	# 	var blob_display := _init_blob(blob);
+	# 	var blob_radius : int = blob_display.get_node("Sprite2D").texture.get_height() * blob_display.get_node("Sprite2D").scale.y / 2; # assuming circle
+	# 	add_child(blob_display);
+	# 	connect_blob_signals(blob_display);
+
+	# 	traversed_blobs.append(blob_ix);
+
+	# 	var limbs_node = blob_display.get_node("Limbs");
+	# 	for positioned_limb in blob.limbs:
+	# 		var limb_display := _init_limb(positioned_limb);
+	# 		# positioned_limb.position = 
+	# 		limbs_node.add_child(limb_display);
+	# 		connect_limb_signals(limb_display);
+
+	# 	for link in amalgam.links:
+
+			
 func idle(kind: IdleKinds) -> void:
 	pass ;
 

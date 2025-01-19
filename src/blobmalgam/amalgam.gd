@@ -6,10 +6,10 @@ var links: Array[Link] = [];
 
 class Link:
 	var from_idx: int;
-	var from_local_pos: Vector2;
+	var from_local_pos: Vector2; # relative to origin of first blob
 	
 	var to_idx: int;
-	var to_local_pos: Vector2;
+	var to_local_pos: Vector2; # relative to origin of first blob
 
 func combat_display_actions_simult_flattened(
 	rng: RandomNumberGenerator,
@@ -36,28 +36,28 @@ func combat_display_actions_simult_flattened(
 		
 		for j in len(original_tags):
 			if i == j:
-				continue;
+				continue ;
 			
 			var may_merge := false;
 			for tag in original_tags[i].keys():
 				if !tag in original_tags[j]:
-					continue;
+					continue ;
 				
 				var prev_val = original_tags[j][tag];
 				var is_accumable: bool = prev_val is int || prev_val is float;
 				if !is_accumable:
-					continue;
+					continue ;
 				
 				may_merge = true;
 			
 			if !may_merge:
-				continue;
+				continue ;
 			
 			for tag in original_tags[j].keys():
 				var prev_val = original_tags[j][tag];
 				var is_accumable: bool = prev_val is int || prev_val is float;
 				if !is_accumable:
-					continue;
+					continue ;
 				
 				if tag in acc:
 					acc[tag] += prev_val;
