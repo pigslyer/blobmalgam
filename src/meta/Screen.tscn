@@ -107,7 +107,7 @@ autowrap_mode = 0
 position = Vector2(273, 485)
 
 [node name="BossEnd" type="Marker2D" parent="Opening"]
-position = Vector2(938, 404)
+position = Vector2(951, 802)
 
 [node name="Player" parent="Opening" instance=ExtResource("4_81d8e")]
 position = Vector2(262, 1096)
@@ -214,7 +214,6 @@ value = 1.0
 [node name="Fight" parent="." instance=ExtResource("1_i02bh")]
 visible = false
 layout_mode = 1
-mouse_filter = 0
 
 [node name="Upgrade" parent="." instance=ExtResource("5_5k88p")]
 visible = false

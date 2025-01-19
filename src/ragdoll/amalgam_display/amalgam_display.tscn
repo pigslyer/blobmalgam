@@ -12,3 +12,4 @@ offset_bottom = 40.0
 color = Color(1, 0, 1, 1)
 
 [node name="BlobDisplay" parent="." instance=ExtResource("2_sxi2t")]
+position = Vector2(0, -73)

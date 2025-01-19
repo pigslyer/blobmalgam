@@ -4,15 +4,19 @@
 [ext_resource type="Texture2D" uid="uid://c1nobtswfvcpa" path="res://assets/monstrous_arm.png" id="2_xa26b"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h63pf"]
-radius = 44.13
-height = 234.56
+radius = 34.52
+height = 191.3
 
 [node name="LimbDisplay" type="RigidBody2D"]
-freeze = true
 script = ExtResource("1_y38qg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_h63pf")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(17, 2)
+rotation = 0.782134
+scale = Vector2(0.75, 0.75)
 texture = ExtResource("2_xa26b")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
