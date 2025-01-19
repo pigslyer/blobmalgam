@@ -6,7 +6,8 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_yg81y"]
 radius = 92.92
 
-[node name="BlobDisplay" type="Node2D"]
+[node name="BlobDisplay" type="RigidBody2D"]
+freeze = true
 script = ExtResource("1_1shfe")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
