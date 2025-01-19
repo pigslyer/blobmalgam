@@ -128,7 +128,8 @@ func _next_fight() -> void:
 		blob.texture = new_blob_texture;
 		adding.append(blob);
 		
-		var limb_pool: Array[Limb] = Utils.limb_tiers()[player_upgrade_strength]
+		var limb_pool: Array[Limb] = [];
+		limb_pool.assign(Utils.limb_tiers()[player_upgrade_strength]);
 		for i in 5:
 			adding.append(limb_pool.pick_random());
 		
