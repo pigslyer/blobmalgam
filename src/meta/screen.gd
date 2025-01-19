@@ -136,7 +136,7 @@ func _next_fight() -> void:
 		upgrade.upgrade(player, adding);
 		await upgrade.finished;
 	
-	tween = create_tween();
+	tween = create_tween().set_parallel();
 	
 	var enemy_bckg := background_fitting(enemy);
 	next_background.texture = enemy_bckg.texture;
