@@ -1,22 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://kqat6upl4hrn"]
+[gd_scene load_steps=3 format=3 uid="uid://kqat6upl4hrn"]
 
 [ext_resource type="Script" path="res://src/ragdoll/limb_display/limb_display.gd" id="1_y38qg"]
 [ext_resource type="Texture2D" uid="uid://c1nobtswfvcpa" path="res://assets/monstrous_arm.png" id="2_xa26b"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_h63pf"]
-radius = 34.52
-height = 191.3
-
-[node name="LimbDisplay" type="RigidBody2D"]
+[node name="LimbDisplay" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_y38qg")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CapsuleShape2D_h63pf")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(17, 2)
 rotation = 0.782134
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("2_xa26b")
-
-[connection signal="input_event" from="." to="." method="_on_input_event"]

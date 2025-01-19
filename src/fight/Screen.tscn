@@ -869,10 +869,11 @@ offset_right = -2.0
 offset_bottom = -0.599976
 grow_horizontal = 2
 grow_vertical = 0
-mouse_filter = 2
+mouse_filter = 1
 
 [node name="PlayerAmalgam" parent="PlayerRagdollArea/Origin" instance=ExtResource("5_vdmff")]
 unique_name_in_owner = true
+mouse_filter = 2
 
 [node name="EnemyRagdollArea" type="ReferenceRect" parent="."]
 layout_mode = 1
@@ -881,7 +882,6 @@ anchor_left = 0.6
 anchor_top = 0.15
 anchor_right = 0.9
 anchor_bottom = 0.78
-mouse_filter = 2
 border_color = Color(0, 0.56871, 0.847554, 1)
 editor_only = false
 

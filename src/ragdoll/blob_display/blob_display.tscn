@@ -1,24 +1,25 @@
-[gd_scene load_steps=4 format=3 uid="uid://b33g4au5nv5ss"]
+[gd_scene load_steps=3 format=3 uid="uid://b33g4au5nv5ss"]
 
 [ext_resource type="Script" path="res://src/ragdoll/blob_display/blob_display.gd" id="1_1shfe"]
 [ext_resource type="Texture2D" uid="uid://dcjg7qk2d8omb" path="res://assets/eldritch_blob.png" id="2_6t6in"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_yg81y"]
-radius = 68.54
-
-[node name="BlobDisplay" type="RigidBody2D"]
-input_pickable = true
+[node name="BlobDisplay" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 1
 script = ExtResource("1_1shfe")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -75.0
+offset_top = -75.0
+offset_right = 125.0
+offset_bottom = 125.0
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("2_6t6in")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_yg81y")
-
 [node name="Limbs" type="Node2D" parent="."]
 
-[connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

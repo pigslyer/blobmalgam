@@ -1,5 +1,5 @@
 class_name AmalgamDisplay
-extends Node2D
+extends Control
 
 @onready var card: Amalgam = null;
 @onready var blob_scene := preload("res://src/ragdoll/blob_display/blob_display.tscn");
@@ -21,10 +21,13 @@ enum EffectKind {
 
 # Signal passing
 func _on_blob_pressed(blob: Blob) -> void:
+	print_debug("Emitting blob_pressed with blob: ", self.name);
 	blob_pressed.emit(blob);
 func _on_blob_hovered(blob: Blob, state: bool) -> void:
+	print_debug("Emitting blob_hovered with blob: ", self.name);
 	blob_hovered.emit(blob, state);
 func _on_limb_pressed(limb: Limb) -> void:
+	print_debug("Emitting limb_pressed with limb: ", self.name);
 	limb_pressed.emit(limb);
 func _on_test_signal(viewport, event, shape_idx) -> void:
 	print_debug("Test signal received");
@@ -44,8 +47,6 @@ func _init_blob(blob: Blob) -> BlobDisplay:
 	blob_display.name = name + "_blob_" + str(blob.get_instance_id());
 	# blob_display.image = preload("res://src/ragdoll/placeholder/blob.png");
 	blob_display.card = blob;
-	blob_display.input_pickable = true;
-	blob_display.freeze = true;
 	return blob_display;
 
 func _init_limb(limb: PositionedLimb) -> LimbDisplay:
@@ -53,8 +54,6 @@ func _init_limb(limb: PositionedLimb) -> LimbDisplay:
 	limb_display.name = name + "_limb_" + str(limb.get_instance_id());
 	limb_display.card = limb.limb;
 	limb_display.position = limb.position;
-	limb_display.input_pickable = true;
-	limb_display.freeze = true;
 	if limb.limb.tags.has("blob_images"):
 		if limb.limb.tags["blob_images"] is Array:
 			# TODO: add both for eyes
@@ -82,7 +81,7 @@ func display_amalgam(amalgam: Amalgam) -> void:
 		var limbs_node = blob_display.get_node("Limbs");
 		for positioned_limb in blob.limbs:
 			var limb_display := _init_limb(positioned_limb);
-			# limbs_node.add_child(limb_display);
+			limbs_node.add_child(limb_display);
 			connect_limb_signals(limb_display);
 			
 
