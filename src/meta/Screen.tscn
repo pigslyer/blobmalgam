@@ -107,13 +107,19 @@ text = "[wave]Boss"
 autowrap_mode = 0
 
 [node name="Player" parent="Opening" instance=ExtResource("4_81d8e")]
-position = Vector2(273, 1092)
+offset_left = 273.0
+offset_top = 1092.0
+offset_right = 273.0
+offset_bottom = 1092.0
 
 [node name="PlayerEnd" type="Marker2D" parent="Opening"]
 position = Vector2(273, 485)
 
 [node name="Boss" parent="Opening" instance=ExtResource("4_81d8e")]
-position = Vector2(951, -355)
+offset_left = 951.0
+offset_top = -355.0
+offset_right = 951.0
+offset_bottom = -355.0
 
 [node name="BossEnd" type="Marker2D" parent="Opening"]
 position = Vector2(951, 376)

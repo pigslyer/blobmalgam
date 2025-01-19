@@ -205,6 +205,7 @@ func play_animation(userdata: Dictionary) -> void:
 
 	_play_slash_sfx(userdata);
 	
+	
 	await get_tree().process_frame;
 	animation_finished.emit();
 
@@ -216,6 +217,16 @@ func _play_slash_sfx(userdata: Dictionary) -> void:
 		Utils.play_sfx(_slash_anims().pick_random());
 		Utils.play_sfx(preload("res://assets/sfx/player dodge.mp3"));
 		await get_tree().create_timer(0.3).timeout;
+
+func _play_heal_sfx(userdata: Dictionary) -> void:
+	if !Ability.ANIM_HEAL in userdata:
+		return;
+	
+	for _i in len(userdata[Ability.ANIM_SLASH]):
+		Utils.play_sfx(_slash_anims().pick_random());
+		Utils.play_sfx(preload("res://assets/sfx/player dodge.mp3"));
+		await get_tree().create_timer(0.3).timeout;
+
 
 ## Elements of limbs_or_blobs are either limbs or blobs.
 ## EffectKind should be set to all limbs_or_blobs in array, or disabled if array is empty.

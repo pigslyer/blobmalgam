@@ -125,15 +125,15 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 		_had_side_effects = true;
 		return value;
 	
-	func damage_blobs(blobs: Array[Blob], amount: float, _userdata: Dictionary) -> void:
+	func damage_blobs(blobs: Array[Blob], amount: float, userdata: Dictionary) -> void:
 		for blob in blobs:
-			blob._health -= amount;
+			blob._health = max(0, blob._health - max(amount - blob.armor(), 1));
 			_had_side_effects = true;
 		
 		if len(blobs) > 0:
-			await _update_blob(_blobs_amalgam(blobs[0]), {
+			await _update_blob(_blobs_amalgam(blobs[0]), userdata.merged({
 				Ability.ANIM_SLASH: blobs,
-			});
+			}));
 	
 	func stun_blob(blob: Blob, turn_count: int, _userdata: Dictionary) -> void:
 		blob._stun += turn_count;
@@ -141,23 +141,23 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 		
 		await _update_blob(_blobs_amalgam(blob), {});
 	
-	func poison_blob(blob: Blob, amount: int, _userdata: Dictionary) -> void:
+	func poison_blob(blob: Blob, amount: int, userdata: Dictionary) -> void:
 		blob._poison = amount;
 		_had_side_effects = true;
 		
-		await _update_blob(_blobs_amalgam(blob), {
+		await _update_blob(_blobs_amalgam(blob), userdata.merged({
 			Ability.ANIM_SLASH: [blob],
-		});
+		}));
 	
-	func heal_blobs(blobs: Array[Blob], amount: float, _userdata: Dictionary) -> void:
+	func heal_blobs(blobs: Array[Blob], amount: float, userdata: Dictionary) -> void:
 		for blob in blobs:
-			blob._health += amount;
+			blob._health = min(blob.health() + amount, Blob.MAX_HEALTH);
 			_had_side_effects = true;
 		
 		if len(blobs) > 0:
-			await _update_blob(_blobs_amalgam(blobs[0]), {
+			await _update_blob(_blobs_amalgam(blobs[0]), userdata.merged({
 				Ability.ANIM_HEAL: blobs,
-			});
+			}));
 	
 	func _update_blob(ragdoll: AmalgamDisplay, userdata: Dictionary):
 		battle_screen.player_health.update_health_slow(battle_screen.player);
@@ -345,7 +345,7 @@ class EnemyResolver extends Ability.EffectResolver:
 	
 	func damage_blobs(blobs: Array[Blob], amount: float, userdata: Dictionary) -> void:
 		for blob in blobs:
-			blob._health = max(0, blob.health() - amount);
+			blob._health = max(0, blob.health() - max(amount - blob.armor(), 1));
 			
 		if len(blobs) > 0:
 			_update_blob(_blobs_ragdoll(blobs[0]), userdata.merged({
@@ -356,14 +356,13 @@ class EnemyResolver extends Ability.EffectResolver:
 		blob._stun += turn_count;
 		
 		_update_blob(_blobs_ragdoll(blob), userdata.merged({
-				Ability.ANIM_SLASH: blobs,
-			}));
+		}));
 	
 	func poison_blob(blob: Blob, amount: int, userdata: Dictionary) -> void:
 		blob._poision += amount;
 		
 		_update_blob(_blobs_ragdoll(blob), userdata.merged({
-				Ability.ANIM_SLASH: blobs,
+				Ability.ANIM_SLASH: [blob],
 			}));
 	
 	func heal_blobs(blobs: Array[Blob], amount: float, userdata: Dictionary) -> void:

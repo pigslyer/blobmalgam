@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://src/fight/health_bar.gd" id="1_23snu"]
 [ext_resource type="Texture2D" uid="uid://2qnlecsebhc6" path="res://assets/stun.png" id="1_d4vel"]
 [ext_resource type="Texture2D" uid="uid://c6d3rfk70k2m0" path="res://assets/poison.png" id="2_shbqq"]
-[ext_resource type="Texture2D" uid="uid://2v7v0gtuvsmg" path="res://assets/armor.png" id="4_twl7o"]
+[ext_resource type="Texture2D" uid="uid://cfu0xhrtuluaw" path="res://assets/armor_icon.png" id="4_uo6cn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y25k7"]
 bg_color = Color(0.643137, 0, 0.00784314, 1)
@@ -36,6 +36,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 theme_override_styles/background = SubResource("StyleBoxFlat_y25k7")
 theme_override_styles/fill = SubResource("StyleBoxFlat_hbi5s")
 max_value = 1.0
@@ -51,7 +52,6 @@ anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = 16.0
 grow_vertical = 2
-mouse_filter = 1
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -69,15 +69,16 @@ alignment = 2
 visible = false
 layout_mode = 2
 tooltip_text = "Every time an amalgam would choose a limb from this blob, they get nothing instead."
+mouse_default_cursor_shape = 2
 
 [node name="Count" type="Label" parent="Statuses/Stun"]
 layout_mode = 2
-mouse_filter = 1
 text = "5"
 label_settings = SubResource("LabelSettings_cc8sm")
 
 [node name="Icon" type="TextureRect" parent="Statuses/Stun"]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("1_d4vel")
 expand_mode = 2
 
@@ -85,16 +86,34 @@ expand_mode = 2
 visible = false
 layout_mode = 2
 tooltip_text = "Blob takes this much damage every turn. When blob dies, it spreads to directly connected blobs."
+mouse_default_cursor_shape = 2
 
 [node name="Count" type="Label" parent="Statuses/Poison"]
 layout_mode = 2
-mouse_filter = 1
 text = "5"
 label_settings = SubResource("LabelSettings_cc8sm")
 
 [node name="Icon" type="TextureRect" parent="Statuses/Poison"]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("2_shbqq")
+expand_mode = 2
+
+[node name="Armor" type="HBoxContainer" parent="Statuses"]
+visible = false
+layout_mode = 2
+tooltip_text = "This much direct damage, up to 1, is blocked."
+mouse_default_cursor_shape = 2
+
+[node name="Count" type="Label" parent="Statuses/Armor"]
+layout_mode = 2
+text = "5"
+label_settings = SubResource("LabelSettings_cc8sm")
+
+[node name="Icon" type="TextureRect" parent="Statuses/Armor"]
+layout_mode = 2
+tooltip_text = "asdasd"
+texture = ExtResource("4_uo6cn")
 expand_mode = 2
 
 [node name="HealthReversed" type="Label" parent="."]
@@ -123,32 +142,34 @@ grow_vertical = 2
 [node name="Armor" type="HBoxContainer" parent="StatusesReversed"]
 visible = false
 layout_mode = 2
-tooltip_text = "Blob takes this much damage every turn. When blob dies, it spreads to directly connected blobs."
+tooltip_text = "This much direct damage, up to 1, is blocked."
+mouse_default_cursor_shape = 2
 
 [node name="Count" type="Label" parent="StatusesReversed/Armor"]
 layout_mode = 2
-mouse_filter = 1
 text = "5"
 label_settings = SubResource("LabelSettings_cc8sm")
 
 [node name="Icon" type="TextureRect" parent="StatusesReversed/Armor"]
 layout_mode = 2
-texture = ExtResource("4_twl7o")
+mouse_filter = 2
+texture = ExtResource("4_uo6cn")
 expand_mode = 2
 
 [node name="Stun" type="HBoxContainer" parent="StatusesReversed"]
 visible = false
 layout_mode = 2
 tooltip_text = "Every time an amalgam would choose a limb from this blob, they get nothing instead."
+mouse_default_cursor_shape = 2
 
 [node name="Count" type="Label" parent="StatusesReversed/Stun"]
 layout_mode = 2
-mouse_filter = 1
 text = "5"
 label_settings = SubResource("LabelSettings_cc8sm")
 
 [node name="Icon" type="TextureRect" parent="StatusesReversed/Stun"]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("1_d4vel")
 expand_mode = 2
 
@@ -156,14 +177,15 @@ expand_mode = 2
 visible = false
 layout_mode = 2
 tooltip_text = "Blob takes this much damage every turn. When blob dies, it spreads to directly connected blobs."
+mouse_default_cursor_shape = 2
 
 [node name="Count" type="Label" parent="StatusesReversed/Poison"]
 layout_mode = 2
-mouse_filter = 1
 text = "5"
 label_settings = SubResource("LabelSettings_cc8sm")
 
 [node name="Icon" type="TextureRect" parent="StatusesReversed/Poison"]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("2_shbqq")
 expand_mode = 2

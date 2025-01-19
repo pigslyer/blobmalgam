@@ -332,6 +332,16 @@ static func limb_tiers() -> Dictionary:
 		]
 	}
 
+func blobs() -> Array[Texture]:
+	return [
+		preload("res://assets/normal_blob.png"),
+		preload("res://assets/monstrous_blobpng.png"),
+		preload("res://assets/plant_blob.png"),
+		preload("res://assets/medieval_blob.png"),
+		preload("res://assets/eldritch_blob.png"),
+		preload("res://assets/cyber - blob.png"),
+	];
+
 var _unused_players: Array[AudioStreamPlayer];
 func play_sfx(stream: AudioStream) -> void:
 	var player: AudioStreamPlayer;
