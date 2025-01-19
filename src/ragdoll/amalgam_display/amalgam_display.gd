@@ -62,6 +62,32 @@ func _init_limb(limb: PositionedLimb) -> LimbDisplay:
 			limb_display.image = limb.limb.tags["blob_images"];
 	return limb_display;
 
+func generate_limb_scale(limb: Limb) -> float:
+	if limb.tags.has("leg"):
+		return 0.6;
+	elif limb.tags.has("arm"):
+		return 0.5;
+	elif limb.tags.has("head"):
+		return 0.4;
+	elif limb.tags.has("eye"):
+		return 0.3;
+	return 0.5;
+
+func generate_limb_position(limb: Limb, blob_radius: int) -> Vector2:
+	if limb.tags.has("leg"):
+		return Vector2(0, blob_radius);
+	elif limb.tags.has("arm"):
+		return Vector2(blob_radius, 0);
+	elif limb.tags.has("head"):
+		return Vector2(0, -blob_radius);
+	elif limb.tags.has("eye"):
+		return Vector2(0, 0);
+	elif limb.tags.has("mouth"):
+		return Vector2(-blob_radius, 0);
+	var random_angle := randf() * PI * 2
+	var random_distance := randf() * blob_radius
+	return Vector2(cos(random_angle), sin(random_angle)) * random_distance;
+
 # Called when redraw needed (state change, e.g. blob has died, limb has changed)
 func display_amalgam(amalgam: Amalgam) -> void:
 	print_debug("display_amalgam called on ", name);
@@ -69,22 +95,68 @@ func display_amalgam(amalgam: Amalgam) -> void:
 	for child in get_children():
 		child.queue_free();
 
-	var blob_y_offset := 0;
-	for blob in amalgam.blobs:
+	var traversed_blobs := [];
+	var blob_positions := {};
+	var ix_stack := [0]
+
+
+	# First blob will always be at origin
+	# Get position of other blobs based on their links (DFS)
+
+	# TODO: call auto-link generation
+
+	# assert(amalgam.blobs.size() == amalgam.links.size() + 1, "Amalgam blobs and links size mismatch");
+	while ix_stack.size() > 0:
+		var blob_ix = ix_stack.pop_back();
+		var blob: Blob = amalgam.blobs[blob_ix];
 		var blob_display := _init_blob(blob);
-		blob_y_offset -= blob_display.get_node("Sprite2D").texture.get_height() * blob_display.get_node("Sprite2D").scale.y / 2; # assuming circle
 		add_child(blob_display);
 		connect_blob_signals(blob_display);
-		blob_display.position = Vector2(0, blob_y_offset);
-		blob_y_offset -= blob_display.get_node("Sprite2D").texture.get_height() * blob_display.get_node("Sprite2D").scale.y / 2; # add own radius to make space for next one
+
+		var blob_radius: int = blob_display.get_node("Sprite2D").texture.get_height() * blob_display.get_node("Sprite2D").scale.y / 2; # assuming circle
+		traversed_blobs.append(blob_ix);
 
 		var limbs_node = blob_display.get_node("Limbs");
 		for positioned_limb in blob.limbs:
 			var limb_display := _init_limb(positioned_limb);
 			limbs_node.add_child(limb_display);
+			if positioned_limb.position == Vector2.ZERO:
+				positioned_limb.position = generate_limb_position(positioned_limb.limb, blob_radius);
+			limb_display.scale = Vector2(
+				generate_limb_scale(positioned_limb.limb),
+				generate_limb_scale(positioned_limb.limb)
+				);
+			limb_display.position = positioned_limb.position
 			connect_limb_signals(limb_display);
-			
 
+		for link in amalgam.links:
+			if link.from_idx == blob_ix and not link.to_idx in traversed_blobs:
+				ix_stack.append(link.to_idx);
+			elif link.to_idx == blob_ix and not link.from_idx in traversed_blobs:
+				ix_stack.append(link.from_idx);
+
+	# while (traversed_blobs.length() < amalgam.blobs.length()):
+	# 	var blob := amalgam.blobs[blob_ix];
+	# 	if blob in traversed_blobs:
+	# 		blob_ix += 1;
+	# 		continue;
+	# 	var blob_display := _init_blob(blob);
+	# 	var blob_radius : int = blob_display.get_node("Sprite2D").texture.get_height() * blob_display.get_node("Sprite2D").scale.y / 2; # assuming circle
+	# 	add_child(blob_display);
+	# 	connect_blob_signals(blob_display);
+
+	# 	traversed_blobs.append(blob_ix);
+
+	# 	var limbs_node = blob_display.get_node("Limbs");
+	# 	for positioned_limb in blob.limbs:
+	# 		var limb_display := _init_limb(positioned_limb);
+	# 		# positioned_limb.position = 
+	# 		limbs_node.add_child(limb_display);
+	# 		connect_limb_signals(limb_display);
+
+	# 	for link in amalgam.links:
+
+			
 func idle(kind: IdleKinds) -> void:
 	pass ;
 

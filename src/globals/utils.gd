@@ -175,7 +175,6 @@ static func default_amalgam() -> Amalgam:
 	return ret;
 
 
-
 enum EnemyStrength {
 	Weak = 0,
 	Average = 1,
@@ -221,23 +220,23 @@ static func generate_enemy(str: EnemyStrength, rng: RandomNumberGenerator) -> Am
 
 static func blob_count() -> Dictionary:
 	return {
-		EnemyStrength.Weak : [1, 1],
-		EnemyStrength.Average : [1, 3],
-		EnemyStrength.Strong : [2, 5],
-		EnemyStrength.Boss : [4, 6],
+		EnemyStrength.Weak: [2, 2],
+		EnemyStrength.Average: [1, 3],
+		EnemyStrength.Strong: [2, 5],
+		EnemyStrength.Boss: [4, 6],
 	}
 
 static func limb_count() -> Dictionary:
 	return {
-		EnemyStrength.Weak : [1, 2],
-		EnemyStrength.Average : [2, 3],
-		EnemyStrength.Strong : [3, 5],
-		EnemyStrength.Boss : [6, 6],
+		EnemyStrength.Weak: [1, 2],
+		EnemyStrength.Average: [2, 3],
+		EnemyStrength.Strong: [3, 5],
+		EnemyStrength.Boss: [6, 6],
 	}
 
 static func limb_tiers() -> Dictionary:
 	return {
-		EnemyStrength.Weak : [
+		EnemyStrength.Weak: [
 			Normal.leg(), Normal.leg(), Normal.leg(), Normal.leg(),
 			Normal.arm(), Normal.arm(), Normal.arm(), Normal.arm(),
 			Normal.eyes(), Normal.eyes(),
@@ -255,7 +254,7 @@ static func limb_tiers() -> Dictionary:
 			Cute.cat_ears(),
 		],
 		
-		EnemyStrength.Average : [
+		EnemyStrength.Average: [
 			Cute.eyes(),
 			Cute.wings(),
 			Cute.arm(),
@@ -279,7 +278,7 @@ static func limb_tiers() -> Dictionary:
 			Medieval.helmet(),
 		],
 		
-		EnemyStrength.Strong : [
+		EnemyStrength.Strong: [
 			Cyber.arm(),
 			Cyber.arm(),
 			Cyber.leg(),
@@ -299,7 +298,7 @@ static func limb_tiers() -> Dictionary:
 			Angelic.wings(),
 		],
 		
-		EnemyStrength.Boss : [
+		EnemyStrength.Boss: [
 			Eldritch.tentacle(), Eldritch.tentacle(),
 			Eldritch.mouth(), Eldritch.mouth(),
 			#Eldritch.wings(), Eldritch.wings(),
@@ -320,7 +319,7 @@ func play_sfx(stream: AudioStream) -> void:
 		player = AudioStreamPlayer.new();
 		player.bus = "Effects";
 		add_child(player);
-		player.finished.connect(func(): Utils._unused_players.append(player));
+		# player.finished.connect(func(): Utils._unused_players.append(player));
 	else:
 		player = _unused_players.pop_back();
 	

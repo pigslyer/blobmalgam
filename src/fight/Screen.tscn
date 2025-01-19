@@ -406,6 +406,7 @@ anchor_top = 0.15
 anchor_right = 0.4
 anchor_bottom = 0.78
 mouse_filter = 2
+editor_only = false
 
 [node name="Origin" type="Control" parent="PlayerRagdollArea"]
 layout_mode = 1
@@ -433,6 +434,7 @@ anchor_top = 0.15
 anchor_right = 0.9
 anchor_bottom = 0.78
 border_color = Color(0, 0.56871, 0.847554, 1)
+editor_only = false
 
 [node name="Origin" type="Control" parent="EnemyRagdollArea"]
 layout_mode = 1
@@ -450,6 +452,8 @@ mouse_filter = 2
 [node name="EnemyAmalgam" parent="EnemyRagdollArea/Origin" instance=ExtResource("5_vdmff")]
 unique_name_in_owner = true
 
+[connection signal="selected" from="ExchangeCard/Card" to="." method="_on_player_card_selected"]
+[connection signal="selected" from="BodySlamCard/Card" to="." method="_on_player_card_selected"]
 [connection signal="pressed" from="SkipTurn" to="." method="_on_skip_turn_pressed"]
 [connection signal="blob_hovered" from="PlayerRagdollArea/Origin/PlayerAmalgam" to="." method="_on_player_amalgam_blob_hovered"]
 [connection signal="blob_pressed" from="PlayerRagdollArea/Origin/PlayerAmalgam" to="." method="_on_player_amalgam_blob_pressed"]
