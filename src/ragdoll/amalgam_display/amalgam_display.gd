@@ -1,6 +1,8 @@
 class_name AmalgamDisplay
 extends Control
 
+const OVERLAP_DISTANCE = 20;
+
 @onready var card: Amalgam = null;
 @onready var blob_scene := preload("res://src/ragdoll/blob_display/blob_display.tscn");
 @onready var limb_scene := preload("res://src/ragdoll/limb_display/limb_display.tscn");
@@ -63,30 +65,35 @@ func _init_limb(limb: PositionedLimb) -> LimbDisplay:
 	return limb_display;
 
 func generate_limb_scale(limb: Limb) -> float:
-	if limb.tags.has("leg"):
+	if limb.tags.has(Ability.LEG):
 		return 0.6;
-	elif limb.tags.has("arm"):
+	elif limb.tags.has(Ability.ARM):
 		return 0.5;
-	elif limb.tags.has("head"):
+	elif limb.tags.has(Ability.TAIL):
 		return 0.4;
-	elif limb.tags.has("eye"):
-		return 0.3;
+	elif limb.tags.has(Ability.EYES):
+		return 0.5;
 	return 0.5;
 
-func generate_limb_position(limb: Limb, blob_radius: int) -> Vector2:
-	if limb.tags.has("leg"):
-		return Vector2(0, blob_radius);
-	elif limb.tags.has("arm"):
-		return Vector2(blob_radius, 0);
-	elif limb.tags.has("head"):
-		return Vector2(0, -blob_radius);
-	elif limb.tags.has("eye"):
-		return Vector2(0, 0);
-	elif limb.tags.has("mouth"):
-		return Vector2(-blob_radius, 0);
+func generate_random_limb_position(limb: Limb, blob_radius: int) -> Vector2:
 	var random_angle := randf() * PI * 2
-	var random_distance := randf() * blob_radius
+	var random_distance := randf_range(blob_radius * 0.5, blob_radius)
 	return Vector2(cos(random_angle), sin(random_angle)) * random_distance;
+
+func generate_limb_position(limb: Limb, blob_radius: int) -> Vector2:
+	if limb.tags.has(Ability.LEG):
+		var side := -1 if randf() < 0.5 else 1;
+		return Vector2(blob_radius * side * 0.4, blob_radius); # legs at bottom
+	elif limb.tags.has(Ability.ARM):
+		var side := -1 if randf() < 0.5 else 1;
+		return Vector2(side * blob_radius, 0);
+	elif limb.tags.has(Ability.TAIL):
+		return Vector2(0, -blob_radius);
+	elif limb.tags.has(Ability.EYES):
+		return Vector2(0, -blob_radius * 0.5);
+	elif limb.tags.has(Ability.MOUTH):
+		return Vector2(0, blob_radius * 0.5);
+	return generate_random_limb_position(limb, blob_radius);
 
 # Called when redraw needed (state change, e.g. blob has died, limb has changed)
 func display_amalgam(amalgam: Amalgam) -> void:
@@ -120,12 +127,29 @@ func display_amalgam(amalgam: Amalgam) -> void:
 		for positioned_limb in blob.limbs:
 			var limb_display := _init_limb(positioned_limb);
 			limbs_node.add_child(limb_display);
-			if positioned_limb.position == Vector2.ZERO:
-				positioned_limb.position = generate_limb_position(positioned_limb.limb, blob_radius);
 			limb_display.scale = Vector2(
 				generate_limb_scale(positioned_limb.limb),
 				generate_limb_scale(positioned_limb.limb)
 				);
+			if positioned_limb.position == Vector2.ZERO:
+				var iterations := 0;
+				positioned_limb.position = generate_limb_position(
+					positioned_limb.limb,
+					blob_radius
+				);
+				for limb in blob.limbs:
+					if limb == positioned_limb:
+						continue ;
+					if limb.position.distance_to(positioned_limb.position) < OVERLAP_DISTANCE:
+						print_debug("Regenerating limb position");
+						positioned_limb.position = generate_random_limb_position(
+							positioned_limb.limb,
+							blob_radius
+						);
+						iterations += 1;
+						if iterations > 10:
+							break ;
+
 			limb_display.position = positioned_limb.position
 			connect_limb_signals(limb_display);
 
@@ -182,7 +206,7 @@ func play_animation(userdata: Dictionary) -> void:
 
 func _play_slash_sfx(userdata: Dictionary) -> void:
 	if !Ability.ANIM_SLASH in userdata:
-		return;
+		return ;
 	
 	for _i in len(userdata[Ability.ANIM_SLASH]):
 		Utils.play_sfx(_slash_anims().pick_random());
