@@ -4,6 +4,7 @@ extends Control
 signal selected(ability: Dictionary);
 
 @export var title: Label;
+@export var description: Label;
 @export var short_desc: Label;
 @export var effects_parent: Control;
 @export var art: TextureRect;
@@ -36,7 +37,7 @@ func display_card(def: Dictionary, caster: Amalgam, enemy: Amalgam) -> void:
 	
 	title.text = title_text;
 	short_desc.text = def.get(Ability.DESC_SHORT, "");
-	tooltip_text = def.get(Ability.DESC, "");
+	description.text = def.get(Ability.DESC, "");
 	art.texture = def.get(Ability.ABILITY_IMAGE, preload("res://assets/card - card.png"));
 	
 	

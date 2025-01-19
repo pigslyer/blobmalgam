@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b8pepwnkg674s"]
+[gd_scene load_steps=12 format=3 uid="uid://b8pepwnkg674s"]
 
 [ext_resource type="Texture2D" uid="uid://cdorta5gy54ms" path="res://icon.svg" id="1_220gv"]
 [ext_resource type="Script" path="res://src/fight/card.gd" id="2_2hc8x"]
@@ -20,6 +20,10 @@ font_size = 20
 font_color = Color(0, 0, 0, 1)
 outline_size = 2
 
+[sub_resource type="LabelSettings" id="LabelSettings_p13xo"]
+font_color = Color(0, 0, 0, 1)
+outline_size = 1
+
 [sub_resource type="LabelSettings" id="LabelSettings_8odsm"]
 outline_size = 1
 outline_color = Color(0, 0, 0, 1)
@@ -29,7 +33,7 @@ font_size = 24
 outline_size = 2
 outline_color = Color(0, 0, 0, 1)
 
-[node name="Card" type="TextureRect" node_paths=PackedStringArray("title", "short_desc", "art", "damage_icon", "damage_label", "stun_icon", "stun_label", "poison_icon", "poison_label")]
+[node name="Card" type="TextureRect" node_paths=PackedStringArray("title", "description", "short_desc", "art", "damage_icon", "damage_label", "stun_icon", "stun_label", "poison_icon", "poison_label")]
 custom_minimum_size = Vector2(130, 120)
 anchors_preset = 15
 anchor_right = 1.0
@@ -43,6 +47,7 @@ texture = ExtResource("1_220gv")
 expand_mode = 1
 script = ExtResource("2_2hc8x")
 title = NodePath("CardName")
+description = NodePath("Desc")
 short_desc = NodePath("ShortDesc")
 art = NodePath(".")
 damage_icon = NodePath("PreviewIcons/Damage")
@@ -76,16 +81,29 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_q2t45")
 
 [node name="CardName" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
+anchors_preset = -1
 anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -14.0
-offset_bottom = 14.0
+offset_top = 8.0
+offset_bottom = 28.0
 grow_horizontal = 2
-grow_vertical = 2
 text = "Consecutive Normal Kick"
 label_settings = SubResource("LabelSettings_ltesk")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Desc" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 24.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+label_settings = SubResource("LabelSettings_p13xo")
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3

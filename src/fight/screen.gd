@@ -222,6 +222,9 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 	func _on_ragdoll_selection(what) -> void:
 		assert(what is Blob || what is Limb);
 		
+		if what is Blob && what.health() <= 0:
+			return;
+		
 		var is_selectable: bool = _valid_selection.find(what) != -1;
 		if is_selectable:
 			var idx: int = _currently_selected.find(what);
@@ -315,14 +318,20 @@ class EnemyResolver extends Ability.EffectResolver:
 	var rng: RandomNumberGenerator;
 	
 	func blobs(from_selection: Array[Blob], count: int) -> Array[Blob]:
-		if count <= len(from_selection):
-			return from_selection;
+		from_selection = from_selection.duplicate();
+		var new_arr = [];
+		for el in from_selection:
+			if el.health() > 0:
+				new_arr.append(el);
+		
+		if count <= len(new_arr):
+			return new_arr;
 		
 		var ret: Array[Blob];
 		for _i in count:
-			var idx := rng.randi() % len(from_selection);
-			ret.append(from_selection[idx]);
-			from_selection.remove_at(idx);
+			var idx := rng.randi() % len(new_arr);
+			ret.append(new_arr[idx]);
+			new_arr.remove_at(idx);
 		
 		return ret;
 	

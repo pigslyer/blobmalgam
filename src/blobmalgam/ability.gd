@@ -135,7 +135,7 @@ class Effector:
 	func blob_on(a: Amalgam) -> Blob:
 		return _first_or_null(await blobs_on(a, 1));
 	func blobs_on(a: Amalgam, count: int) -> Array[Blob]:
-		return await _resolver.blobs(a.blobs, count);
+		return await _resolver.blobs(a.blobs.filter(func(e): e.health() > 0), count);
 	
 	func limb_on(a: Amalgam) -> Limb:
 		return _first_or_null(await limbs_on(a, 1));
@@ -234,7 +234,7 @@ static func bodyslam() -> Dictionary:
 	
 	return {
 		NAME: "Bodyslam",
-		DESC: "Your body is your weapon! Deal %d damage per blob." % BODYSLAM_DAMAGE,
+		DESC_SHORT: "Your body is your weapon!",
 		ABILITY_IMAGE: preload("res://assets/card - bodyslam.png"),
 		
 		DAMAGE_PREVIEW: func(d: DescBuilder):
@@ -246,12 +246,9 @@ static func bodyslam() -> Dictionary:
 	}
 
 static func exchange() -> Dictionary:
-	const EXCHANGE_DESC_SHORT = "Swap parts with opponent.";
-	
 	return {
 		NAME: "Exchange",
-		DESC_SHORT: EXCHANGE_DESC_SHORT,
-		DESC: EXCHANGE_DESC_SHORT,
+		DESC_SHORT: "Swap parts",
 		ABILITY_IMAGE: preload("res://assets/card - swap.png"),
 		
 		EXCHANGE: "1",
@@ -767,7 +764,7 @@ static func _upgrade_crafter(c: Crafter) -> void:
 		],
 		{
 			NAME: "Hard stare",
-			DESC: "Stare at the enemy amalgam, dealing 2 psychic damage per eye to every blob.",
+			DESC: "Deal 2 psychic damage per eye to enemy.",
 			DAMAGE_PREVIEW: func(d: DescBuilder):
 				return d.tags[EYES] * 2,
 			EFFECT: func(e: Effector):
