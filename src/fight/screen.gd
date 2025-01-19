@@ -376,7 +376,7 @@ class EnemyResolver extends Ability.EffectResolver:
 	
 	func heal_blobs(blobs: Array[Blob], amount: float, userdata: Dictionary) -> void:
 		for blob in blobs:
-			blob._health = max(Blob.MAX_HEALTH, blob.health() + amount);
+			blob._health = min(Blob.MAX_HEALTH, blob.health() + amount);
 			
 		if len(blobs) > 0:
 			_update_blob(_blobs_ragdoll(blobs[0]), userdata.merged({

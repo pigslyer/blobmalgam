@@ -22,3 +22,9 @@ func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 		elif event.is_action_released("click"):
 			# stop_drag();
 			modulate = Color(1, 1, 1, 1);
+
+
+func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.pressed && event.button_index == MOUSE_BUTTON_LEFT:
+			limb_pressed.emit(card);

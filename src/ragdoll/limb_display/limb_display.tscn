@@ -15,3 +15,5 @@ offset_top = -100.0
 offset_right = 100.0
 offset_bottom = 100.0
 texture = ExtResource("2_xa26b")
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

@@ -96,10 +96,12 @@ func generate_limb_position(limb: Limb, blob_radius: int) -> Vector2:
 		return Vector2(0, blob_radius * 0.5);
 	return generate_random_limb_position(limb, blob_radius);
 
+var _limb_or_blob_to_display: Dictionary = { };
 # Called when redraw needed (state change, e.g. blob has died, limb has changed)
 func display_amalgam(amalgam: Amalgam) -> void:
 	print_debug("display_amalgam called on ", name);
 	card = amalgam;
+	_limb_or_blob_to_display.clear();
 	for child in get_children():
 		child.queue_free();
 
@@ -118,6 +120,7 @@ func display_amalgam(amalgam: Amalgam) -> void:
 		var blob_ix = ix_stack.pop_back();
 		var blob: Blob = amalgam.blobs[blob_ix];
 		var blob_display := _init_blob(blob);
+		_limb_or_blob_to_display[blob] = blob_display;
 		add_child(blob_display);
 		connect_blob_signals(blob_display);
 
@@ -127,6 +130,7 @@ func display_amalgam(amalgam: Amalgam) -> void:
 		var limbs_node = blob_display.get_node("Limbs");
 		for positioned_limb in blob.limbs:
 			var limb_display := _init_limb(positioned_limb);
+			_limb_or_blob_to_display[positioned_limb.limb] = limb_display;
 			limbs_node.add_child(limb_display);
 			limb_display.scale = Vector2(
 				generate_limb_scale(positioned_limb.limb),
@@ -202,8 +206,6 @@ func idle(kind: IdleKinds) -> void:
 ##	don't presuppose that i won't start multiple animations at once
 ##	animations should be in global space i.e. ignoring idle animations
 func play_animation(userdata: Dictionary) -> void:
-	push_warning("play animation", userdata);
-
 	_play_slash_sfx(userdata);
 	
 	
@@ -229,12 +231,35 @@ func _play_heal_sfx(userdata: Dictionary) -> void:
 		await get_tree().create_timer(0.3).timeout;
 
 
+var _effected_limbs_or_blobs: Dictionary;
+
 ## Elements of limbs_or_blobs are either limbs or blobs.
 ## EffectKind should be set to all limbs_or_blobs in array, or disabled if array is empty.
 ## A single limb or blob should support multiple effects at once
 ## You shouldn't assume that all limbs or blobs received are on displayed amalgam.
 func effect(kind: EffectKind, limbs_or_blobs: Array) -> void:
-	pass ;
+	var arr: Array;
+	arr.assign(limbs_or_blobs);
+	_effected_limbs_or_blobs[kind] = arr;
+	
+	var tween := create_tween().set_parallel();
+	
+	for thing in _limb_or_blob_to_display.keys():
+		var display = _limb_or_blob_to_display[thing];
+		
+		var is_selectable: bool = thing in _effected_limbs_or_blobs.get(EffectKind.Selectable, []);
+		var is_selected: bool = thing in _effected_limbs_or_blobs.get(EffectKind.Selected, []);
+		
+		var target_color: Color;
+		if is_selectable && is_selected:
+			target_color = Color.YELLOW;
+		elif is_selectable:
+			target_color = Color.DARK_ORANGE;
+		else:
+			target_color = Color.WHITE;
+		
+		tween.tween_property(display.get_child(0), "self_modulate", target_color, 0.1);
+
 
 func _slash_anims() -> Array[AudioStream]:
 	return [

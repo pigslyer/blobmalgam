@@ -351,7 +351,6 @@ class Crafter:
 		return true;
 
 # delete this to get compiler errors wherever TODO was used
-const TODO = "todo";
 
 static func _upgrade_crafter(c: Crafter) -> void:
 	# EXCHANGE SPECIALIZATION
@@ -433,7 +432,7 @@ static func _upgrade_crafter(c: Crafter) -> void:
 		],
 		{
 			NAME: "Tentacle slap",
-			DESC: TODO,
+			DESC: "Deal GRABBY * 10 damage.",
 			DESC_SHORT: "May damage self",
 			DAMAGE_PREVIEW: func(d: DescBuilder):
 				return str(d.tags[GRABBY] * 10),
@@ -565,7 +564,7 @@ static func _upgrade_crafter(c: Crafter) -> void:
 			DAMAGE_PREVIEW: func(d: DescBuilder):
 				return "3x%d" % (d.tags[LEG] * 12),
 			EFFECT: func(e: Effector):
-				var target: Blob = await e.blob(e.them);
+				var target: Blob = await e.blob_on(e.them);
 				
 				for i in 3:
 					await e.damage_blob(target, e.tags[LEG] * 12, {}),
@@ -704,7 +703,7 @@ static func _upgrade_crafter(c: Crafter) -> void:
 		],
 		{
 			NAME: "Consecutive Kick",
-			DESC: "Kick your opponent with all your legs!\nDeal 10 damage per legs",
+			DESC: "Deal 10 damage per LEG.",
 			DAMAGE_PREVIEW: func(d: DescBuilder):
 				return str(d.tags[LEG] * 10),
 			EFFECT: func(e: Effector):

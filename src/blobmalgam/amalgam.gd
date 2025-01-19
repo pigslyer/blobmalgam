@@ -93,14 +93,14 @@ func total_global_health() -> float:
 	if len(blobs) <= 2:
 		return len(blobs) * Blob.MAX_HEALTH;
 	else:
-		return len(blobs) * Blob.MAX_HEALTH * 0.6667;
+		return int(len(blobs) * Blob.MAX_HEALTH * 0.6667);
 
 func current_global_health() -> float:
 	var total: float = 0;
 	for blob in blobs:
 		total += blob.health();
 	
-	return total / (len(blobs) * Blob.MAX_HEALTH) * total_global_health();
+	return int(total / (len(blobs) * Blob.MAX_HEALTH) * total_global_health());
 
 func alive_limbs_flat() -> Array[Limb]:
 	var arr: Array[Limb] = [];
