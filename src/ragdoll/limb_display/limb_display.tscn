@@ -8,8 +8,10 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_y38qg")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(17, 2)
-rotation = 0.782134
-scale = Vector2(0.75, 0.75)
+[node name="Sprite2D" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
 texture = ExtResource("2_xa26b")
