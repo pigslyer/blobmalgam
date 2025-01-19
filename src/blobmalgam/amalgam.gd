@@ -16,7 +16,7 @@ func combat_display_actions_simult_flattened(
 	draw_count: int,
 	include_base: bool,
 ) -> Array[Dictionary]:
-	var limbs: Array[Limb] = _get_limbs_flat();
+	var limbs: Array[Limb] = alive_limbs_flat();
 	
 	var original_tags: Array[Dictionary];
 	if include_base:
@@ -81,11 +81,26 @@ func current_global_health() -> float:
 		total += blob.health();
 	return total;
 
-func _get_limbs_flat() -> Array[Limb]:
+func alive_limbs_flat() -> Array[Limb]:
 	var arr: Array[Limb] = [];
 	
 	for blob in blobs:
+		if blob.health() <= 0:
+			continue;
+		
 		for pos_limb in blob.limbs:
 			arr.append(pos_limb.limb);
 	
 	return arr;
+
+func linked_blobs(linked_to: Blob) -> Array[Blob]:
+	var ret: Array[Blob] = [];
+	
+	for link in links:
+		if blobs[link.from_idx] == linked_to:
+			ret.append(blobs[link.to_idx]);
+		if blobs[link.to_idx] == linked_to:
+			ret.append(blobs[link.from_idx]);
+	
+	return ret;
+	

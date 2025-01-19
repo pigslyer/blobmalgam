@@ -28,9 +28,10 @@ func _ready():
 	for i in player_cards.get_children():
 		var player_card: ExportedCard = i;
 		
-		player_card.selected.connect(_on_player_card_selected);
+		player_card.selected.connect(func(c): _on_player_card_selected(c, player_card));
 	
-	
+	exchange.selected.connect(func(c): _on_player_card_selected(c, exchange));
+	bodyslam.selected.connect(func(c): _on_player_card_selected(c, bodyslam));
 @warning_ignore("shadowed_variable")
 func begin_fight(player: Amalgam, enemy: Amalgam) -> void:
 	self.player = player;
@@ -47,6 +48,8 @@ func begin_fight(player: Amalgam, enemy: Amalgam) -> void:
 	player_turn();
 
 func player_turn():
+	_apply_start_of_turn(player, player_ragdoll);
+	
 	skip.show();
 	var rng := RandomNumberGenerator.new();
 	var abilities: Array[Dictionary] = player.combat_display_actions_simult_flattened(rng, 5, true);
@@ -204,8 +207,6 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 	var _currently_selected: Array;
 	var _required_count: int;
 	func _begin_selection(selectable: Array, count: int) -> void:
-		print_stack();
-		
 		battle_screen.player_ragdoll.effect(AmalgamDisplay.EffectKind.Selectable, selectable);
 		battle_screen.enemy_ragdoll.effect(AmalgamDisplay.EffectKind.Selectable, selectable);
 		
@@ -248,9 +249,15 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 		return _had_side_effects;
 
 var _last_resolver: PlayerEffectResolver;
-func _on_player_card_selected(card: Dictionary):
+func _on_player_card_selected(card: Dictionary, card_display: ExportedCard):
+	if _last_resolver != null && _last_resolver.had_side_effects():
+		print("disallowing %s because another card is currently active and has had side effects" % str(card));
+		return;
+	
+	
 	print("selecting card!", card);
 	_cancel_active_cast();
+	card_display.set_selected(true);
 	
 	var card_idx: int = player_drawn_abilities.find(card);
 	assert(card_idx != -1);
@@ -268,6 +275,8 @@ func _on_player_card_selected(card: Dictionary):
 	
 	var is_same_ability: bool = card_idx == player_drawn_abilities.find(card);
 	print("wrapping up ability ", card)
+	if is_same_ability:
+		card_display.set_selected(false);
 	if is_same_ability && resolver.had_side_effects():
 		_end_player_turn();
 
@@ -290,6 +299,9 @@ func _end_player_turn() -> void:
 	
 	var player_died := player.current_global_health() <= 0;
 	var enemy_died := enemy.current_global_health() <= 0;
+	
+	_enemy_lost();
+	return;
 	
 	if player_died:
 		_player_lost();
@@ -434,9 +446,20 @@ func enemy_turn() -> void:
 		player_turn();
 
 func _apply_start_of_turn(on: Amalgam, displayed_on: AmalgamDisplay) -> void:
+	var poison_spreader: Array[Blob] = [];
+	for blob in on.blobs:
+		if blob.poison() <= 0:
+			continue;
+		
+		blob._health -= blob.poison();
+		
+		if blob.health() <= 0:
+			poison_spreader.append(blob);
 	
+	for spreader in poison_spreader:
+		for linked_blob in on.linked_blobs(spreader):
+			linked_blob._poision += spreader.poison();
 	
-	pass
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:

@@ -915,6 +915,4 @@ grow_vertical = 0
 unique_name_in_owner = true
 position = Vector2(4, -96.6)
 
-[connection signal="selected" from="ExchangeCard/Card" to="." method="_on_player_card_selected"]
-[connection signal="selected" from="BodySlamCard/Card" to="." method="_on_player_card_selected"]
 [connection signal="pressed" from="SkipTurn" to="." method="_on_skip_turn_pressed"]

@@ -87,6 +87,7 @@ offset_top = 517.0
 offset_right = 322.0
 offset_bottom = 549.0
 mouse_filter = 2
+theme_override_constants/outline_size = 2
 bbcode_enabled = true
 text = "[shake]You"
 fit_content = true
@@ -99,6 +100,7 @@ offset_top = 421.0
 offset_right = 1032.0
 offset_bottom = 453.0
 mouse_filter = 2
+theme_override_constants/outline_size = 2
 bbcode_enabled = true
 text = "[wave]Boss"
 autowrap_mode = 0
@@ -112,16 +114,8 @@ position = Vector2(938, 404)
 [node name="Player" parent="Opening" instance=ExtResource("4_81d8e")]
 position = Vector2(262, 1096)
 
-[node name="Sprite2D" type="Sprite2D" parent="Opening/Player"]
-texture = ExtResource("4_20d7b")
-offset = Vector2(0, -64)
-
 [node name="Boss" parent="Opening" instance=ExtResource("4_81d8e")]
 position = Vector2(938, -212)
-
-[node name="Sprite2D2" type="Sprite2D" parent="Opening/Boss"]
-texture = ExtResource("4_20d7b")
-offset = Vector2(0, -64)
 
 [node name="MainMenu" type="Control" parent="."]
 layout_mode = 1
@@ -248,10 +242,14 @@ text = "You are... dead."
 
 [node name="Music" type="Node" parent="."]
 
-[node name="ActiveTrack" type="AudioStreamPlayer" parent="Music"]
+[node name="TrackIntro" type="AudioStreamPlayer" parent="Music"]
+bus = &"Music"
+
+[node name="TrackLoop" type="AudioStreamPlayer" parent="Music"]
 bus = &"Music"
 
 [connection signal="pressed" from="MainMenu/PanelContainer/MarginContainer/Content/Start" to="." method="_on_start_pressed"]
 [connection signal="value_changed" from="MainMenu/PanelContainer/MarginContainer/Content/VolumeControls/MasterSlider" to="." method="_on_master_slider_value_changed"]
 [connection signal="value_changed" from="MainMenu/PanelContainer/MarginContainer/Content/VolumeControls/SfxSlider" to="." method="_on_sfx_slider_value_changed"]
 [connection signal="value_changed" from="MainMenu/PanelContainer/MarginContainer/Content/VolumeControls/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="finished" from="Music/TrackLoop" to="Music/TrackLoop" method="play"]

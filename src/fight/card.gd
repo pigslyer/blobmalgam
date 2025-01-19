@@ -20,13 +20,15 @@ signal selected(ability: Dictionary);
 var _content: Dictionary;
 
 func display_card(def: Dictionary, caster: Amalgam, enemy: Amalgam) -> void:
+	set_selected(false);
+	
 	_content = def.duplicate();
 	_content.make_read_only();
 	
 	title.text = def.get(Ability.NAME, "<missing name>");
 	short_desc.text = def.get(Ability.DESC_SHORT, "");
 	tooltip_text = def.get(Ability.DESC, "");
-	#art.texture = def.get(Ability.IMAGE, null);
+	art.texture = def.get(Ability.ABILITY_IMAGE, preload("res://assets/card - card.png"));
 	
 	var desc := Ability.DescBuilder.new();
 	desc.tags = def;
@@ -44,6 +46,16 @@ func display_card(def: Dictionary, caster: Amalgam, enemy: Amalgam) -> void:
 	poison_icon.visible = Ability.POISON_PREVIEW in def;
 	poison_label.text = str(def.get(Ability.POISON_PREVIEW, no_op).call(desc));
 
+func set_selected(state: bool):
+	var target_color: Color;
+	if state:
+		target_color = Color.DARK_GRAY;
+	else:
+		target_color = Color.WHITE;
+	
+	const SELECT_TIME = 0.1;
+	var tween := create_tween().set_trans(Tween.TRANS_LINEAR);
+	tween.tween_property(self, "modulate", target_color, SELECT_TIME);
 
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
