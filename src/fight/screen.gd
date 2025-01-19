@@ -480,3 +480,16 @@ func _player_lost() -> void:
 
 func _enemy_lost() -> void:
 	player_won.emit();
+
+
+func _on_player_amalgam_blob_hovered(which: Blob, state: bool) -> void:
+	print_debug("player amalgam hovered");
+	pass # Replace with function body.
+
+
+func _on_player_amalgam_blob_pressed(which: Blob) -> void:
+	print_debug("player amalgam pressed");
+
+
+func _on_player_amalgam_limb_pressed(which: Limb) -> void:
+	print_debug("player limb pressed");

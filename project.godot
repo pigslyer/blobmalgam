@@ -31,7 +31,7 @@ click={
 
 [physics]
 
-3d/physics_engine="JoltPhysics3D"
+2d/physics_engine="GodotPhysics2D"
 
 [rendering]
 

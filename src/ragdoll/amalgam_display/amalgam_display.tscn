@@ -3,12 +3,17 @@
 [ext_resource type="Script" path="res://src/ragdoll/amalgam_display/amalgam_display.gd" id="1_sc120"]
 [ext_resource type="PackedScene" uid="uid://b33g4au5nv5ss" path="res://src/ragdoll/blob_display/blob_display.tscn" id="2_sxi2t"]
 
-[node name="AmalgamDisplay" type="Node2D"]
+[node name="AmalgamDisplay" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_sc120")
 
 [node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 color = Color(1, 0, 1, 1)
 
 [node name="BlobDisplay" parent="." instance=ExtResource("2_sxi2t")]
+offset_top = -73.0
+offset_bottom = -73.0

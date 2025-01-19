@@ -1,5 +1,5 @@
 class_name BlobDisplay
-extends RigidBody2D
+extends Control
 
 var card: Blob = null;
 var image: CompressedTexture2D = null;
@@ -13,23 +13,24 @@ func _enter_tree() -> void:
 		return ;
 	get_node("Sprite2D").texture = image;
 
-func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+func _process(delta: float) -> void:
+	pass ;
+
+func _on_mouse_entered() -> void:
+	# Emitted on all blobs (even dead)
+	blob_hovered.emit(card, true);
+
+func _on_mouse_exited() -> void:
+	blob_hovered.emit(card, false);
+
+func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.is_action_pressed("click"):
 			# Emitted on all blobs (even dead)
 			print_debug("Emitting blob_pressed with blob: ", self.name);
-			emit_signal("blob_pressed", card);
+			blob_pressed.emit(card);
 			# start_drag(self);
 			modulate = Color(1, 1, 1, 0.5);
 		elif event.is_action_released("click"):
 			# stop_drag();
 			modulate = Color(1, 1, 1, 1);
-
-func _on_mouse_entered() -> void:
-	# Emitted on all blobs (even dead)
-	print_debug("Emitting blob_hovered (state: true) with blob: ", self.name);
-	emit_signal("blob_hovered", card, true);
-
-func _on_mouse_exited() -> void:
-	print_debug("Emitting blob_hovered (state: false) with blob: ", self.name);
-	emit_signal("blob_hovered", card, false);

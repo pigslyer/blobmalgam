@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dmdpqvtgjpfae"]
+[gd_scene load_steps=9 format=3 uid="uid://dmdpqvtgjpfae"]
 
 [ext_resource type="Script" path="res://src/fight/screen.gd" id="1_15obj"]
 [ext_resource type="PackedScene" uid="uid://b8pepwnkg674s" path="res://src/fight/Card.tscn" id="1_e7pql"]
@@ -9,20 +9,11 @@
 [sub_resource type="Theme" id="Theme_wupdr"]
 default_font_size = 12
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_yq31k"]
-distance = 13.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bochu"]
+size = Vector2(258, 451.5)
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ua62e"]
-normal = Vector2(0, 1)
-distance = 13.0
-
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_gaxeo"]
-normal = Vector2(-1, 0)
-distance = -992.0
-
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_3il1s"]
-normal = Vector2(1, 0)
-distance = 97.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bomkx"]
+size = Vector2(1462, 167)
 
 [node name="Fight" type="Control"]
 layout_mode = 3
@@ -827,6 +818,34 @@ grow_vertical = 0
 theme_override_font_sizes/font_size = 36
 text = "Skip Turn"
 
+[node name="WorldBoundaries" type="StaticBody2D" parent="."]
+position = Vector2(128, 108)
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="WorldBoundaries"]
+position = Vector2(1131, 224)
+shape = SubResource("RectangleShape2D_bochu")
+debug_color = Color(0.610271, 0.361733, 1, 0.42)
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="WorldBoundaries"]
+position = Vector2(-127, 224)
+shape = SubResource("RectangleShape2D_bochu")
+debug_color = Color(0.610271, 0.361733, 1, 0.42)
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="WorldBoundaries"]
+position = Vector2(511, 225)
+shape = SubResource("RectangleShape2D_bochu")
+debug_color = Color(0.610271, 0.361733, 1, 0.42)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="WorldBoundaries"]
+position = Vector2(462, -83)
+shape = SubResource("RectangleShape2D_bomkx")
+debug_color = Color(0.610271, 0.361733, 1, 0.42)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundaries"]
+position = Vector2(496, 537.5)
+shape = SubResource("RectangleShape2D_bomkx")
+debug_color = Color(0.610271, 0.361733, 1, 0.42)
+
 [node name="PlayerRagdollArea" type="ReferenceRect" parent="."]
 layout_mode = 1
 anchors_preset = -1
@@ -834,42 +853,27 @@ anchor_left = 0.1
 anchor_top = 0.15
 anchor_right = 0.4
 anchor_bottom = 0.78
+mouse_filter = 2
 editor_only = false
 
-[node name="StaticBody2D" type="StaticBody2D" parent="PlayerRagdollArea"]
-
-[node name="Bottom" type="CollisionShape2D" parent="PlayerRagdollArea/StaticBody2D"]
-position = Vector2(195, 466)
-shape = SubResource("WorldBoundaryShape2D_yq31k")
-
-[node name="Top" type="CollisionShape2D" parent="PlayerRagdollArea/StaticBody2D"]
-position = Vector2(183, -13)
-shape = SubResource("WorldBoundaryShape2D_ua62e")
-
-[node name="Right" type="CollisionShape2D" parent="PlayerRagdollArea/StaticBody2D"]
-position = Vector2(-608, 298)
-shape = SubResource("WorldBoundaryShape2D_gaxeo")
-
-[node name="Left" type="CollisionShape2D" parent="PlayerRagdollArea/StaticBody2D"]
-position = Vector2(-97, 334)
-shape = SubResource("WorldBoundaryShape2D_3il1s")
-
-[node name="Origin" type="Control" parent="PlayerRagdollArea/StaticBody2D"]
-layout_mode = 3
+[node name="Origin" type="Control" parent="PlayerRagdollArea"]
+layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 194.0
-offset_top = 206.0
-offset_right = 194.0
-offset_bottom = 206.0
+offset_left = -2.0
+offset_top = -0.599976
+offset_right = -2.0
+offset_bottom = -0.599976
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 1
 
-[node name="PlayerAmalgam" parent="PlayerRagdollArea/StaticBody2D/Origin" instance=ExtResource("5_vdmff")]
+[node name="PlayerAmalgam" parent="PlayerRagdollArea/Origin" instance=ExtResource("5_vdmff")]
 unique_name_in_owner = true
+mouse_filter = 2
 
 [node name="EnemyRagdollArea" type="ReferenceRect" parent="."]
 layout_mode = 1
@@ -878,41 +882,26 @@ anchor_left = 0.6
 anchor_top = 0.15
 anchor_right = 0.9
 anchor_bottom = 0.78
+border_color = Color(0, 0.56871, 0.847554, 1)
+editor_only = false
 
-[node name="StaticBody2D" type="StaticBody2D" parent="EnemyRagdollArea"]
-
-[node name="Bottom" type="CollisionShape2D" parent="EnemyRagdollArea/StaticBody2D"]
-position = Vector2(195, 466)
-shape = SubResource("WorldBoundaryShape2D_yq31k")
-
-[node name="Top" type="CollisionShape2D" parent="EnemyRagdollArea/StaticBody2D"]
-position = Vector2(183, -13)
-shape = SubResource("WorldBoundaryShape2D_ua62e")
-
-[node name="Right" type="CollisionShape2D" parent="EnemyRagdollArea/StaticBody2D"]
-position = Vector2(-608, 298)
-shape = SubResource("WorldBoundaryShape2D_gaxeo")
-
-[node name="Left" type="CollisionShape2D" parent="EnemyRagdollArea/StaticBody2D"]
-position = Vector2(-97, 334)
-shape = SubResource("WorldBoundaryShape2D_3il1s")
-
-[node name="Origin" type="Control" parent="EnemyRagdollArea/StaticBody2D"]
-layout_mode = 3
+[node name="Origin" type="Control" parent="EnemyRagdollArea"]
+layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 192.0
-offset_top = 453.6
-offset_right = 192.0
-offset_bottom = 453.6
+offset_top = 6.10352e-05
+offset_bottom = 6.10352e-05
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 
-[node name="EnemyAmalgam" parent="EnemyRagdollArea/StaticBody2D/Origin" instance=ExtResource("5_vdmff")]
+[node name="EnemyAmalgam" parent="EnemyRagdollArea/Origin" instance=ExtResource("5_vdmff")]
 unique_name_in_owner = true
-position = Vector2(4, -96.6)
 
 [connection signal="pressed" from="SkipTurn" to="." method="_on_skip_turn_pressed"]
+[connection signal="blob_hovered" from="PlayerRagdollArea/Origin/PlayerAmalgam" to="." method="_on_player_amalgam_blob_hovered"]
+[connection signal="blob_pressed" from="PlayerRagdollArea/Origin/PlayerAmalgam" to="." method="_on_player_amalgam_blob_pressed"]
+[connection signal="limb_pressed" from="PlayerRagdollArea/Origin/PlayerAmalgam" to="." method="_on_player_amalgam_limb_pressed"]

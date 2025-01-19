@@ -1,5 +1,5 @@
 class_name AmalgamDisplay
-extends Node2D
+extends Control
 
 @onready var card: Amalgam = null;
 @onready var blob_scene := preload("res://src/ragdoll/blob_display/blob_display.tscn");
@@ -21,28 +21,32 @@ enum EffectKind {
 
 # Signal passing
 func _on_blob_pressed(blob: Blob) -> void:
-	emit_signal("blob_pressed", blob);
+	print_debug("Emitting blob_pressed with blob: ", self.name);
+	blob_pressed.emit(blob);
 func _on_blob_hovered(blob: Blob, state: bool) -> void:
-	emit_signal("blob_hovered", blob, state);
+	print_debug("Emitting blob_hovered with blob: ", self.name);
+	blob_hovered.emit(blob, state);
 func _on_limb_pressed(limb: Limb) -> void:
-	emit_signal("limb_pressed", limb);
-
+	print_debug("Emitting limb_pressed with limb: ", self.name);
+	limb_pressed.emit(limb);
+func _on_test_signal(viewport, event, shape_idx) -> void:
+	print_debug("Test signal received");
 func _ready() -> void:
 	pass ;
 
 func connect_blob_signals(blob_display: BlobDisplay, amalgam_display: AmalgamDisplay = self) -> void:
-	blob_display.connect("blob_pressed", Callable(amalgam_display, "_on_blob_pressed"));
-	blob_display.connect("blob_hovered", Callable(amalgam_display, "_on_blob_hovered"));
+	blob_display.blob_pressed.connect(func(blob: Blob): amalgam_display._on_blob_pressed(blob));
+	blob_display.blob_hovered.connect(func(blob: Blob, state: bool): amalgam_display._on_blob_hovered(blob, state));
+
 
 func connect_limb_signals(limb_display: LimbDisplay, amalgam_display: AmalgamDisplay = self) -> void:
-	limb_display.connect("limb_pressed", Callable(amalgam_display, "_on_limb_pressed"));
+	limb_display.limb_pressed.connect(func(limb: Limb): amalgam_display._on_limb_pressed(limb));
 
 func _init_blob(blob: Blob) -> BlobDisplay:
 	var blob_display := blob_scene.instantiate();
 	blob_display.name = name + "_blob_" + str(blob.get_instance_id());
 	# blob_display.image = preload("res://src/ragdoll/placeholder/blob.png");
 	blob_display.card = blob;
-	# blob_display.position
 	return blob_display;
 
 func _init_limb(limb: PositionedLimb) -> LimbDisplay:
@@ -65,18 +69,20 @@ func display_amalgam(amalgam: Amalgam) -> void:
 	for child in get_children():
 		child.queue_free();
 
+	var blob_y_offset := 0;
 	for blob in amalgam.blobs:
 		var blob_display := _init_blob(blob);
+		blob_y_offset -= blob_display.get_node("Sprite2D").texture.get_height() * blob_display.get_node("Sprite2D").scale.y / 2; # assuming circle
 		add_child(blob_display);
 		connect_blob_signals(blob_display);
-		blob_display.freeze = true;
+		blob_display.position = Vector2(0, blob_y_offset);
+		blob_y_offset -= blob_display.get_node("Sprite2D").texture.get_height() * blob_display.get_node("Sprite2D").scale.y / 2; # add own radius to make space for next one
 
 		var limbs_node = blob_display.get_node("Limbs");
 		for positioned_limb in blob.limbs:
 			var limb_display := _init_limb(positioned_limb);
 			limbs_node.add_child(limb_display);
 			connect_limb_signals(limb_display);
-			limb_display.freeze = true;
 			
 
 func idle(kind: IdleKinds) -> void:
@@ -102,7 +108,4 @@ func play_animation(userdata: Dictionary) -> void:
 ## A single limb or blob should support multiple effects at once
 ## You shouldn't assume that all limbs or blobs received are on displayed amalgam.
 func effect(kind: EffectKind, limbs_or_blobs: Array) -> void:
-	pass ;
-
-func _physics_process(delta: float) -> void:
 	pass ;

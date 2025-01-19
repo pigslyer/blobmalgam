@@ -86,7 +86,6 @@ mouse_filter = 2
 color = Color(0.314283, 0.000825346, 0.779154, 1)
 
 [node name="testamalgam" type="Node2D" parent="."]
-visible = false
 position = Vector2(328, 322)
 
 [node name="Blob1" type="RigidBody2D" parent="testamalgam"]
@@ -113,7 +112,7 @@ scale = Vector2(1.5, 1.5)
 texture = ExtResource("2_cpj3v")
 
 [node name="PinJoint2D" type="PinJoint2D" parent="testamalgam/Limb-Arm"]
-position = Vector2(-1, 46)
+position = Vector2(-1, 47)
 node_a = NodePath("../../Blob1")
 node_b = NodePath("..")
 angular_limit_enabled = true
@@ -121,6 +120,7 @@ angular_limit_lower = -0.523599
 angular_limit_upper = 0.523599
 
 [node name="LimbHandle" type="Sprite2D" parent="testamalgam/Limb-Arm/PinJoint2D"]
+position = Vector2(16, 0)
 texture = ExtResource("3_a0xsk")
 
 [node name="Limb-Arm2" type="RigidBody2D" parent="testamalgam"]
