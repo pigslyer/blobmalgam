@@ -122,7 +122,7 @@ offset_right = 951.0
 offset_bottom = -355.0
 
 [node name="BossEnd" type="Marker2D" parent="Opening"]
-position = Vector2(1005, 665)
+position = Vector2(1012, 634)
 
 [node name="MainMenu" type="Control" parent="."]
 layout_mode = 1

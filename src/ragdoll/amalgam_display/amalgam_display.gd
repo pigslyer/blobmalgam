@@ -2,7 +2,7 @@ class_name AmalgamDisplay
 extends Control
 
 const OVERLAP_DISTANCE = 50;
-const BLOB_RADIUS = 80;
+const BLOB_RADIUS = 60;
 
 @onready var card: Amalgam = null;
 @onready var blob_scene := preload("res://src/ragdoll/blob_display/blob_display.tscn");
@@ -67,14 +67,14 @@ func _init_limb(limb: PositionedLimb) -> LimbDisplay:
 
 func generate_limb_scale(limb: Limb) -> float:
 	if limb.tags.has(Ability.LEG):
-		return 0.6;
+		return 0.5;
 	elif limb.tags.has(Ability.ARM):
-		return 0.5;
-	elif limb.tags.has(Ability.TAIL):
 		return 0.4;
+	elif limb.tags.has(Ability.TAIL):
+		return 0.3;
 	elif limb.tags.has(Ability.EYES):
-		return 0.5;
-	return 0.5;
+		return 0.4;
+	return 0.4;
 
 func generate_random_limb_position(limb: Limb, blob_radius: int) -> Vector2:
 	var random_angle := randf() * PI * 2
@@ -155,6 +155,7 @@ func display_amalgam(amalgam: Amalgam) -> void:
 			connect_limb_signals(limb_display);
 		
 		blob_display.position = blob_positions[blob_ix];
+		blob_display.image = blob.texture;
 
 		for link in amalgam.links:
 			if link.from_idx == blob_ix and not link.to_idx in traversed_blobs:
