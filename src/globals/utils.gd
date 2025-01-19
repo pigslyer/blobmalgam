@@ -140,11 +140,11 @@ static func limb_table() -> Array[Limb]:
 		Cyber.arm(),
 		Cyber.eyes(),
 		Cyber.jetpack(),
-		Cyber.reflex_booster(),
+		#Cyber.reflex_booster(),
 		
 		Eldritch.tentacle(),
 		Eldritch.eyes(),
-		Eldritch.wings(),
+		#Eldritch.wings(),
 		Eldritch.mouth(),
 		
 		Cute.arm(),
@@ -283,12 +283,12 @@ static func limb_tiers() -> Dictionary:
 			Cyber.eyes(),
 			Cyber.jetpack(),
 			Cyber.jetpack(),
-			Cyber.reflex_booster(),
-			Cyber.reflex_booster(),
+			#Cyber.reflex_booster(),
+			#Cyber.reflex_booster(),
 			
 			Eldritch.tentacle(), Eldritch.tentacle(),
 			Eldritch.mouth(), Eldritch.mouth(),
-			Eldritch.wings(), Eldritch.wings(),
+			#Eldritch.wings(), Eldritch.wings(),
 			
 			Angelic.eyes(),
 			Angelic.wings(),
@@ -297,7 +297,7 @@ static func limb_tiers() -> Dictionary:
 		EnemyStrength.Boss : [
 			Eldritch.tentacle(), Eldritch.tentacle(),
 			Eldritch.mouth(), Eldritch.mouth(),
-			Eldritch.wings(), Eldritch.wings(),
+			#Eldritch.wings(), Eldritch.wings(),
 			
 			Angelic.eyes(),
 			Angelic.wings(),
