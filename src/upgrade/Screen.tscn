@@ -28,6 +28,21 @@ theme_override_constants/outline_size = 10
 theme_override_font_sizes/font_size = 60
 text = "Upgrade limbs & blobs !"
 
+[node name="CountLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -225.0
+offset_top = 174.0
+offset_right = 461.0
+offset_bottom = 257.0
+grow_horizontal = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 40
+text = "x upgrades left"
+
 [node name="Player" parent="." instance=ExtResource("2_kpmqm")]
 unique_name_in_owner = true
 offset_left = 490.0
