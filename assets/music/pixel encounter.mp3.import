@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dasko13h6gwm3"
+path="res://.godot/imported/pixel encounter.mp3-65f04d5e52ec77b10e7d9dadf8b83a39.mp3str"
+
+[deps]
+
+source_file="res://assets/music/pixel encounter.mp3"
+dest_files=["res://.godot/imported/pixel encounter.mp3-65f04d5e52ec77b10e7d9dadf8b83a39.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

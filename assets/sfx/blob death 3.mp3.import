@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://43i0c4nylli3"
+path="res://.godot/imported/blob death 3.mp3-854784fd2953b9efe37499f5135a4f09.mp3str"
+
+[deps]
+
+source_file="res://assets/sfx/blob death 3.mp3"
+dest_files=["res://.godot/imported/blob death 3.mp3-854784fd2953b9efe37499f5135a4f09.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

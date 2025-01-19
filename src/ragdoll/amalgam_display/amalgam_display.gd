@@ -136,6 +136,7 @@ func idle(kind: IdleKinds) -> void:
 ##	don't presuppose that i won't start multiple animations at once
 ##	animations should be in global space i.e. ignoring idle animations
 func play_animation(userdata: Dictionary) -> void:
+	await get_tree().process_frame;
 	animation_finished.emit();
 	pass ;
 

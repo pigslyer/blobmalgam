@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bc42gxwial6sd"
+path="res://.godot/imported/cute and kawaii uwu.mp3-b45ea01fe70e23072369c8868101642c.mp3str"
+
+[deps]
+
+source_file="res://assets/music/cute and kawaii uwu.mp3"
+dest_files=["res://.godot/imported/cute and kawaii uwu.mp3-b45ea01fe70e23072369c8868101642c.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

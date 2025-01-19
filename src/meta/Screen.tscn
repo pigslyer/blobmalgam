@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://b16tbptxmgkat"]
+[gd_scene load_steps=11 format=3 uid="uid://b16tbptxmgkat"]
 
 [ext_resource type="FontFile" uid="uid://r38d3q1uv1mb" path="res://assets/Chewy-Regular.ttf" id="1_egax4"]
 [ext_resource type="PackedScene" uid="uid://dmdpqvtgjpfae" path="res://src/fight/Screen.tscn" id="1_i02bh"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cdorta5gy54ms" path="res://icon.svg" id="4_20d7b"]
 [ext_resource type="PackedScene" uid="uid://uw564dostwoo" path="res://src/ragdoll/amalgam_display/amalgam_display.tscn" id="4_81d8e"]
 [ext_resource type="PackedScene" uid="uid://dhv7m5l6snwf7" path="res://src/upgrade/Screen.tscn" id="5_5k88p"]
+[ext_resource type="AudioStream" uid="uid://c24k15jdn3wcp" path="res://assets/sfx/pause scratch.mp3" id="7_x4ce5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hem84"]
 bg_color = Color(0.482353, 0.0235294, 0.180392, 0.917647)
@@ -87,6 +88,7 @@ offset_top = 517.0
 offset_right = 322.0
 offset_bottom = 549.0
 mouse_filter = 2
+theme_override_constants/outline_size = 2
 bbcode_enabled = true
 text = "[shake]You"
 fit_content = true
@@ -99,35 +101,22 @@ offset_top = 421.0
 offset_right = 1032.0
 offset_bottom = 453.0
 mouse_filter = 2
+theme_override_constants/outline_size = 2
 bbcode_enabled = true
 text = "[wave]Boss"
 autowrap_mode = 0
 
+[node name="Player" parent="Opening" instance=ExtResource("4_81d8e")]
+position = Vector2(273, 1092)
+
 [node name="PlayerEnd" type="Marker2D" parent="Opening"]
 position = Vector2(273, 485)
 
-[node name="BossEnd" type="Marker2D" parent="Opening"]
-position = Vector2(951, 802)
-
-[node name="Player" parent="Opening" instance=ExtResource("4_81d8e")]
-offset_left = 262.0
-offset_top = 1096.0
-offset_right = 262.0
-offset_bottom = 1096.0
-
-[node name="Sprite2D" type="Sprite2D" parent="Opening/Player"]
-texture = ExtResource("4_20d7b")
-offset = Vector2(0, -64)
-
 [node name="Boss" parent="Opening" instance=ExtResource("4_81d8e")]
-offset_left = 938.0
-offset_top = -212.0
-offset_right = 938.0
-offset_bottom = -212.0
+position = Vector2(951, -355)
 
-[node name="Sprite2D2" type="Sprite2D" parent="Opening/Boss"]
-texture = ExtResource("4_20d7b")
-offset = Vector2(0, -64)
+[node name="BossEnd" type="Marker2D" parent="Opening"]
+position = Vector2(951, 376)
 
 [node name="MainMenu" type="Control" parent="."]
 layout_mode = 1
@@ -186,9 +175,9 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-max_value = 2.0
+max_value = 1.0
 step = 0.001
-value = 1.0
+value = 0.5
 
 [node name="SfxLabel" type="Label" parent="MainMenu/PanelContainer/MarginContainer/Content/VolumeControls"]
 layout_mode = 2
@@ -200,9 +189,9 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-max_value = 2.0
+max_value = 1.0
 step = 0.001
-value = 1.0
+value = 0.5
 
 [node name="MusicLabel" type="Label" parent="MainMenu/PanelContainer/MarginContainer/Content/VolumeControls"]
 layout_mode = 2
@@ -213,9 +202,9 @@ text = "Music Volume"
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_vertical = 1
-max_value = 2.0
+max_value = 1.0
 step = 0.001
-value = 1.0
+value = 0.5
 
 [node name="Fight" parent="." instance=ExtResource("1_i02bh")]
 visible = false
@@ -254,10 +243,18 @@ text = "You are... dead."
 
 [node name="Music" type="Node" parent="."]
 
-[node name="ActiveTrack" type="AudioStreamPlayer" parent="Music"]
+[node name="TrackIntro" type="AudioStreamPlayer" parent="Music"]
 bus = &"Music"
+
+[node name="TrackLoop" type="AudioStreamPlayer" parent="Music"]
+bus = &"Music"
+
+[node name="RecordScratch" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource("7_x4ce5")
+bus = &"Effects"
 
 [connection signal="pressed" from="MainMenu/PanelContainer/MarginContainer/Content/Start" to="." method="_on_start_pressed"]
 [connection signal="value_changed" from="MainMenu/PanelContainer/MarginContainer/Content/VolumeControls/MasterSlider" to="." method="_on_master_slider_value_changed"]
 [connection signal="value_changed" from="MainMenu/PanelContainer/MarginContainer/Content/VolumeControls/SfxSlider" to="." method="_on_sfx_slider_value_changed"]
 [connection signal="value_changed" from="MainMenu/PanelContainer/MarginContainer/Content/VolumeControls/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="finished" from="Music/TrackLoop" to="Music/TrackLoop" method="play"]

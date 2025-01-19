@@ -4,6 +4,7 @@ extends Object
 const NAME = "display_name";
 const DESC_SHORT = "desc_short";
 const DESC = "desc";
+const ABILITY_IMAGE = "ability_image";
 const IMAGE = "blob_images";
 const EFFECT = "card_effect";
 
@@ -232,6 +233,8 @@ static func bodyslam() -> Dictionary:
 	return {
 		NAME : "Bodyslam",
 		DESC : "Your body is your weapon! Deal %d damage per blob." % BODYSLAM_DAMAGE,
+		ABILITY_IMAGE : preload("res://assets/card - bodyslam.png"),
+		
 		DAMAGE_PREVIEW: func(d: DescBuilder):
 			return str(BODYSLAM_DAMAGE * len(d.me.blobs)),
 		BODYSLAM : "1",
@@ -247,6 +250,8 @@ static func exchange() -> Dictionary:
 		NAME : "Exchange",
 		DESC_SHORT: EXCHANGE_DESC_SHORT,
 		DESC : EXCHANGE_DESC_SHORT,
+		ABILITY_IMAGE : preload("res://assets/card - swap.png"),
+		
 		EXCHANGE : "1",
 		GRABBY : 0,
 		EFFECT: func(e: Effector):
@@ -765,7 +770,7 @@ static func _upgrade_crafter(c: Crafter) -> void:
 				return d.tags[EYES] * 2,
 			EFFECT : func(e: Effector):
 				var may_continue: bool = await e.confirm_enemy({ });
-				if may_continue:
+				if !may_continue:
 					return;
 				
 				await e.damage_blobs(e.them.blobs, e.tags[EYES] * 2, { });

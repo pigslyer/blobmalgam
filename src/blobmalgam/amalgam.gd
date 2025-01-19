@@ -16,7 +16,7 @@ func combat_display_actions_simult_flattened(
 	draw_count: int,
 	include_base: bool,
 ) -> Array[Dictionary]:
-	var limbs: Array[Limb] = _get_limbs_flat();
+	var limbs: Array[Limb] = alive_limbs_flat();
 	
 	var original_tags: Array[Dictionary];
 	if include_base:
@@ -28,7 +28,21 @@ func combat_display_actions_simult_flattened(
 		var removed_limb: Limb = limbs[removed_limb_idx];
 		limbs.remove_at(removed_limb_idx);
 		
-		original_tags.append(removed_limb.tags);
+		var is_stunned: bool = false;
+		for blob in blobs:
+			if is_stunned:
+				break;
+			
+			if blob.stun() == 0:
+				continue;
+			
+			for limb in blob.limbs:
+				if removed_limb == limb.limb:
+					is_stunned = true;
+					blob._stun -= 1;
+		
+		if !is_stunned:
+			original_tags.append(removed_limb.tags);
 	
 	var combined_tags: Array[Dictionary];
 	for i in len(original_tags):
@@ -81,11 +95,26 @@ func current_global_health() -> float:
 		total += blob.health();
 	return total;
 
-func _get_limbs_flat() -> Array[Limb]:
+func alive_limbs_flat() -> Array[Limb]:
 	var arr: Array[Limb] = [];
 	
 	for blob in blobs:
+		if blob.health() <= 0:
+			continue;
+		
 		for pos_limb in blob.limbs:
 			arr.append(pos_limb.limb);
 	
 	return arr;
+
+func linked_blobs(linked_to: Blob) -> Array[Blob]:
+	var ret: Array[Blob] = [];
+	
+	for link in links:
+		if blobs[link.from_idx] == linked_to:
+			ret.append(blobs[link.to_idx]);
+		if blobs[link.to_idx] == linked_to:
+			ret.append(blobs[link.from_idx]);
+	
+	return ret;
+	

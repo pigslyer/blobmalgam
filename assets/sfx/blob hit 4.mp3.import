@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://djc638qfvx1vk"
+path="res://.godot/imported/blob hit 4.mp3-cf9ba0965caccae84d46af7db46e680a.mp3str"
+
+[deps]
+
+source_file="res://assets/sfx/blob hit 4.mp3"
+dest_files=["res://.godot/imported/blob hit 4.mp3-cf9ba0965caccae84d46af7db46e680a.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

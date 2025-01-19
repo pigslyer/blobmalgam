@@ -16,6 +16,10 @@ run/main_scene="res://src/meta/Screen.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Utils="*res://src/globals/utils.gd"
+
 [display]
 
 window/size/viewport_width=1280
@@ -32,3 +36,7 @@ click={
 [physics]
 
 2d/physics_engine="GodotPhysics2D"
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0

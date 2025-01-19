@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dwf1hifwldvqg"
+path="res://.godot/imported/hit light.mp3-018c7c34ed754f10f034f8491955d35a.mp3str"
+
+[deps]
+
+source_file="res://assets/sfx/hit light.mp3"
+dest_files=["res://.godot/imported/hit light.mp3-018c7c34ed754f10f034f8491955d35a.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
