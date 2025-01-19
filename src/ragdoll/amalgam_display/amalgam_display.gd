@@ -1,7 +1,8 @@
 class_name AmalgamDisplay
 extends Control
 
-const OVERLAP_DISTANCE = 20;
+const OVERLAP_DISTANCE = 50;
+const BLOB_RADIUS = 60;
 
 @onready var card: Amalgam = null;
 @onready var blob_scene := preload("res://src/ragdoll/blob_display/blob_display.tscn");
@@ -66,14 +67,14 @@ func _init_limb(limb: PositionedLimb) -> LimbDisplay:
 
 func generate_limb_scale(limb: Limb) -> float:
 	if limb.tags.has(Ability.LEG):
-		return 0.6;
+		return 0.5;
 	elif limb.tags.has(Ability.ARM):
-		return 0.5;
-	elif limb.tags.has(Ability.TAIL):
 		return 0.4;
+	elif limb.tags.has(Ability.TAIL):
+		return 0.3;
 	elif limb.tags.has(Ability.EYES):
-		return 0.5;
-	return 0.5;
+		return 0.4;
+	return 0.4;
 
 func generate_random_limb_position(limb: Limb, blob_radius: int) -> Vector2:
 	var random_angle := randf() * PI * 2
@@ -103,15 +104,15 @@ func display_amalgam(amalgam: Amalgam) -> void:
 		child.queue_free();
 
 	var traversed_blobs := [];
-	var blob_positions := {};
 	var ix_stack := [0]
-
+	var blob_positions: Array[Vector2] = [Vector2.ZERO];
+	blob_positions.resize(amalgam.blobs.size());
 
 	# First blob will always be at origin
 	# Get position of other blobs based on their links (DFS)
 
-	# TODO: call auto-link generation
-
+	if (amalgam.blobs.size() != amalgam.links.size() + 1):
+		push_warning("Amalgam blobs and links size mismatch");
 	# assert(amalgam.blobs.size() == amalgam.links.size() + 1, "Amalgam blobs and links size mismatch");
 	while ix_stack.size() > 0:
 		var blob_ix = ix_stack.pop_back();
@@ -120,7 +121,7 @@ func display_amalgam(amalgam: Amalgam) -> void:
 		add_child(blob_display);
 		connect_blob_signals(blob_display);
 
-		var blob_radius: int = blob_display.get_node("Sprite2D").texture.get_height() * blob_display.get_node("Sprite2D").scale.y / 2; # assuming circle
+		# var blob_radius: int = blob_display.get_node("Sprite2D").texture.get_height() * blob_display.get_node("Sprite2D").scale.y / 2; # assuming circle
 		traversed_blobs.append(blob_ix);
 
 		var limbs_node = blob_display.get_node("Limbs");
@@ -135,7 +136,7 @@ func display_amalgam(amalgam: Amalgam) -> void:
 				var iterations := 0;
 				positioned_limb.position = generate_limb_position(
 					positioned_limb.limb,
-					blob_radius
+					BLOB_RADIUS
 				);
 				for limb in blob.limbs:
 					if limb == positioned_limb:
@@ -144,7 +145,7 @@ func display_amalgam(amalgam: Amalgam) -> void:
 						print_debug("Regenerating limb position");
 						positioned_limb.position = generate_random_limb_position(
 							positioned_limb.limb,
-							blob_radius
+							BLOB_RADIUS
 						);
 						iterations += 1;
 						if iterations > 10:
@@ -152,11 +153,16 @@ func display_amalgam(amalgam: Amalgam) -> void:
 
 			limb_display.position = positioned_limb.position
 			connect_limb_signals(limb_display);
+		
+		blob_display.position = blob_positions[blob_ix];
+		blob_display.image = blob.texture;
 
 		for link in amalgam.links:
 			if link.from_idx == blob_ix and not link.to_idx in traversed_blobs:
+				blob_positions[link.to_idx] = link.to_local_pos;
 				ix_stack.append(link.to_idx);
 			elif link.to_idx == blob_ix and not link.from_idx in traversed_blobs:
+				blob_positions[link.from_idx] = link.from_local_pos;
 				ix_stack.append(link.from_idx);
 
 	# while (traversed_blobs.length() < amalgam.blobs.length()):
@@ -215,7 +221,7 @@ func _play_slash_sfx(userdata: Dictionary) -> void:
 
 func _play_heal_sfx(userdata: Dictionary) -> void:
 	if !Ability.ANIM_HEAL in userdata:
-		return;
+		return ;
 	
 	for _i in len(userdata[Ability.ANIM_SLASH]):
 		Utils.play_sfx(_slash_anims().pick_random());
