@@ -42,6 +42,7 @@ func update_instant(new_health: float, max_health: float, new_stun: int, new_poi
 	stun_count.text = str(new_stun);
 	poison.visible = new_poison > 0;
 	poison_count.text = str(new_poison);
+	armor.visible = new_armor > 0;
 	armor_count.text = str(new_armor);
 	
 	prev_health = new_health;

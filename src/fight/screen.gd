@@ -50,6 +50,9 @@ func begin_fight(player: Amalgam, enemy: Amalgam) -> void:
 func player_turn():
 	_apply_start_of_turn(player, player_ragdoll);
 	
+	if player.total_global_health() <= 0:
+		_player_lost();
+	
 	skip.show();
 	var rng := RandomNumberGenerator.new();
 	var abilities: Array[Dictionary] = player.combat_display_actions_simult_flattened(rng, 5, true);
@@ -376,7 +379,7 @@ class EnemyResolver extends Ability.EffectResolver:
 	
 	func heal_blobs(blobs: Array[Blob], amount: float, userdata: Dictionary) -> void:
 		for blob in blobs:
-			blob._health = max(Blob.MAX_HEALTH, blob.health() + amount);
+			blob._health = min(Blob.MAX_HEALTH, blob.health() + amount);
 			
 		if len(blobs) > 0:
 			_update_blob(_blobs_ragdoll(blobs[0]), userdata.merged({
@@ -418,6 +421,9 @@ class EnemyResolver extends Ability.EffectResolver:
 
 func enemy_turn() -> void:
 	_apply_start_of_turn(enemy, enemy_ragdoll);
+	
+	if enemy.total_global_health() <= 0:
+		_enemy_lost();
 	
 	if enemy.total_global_health() > 0:
 		var rng := RandomNumberGenerator.new();
