@@ -1,6 +1,8 @@
 class_name AmalgamDisplay
 extends Control
 
+const OVERLAP_DISTANCE = 20;
+
 @onready var card: Amalgam = null;
 @onready var blob_scene := preload("res://src/ragdoll/blob_display/blob_display.tscn");
 @onready var limb_scene := preload("res://src/ragdoll/limb_display/limb_display.tscn");
@@ -138,7 +140,7 @@ func display_amalgam(amalgam: Amalgam) -> void:
 				for limb in blob.limbs:
 					if limb == positioned_limb:
 						continue ;
-					if limb.position.distance_to(positioned_limb.position) < 20:
+					if limb.position.distance_to(positioned_limb.position) < OVERLAP_DISTANCE:
 						print_debug("Regenerating limb position");
 						positioned_limb.position = generate_random_limb_position(
 							positioned_limb.limb,
