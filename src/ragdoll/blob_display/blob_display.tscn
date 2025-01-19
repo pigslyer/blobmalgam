@@ -6,17 +6,15 @@
 [node name="BlobDisplay" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_top = -72.0
-offset_bottom = -72.0
 mouse_filter = 1
 script = ExtResource("1_1shfe")
 
 [node name="Sprite2D" type="TextureRect" parent="."]
 layout_mode = 0
 offset_left = -80.0
-offset_top = -89.0
+offset_top = -80.0
 offset_right = 120.0
-offset_bottom = 111.0
+offset_bottom = 120.0
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("2_6t6in")
 

@@ -1,5 +1,7 @@
 extends Node
 
+# const BLOB_RADIUS = 100; # TODO: should be imported
+
 static func not_implemented(on: Object) -> void:
 	var frame = get_stack();
 	
@@ -189,6 +191,8 @@ static func generate_enemy(str: EnemyStrength, rng: RandomNumberGenerator) -> Am
 	
 	# for 0, they're all weak. for average, 1 is weak. for strong, 2 are average. for boss, 3 are strong.
 	var weaken_blob_after: int = blob_count - str;
+	var previous_blob_pos := Vector2.ZERO;
+	var current_blob_pos := Vector2.ZERO;
 	for blob in blob_count:
 		var generated_blob := Blob.new();
 		
@@ -211,6 +215,22 @@ static func generate_enemy(str: EnemyStrength, rng: RandomNumberGenerator) -> Am
 			generated_blob.add_limb(chosen_limb);
 		
 		amalgam.blobs.append(generated_blob);
+
+		if blob == 0:
+			continue ;
+
+		var angle := rng.randf_range(-PI, 0);
+		var direction = Vector2(cos(angle), sin(angle)).normalized();
+		current_blob_pos = previous_blob_pos + direction * (AmalgamDisplay.BLOB_RADIUS * 2);
+
+		var link = Amalgam.Link.new()
+		link.from_idx = blob - 1;
+		link.from_local_pos = previous_blob_pos;
+		link.to_idx = blob;
+		link.to_local_pos = current_blob_pos;
+		amalgam.links.append(link)
+
+		previous_blob_pos = current_blob_pos;
 	
 	if str == EnemyStrength.Weak:
 		for blob in amalgam.blobs:
@@ -273,7 +293,7 @@ static func limb_tiers() -> Dictionary:
 			
 			Medieval.arm(), Medieval.arm(),
 			Medieval.leg(), Medieval.leg(),
-			Medieval.cape(), 
+			Medieval.cape(),
 			Medieval.crown(),
 			Medieval.helmet(),
 		],
