@@ -1,5 +1,5 @@
 class_name LimbDisplay
-extends RigidBody2D
+extends Node2D
 
 var card: Limb = null;
 var image: CompressedTexture2D = null;

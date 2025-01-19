@@ -1,5 +1,5 @@
 class_name BlobDisplay
-extends RigidBody2D
+extends Node2D
 
 var card: Blob = null;
 var image: CompressedTexture2D = null;

@@ -50,7 +50,11 @@ func _init_limb(limb: PositionedLimb) -> LimbDisplay:
 	limb_display.name = name + "_limb_" + str(limb.get_instance_id());
 	limb_display.card = limb.limb;
 	limb_display.position = limb.position;
-	limb_display.image = limb.limb.tags["blob_images"];
+	if limb.limb.tags.has("blob_images"):
+		if limb.limb.tags["blob_images"] is Array:
+			limb_display.image = limb.limb.tags["blob_images"][0];
+		else:
+			limb_display.image = limb.limb.tags["blob_images"];
 	return limb_display;
 
 # Called when redraw needed (state change, e.g. blob has died, limb has changed)
