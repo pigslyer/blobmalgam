@@ -319,7 +319,7 @@ class EnemyResolver extends Ability.EffectResolver:
 	
 	func blobs(from_selection: Array[Blob], count: int) -> Array[Blob]:
 		from_selection = from_selection.duplicate();
-		var new_arr = [];
+		var new_arr: Array[Blob] = [];
 		for el in from_selection:
 			if el.health() > 0:
 				new_arr.append(el);
