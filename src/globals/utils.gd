@@ -1,5 +1,4 @@
-class_name Utils;
-extends Object
+extends Node
 
 static func not_implemented(on: Object) -> void:
 	var frame = get_stack();
@@ -214,7 +213,7 @@ static func generate_enemy(str: EnemyStrength, rng: RandomNumberGenerator) -> Am
 		
 		amalgam.blobs.append(generated_blob);
 	
-	if str == Utils.EnemyStrength.Weak:
+	if str == EnemyStrength.Weak:
 		for blob in amalgam.blobs:
 			blob._health *= 0.3;
 	
@@ -311,3 +310,16 @@ static func limb_tiers() -> Dictionary:
 			Angelic.wings(),
 		]
 	}
+
+var _unused_players: Array[AudioStreamPlayer];
+func play_sfx(stream: AudioStream) -> void:
+	var player: AudioStreamPlayer;
+	if len(_unused_players) == 0:
+		player = AudioStreamPlayer.new();
+		add_child(player);
+		player.finished.connect(func(): Utils._unused_players.append(player));
+	else:
+		player = _unused_players.pop_back();
+	
+	player.stream = stream;
+	player.play();

@@ -275,6 +275,9 @@ func _opening_animation() -> void:
 	var player_text: RichTextLabel = $Opening/PlayerText;
 	var boss_text: RichTextLabel = $Opening/BossText;
 	
+	player_ragdoll.show();
+	boss_ragdoll.show();
+	
 	player_ragdoll.display_amalgam(player);
 	boss_ragdoll.display_amalgam(boss);
 	player_ragdoll.idle(AmalgamDisplay.IdleKinds.None);
@@ -305,10 +308,12 @@ func _opening_animation() -> void:
 	tween.parallel().tween_property(boss_text, "modulate", Color.TRANSPARENT, 0.3);
 	
 	tween.tween_callback(func():
+		player_ragdoll.hide();
 		player_ragdoll.position = player_start;
 		player_ragdoll.scale = Vector2.ONE;
 		player_ragdoll.rotation = 0;
 		
+		boss_ragdoll.hide();
 		boss_ragdoll.position = boss_start;
 		boss_ragdoll.scale = Vector2.ONE;
 		boss_ragdoll.rotation = 0;
@@ -353,10 +358,10 @@ static func background_fitting(whom: Amalgam) -> Background:
 
 static func battle_backgrounds() -> Dictionary:
 	return {
-		Ability.ANGELIC : Background.begin_and_loop(null, preload("res://assets/music/eldritch despair - intro.mp3"), preload("res://assets/music/eldritch despair.mp3")),
-		Ability.CUTE : Background.looping(null, preload("res://assets/music/cute and kawaii uwu.mp3")),
-		Ability.CYBER : Background.begin_and_loop(null, preload("res://assets/music/cyber sunday - intro.mp3"), preload("res://assets/music/cyber sunday.mp3")),
-		Ability.ELDRITCH : Background.begin_and_loop(null, preload("res://assets/music/eldritch despair - intro.mp3"), preload("res://assets/music/eldritch despair.mp3")),
+		Ability.ANGELIC : Background.begin_and_loop(preload("res://assets/angelicB.png"), preload("res://assets/music/eldritch despair - intro.mp3"), preload("res://assets/music/eldritch despair.mp3")),
+		Ability.CUTE : Background.looping(preload("res://assets/cuteB.png"), preload("res://assets/music/cute and kawaii uwu.mp3")),
+		Ability.CYBER : Background.begin_and_loop(preload("res://assets/cyberB.png"), preload("res://assets/music/cyber sunday - intro.mp3"), preload("res://assets/music/cyber sunday.mp3")),
+		Ability.ELDRITCH : Background.begin_and_loop(preload("res://assets/eldritchB.png"), preload("res://assets/music/eldritch despair - intro.mp3"), preload("res://assets/music/eldritch despair.mp3")),
 		Ability.MEDIEVAL : Background.looping(preload("res://assets/medievalB.png"), preload("res://assets/music/medieval bout.mp3")),
 		Ability.MONSTER : Background.looping(preload("res://assets/monstrousB.png"), preload("res://assets/music/plant matter.mp3")),
 		Ability.NORMAL : Background.looping(preload("res://assets/normalB.png"), preload("res://assets/music/normal people type music.mp3")),

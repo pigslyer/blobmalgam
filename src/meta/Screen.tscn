@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cdorta5gy54ms" path="res://icon.svg" id="4_20d7b"]
 [ext_resource type="PackedScene" uid="uid://uw564dostwoo" path="res://src/ragdoll/amalgam_display/amalgam_display.tscn" id="4_81d8e"]
 [ext_resource type="PackedScene" uid="uid://dhv7m5l6snwf7" path="res://src/upgrade/Screen.tscn" id="5_5k88p"]
-[ext_resource type="AudioStream" uid="uid://ex0aekuu30vt" path="res://assets/sfx/death scratch.mp3" id="7_qw6ny"]
+[ext_resource type="AudioStream" uid="uid://c24k15jdn3wcp" path="res://assets/sfx/pause scratch.mp3" id="7_x4ce5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hem84"]
 bg_color = Color(0.482353, 0.0235294, 0.180392, 0.917647)
@@ -250,7 +250,8 @@ bus = &"Music"
 bus = &"Music"
 
 [node name="RecordScratch" type="AudioStreamPlayer" parent="Music"]
-stream = ExtResource("7_qw6ny")
+stream = ExtResource("7_x4ce5")
+bus = &"Effects"
 
 [connection signal="pressed" from="MainMenu/PanelContainer/MarginContainer/Content/Start" to="." method="_on_start_pressed"]
 [connection signal="value_changed" from="MainMenu/PanelContainer/MarginContainer/Content/VolumeControls/MasterSlider" to="." method="_on_master_slider_value_changed"]

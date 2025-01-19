@@ -28,7 +28,21 @@ func combat_display_actions_simult_flattened(
 		var removed_limb: Limb = limbs[removed_limb_idx];
 		limbs.remove_at(removed_limb_idx);
 		
-		original_tags.append(removed_limb.tags);
+		var is_stunned: bool = false;
+		for blob in blobs:
+			if is_stunned:
+				break;
+			
+			if blob.stun() == 0:
+				continue;
+			
+			for limb in blob.limbs:
+				if removed_limb == limb.limb:
+					is_stunned = true;
+					blob._stun -= 1;
+		
+		if !is_stunned:
+			original_tags.append(removed_limb.tags);
 	
 	var combined_tags: Array[Dictionary];
 	for i in len(original_tags):
