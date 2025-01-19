@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://src/fight/screen.gd" id="1_15obj"]
 [ext_resource type="PackedScene" uid="uid://b8pepwnkg674s" path="res://src/fight/Card.tscn" id="1_e7pql"]
 [ext_resource type="Script" path="res://src/fight/health.gd" id="3_g5crb"]
-[ext_resource type="PackedScene" uid="uid://bxtfxhv5poscb" path="res://src/fight/HealthBar.tscn" id="5_ityqo"]
+[ext_resource type="PackedScene" path="res://src/fight/HealthBar.tscn" id="5_ityqo"]
 [ext_resource type="PackedScene" uid="uid://uw564dostwoo" path="res://src/ragdoll/amalgam_display/amalgam_display.tscn" id="5_vdmff"]
 
 [sub_resource type="Theme" id="Theme_wupdr"]

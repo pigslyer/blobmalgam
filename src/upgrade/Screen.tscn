@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://dhv7m5l6snwf7"]
+[gd_scene load_steps=5 format=3 uid="uid://dhv7m5l6snwf7"]
 
 [ext_resource type="Script" path="res://src/upgrade/screen.gd" id="1_vgnx4"]
+[ext_resource type="PackedScene" uid="uid://uw564dostwoo" path="res://src/ragdoll/amalgam_display/amalgam_display.tscn" id="2_kpmqm"]
+[ext_resource type="PackedScene" uid="uid://b33g4au5nv5ss" path="res://src/ragdoll/blob_display/blob_display.tscn" id="3_nlqfq"]
+[ext_resource type="PackedScene" uid="uid://kqat6upl4hrn" path="res://src/ragdoll/limb_display/limb_display.tscn" id="4_lsat5"]
 
 [node name="Screen" type="Control"]
 layout_mode = 3
@@ -10,3 +13,38 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_vgnx4")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -343.0
+offset_top = 84.0
+offset_right = 343.0
+offset_bottom = 167.0
+grow_horizontal = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 60
+text = "Upgrade limbs & blobs !"
+
+[node name="Player" parent="." instance=ExtResource("2_kpmqm")]
+unique_name_in_owner = true
+offset_left = 490.0
+offset_top = 598.0
+offset_right = 490.0
+offset_bottom = 598.0
+
+[node name="NewBlobDisplay" parent="." instance=ExtResource("3_nlqfq")]
+unique_name_in_owner = true
+offset_left = 1106.0
+offset_top = 100.0
+offset_right = 1106.0
+offset_bottom = 100.0
+
+[node name="NewLimbDisplay" parent="." instance=ExtResource("4_lsat5")]
+unique_name_in_owner = true
+offset_left = 1146.0
+offset_top = 366.0
+offset_right = 1146.0
+offset_bottom = 366.0
