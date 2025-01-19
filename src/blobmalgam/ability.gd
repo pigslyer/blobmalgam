@@ -36,7 +36,7 @@ const POISON = "poison_attack";
 const STUN = "intimidating_attack";
 const BLEED = "bleed_attack";
 const SCORE_MULT = "score_mult";
-const REFLEX = "reflex_booster";
+#const REFLEX = "reflex_booster";
 const THROW = "throw_attack";
 const CONSUMING = "consuming_attack";
 const GRABBY = "grabby";
@@ -46,6 +46,7 @@ const ARMOR = "armored";
 const BODYSLAM = "bodyslam_ability";
 const EXCHANGE = "exchange_ability";
 const WEAPON = "weapon_ability";
+const GUN = "gun_ability";
 
 const ANIM_SLASH = "animation_slash";
 const ANIM_HEAL = "animation_heal";

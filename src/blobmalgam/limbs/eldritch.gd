@@ -26,13 +26,13 @@ static func eyes() -> Limb:
 		Ability.STUN : 6,
 	})
 
-static func wings() -> Limb:
-	return Limb.new({
-		Ability.NAME : "Great One's Wings",
-		Ability.DESC : "Their beating can be heard from miles off.",
-		Ability.ELDRITCH : 1,
-		Ability.WINGS : 8,
-	});
+#static func wings() -> Limb:
+	#return Limb.new({
+		#Ability.NAME : "Great One's Wings",
+		#Ability.DESC : "Their beating can be heard from miles off.",
+		#Ability.ELDRITCH : 1,
+		#Ability.WINGS : 8,
+	#});
 
 static func mouth() -> Limb:
 	return Limb.new({
