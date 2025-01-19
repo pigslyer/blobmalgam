@@ -135,7 +135,7 @@ class Effector:
 	func blob_on(a: Amalgam) -> Blob:
 		return _first_or_null(await blobs_on(a, 1));
 	func blobs_on(a: Amalgam, count: int) -> Array[Blob]:
-		return await _resolver.blobs(a.blobs.filter(func(e): e.health() > 0), count);
+		return await _resolver.blobs(a.blobs, count);
 	
 	func limb_on(a: Amalgam) -> Limb:
 		return _first_or_null(await limbs_on(a, 1));
