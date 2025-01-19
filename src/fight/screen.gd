@@ -156,7 +156,7 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 		
 		if len(blobs) > 0:
 			await _update_blob(_blobs_amalgam(blobs[0]), {
-				Ability.ANIM_SLASH: blobs,
+				Ability.ANIM_HEAL: blobs,
 			});
 	
 	func _update_blob(ragdoll: AmalgamDisplay, userdata: Dictionary):
@@ -345,27 +345,35 @@ class EnemyResolver extends Ability.EffectResolver:
 	
 	func damage_blobs(blobs: Array[Blob], amount: float, userdata: Dictionary) -> void:
 		for blob in blobs:
-			blob._health -= amount;
+			blob._health = max(0, blob.health() - amount);
 			
 		if len(blobs) > 0:
-			_update_blob(_blobs_ragdoll(blobs[0]), userdata);
+			_update_blob(_blobs_ragdoll(blobs[0]), userdata.merged({
+				Ability.ANIM_SLASH: blobs,
+			}));
 	
 	func stun_blob(blob: Blob, turn_count: int, userdata: Dictionary) -> void:
 		blob._stun += turn_count;
 		
-		_update_blob(_blobs_ragdoll(blob), userdata);
+		_update_blob(_blobs_ragdoll(blob), userdata.merged({
+				Ability.ANIM_SLASH: blobs,
+			}));
 	
 	func poison_blob(blob: Blob, amount: int, userdata: Dictionary) -> void:
 		blob._poision += amount;
 		
-		_update_blob(_blobs_ragdoll(blob), userdata);
+		_update_blob(_blobs_ragdoll(blob), userdata.merged({
+				Ability.ANIM_SLASH: blobs,
+			}));
 	
 	func heal_blobs(blobs: Array[Blob], amount: float, userdata: Dictionary) -> void:
 		for blob in blobs:
-			blob._health += amount;
+			blob._health = max(Blob.MAX_HEALTH, blob.health() + amount);
 			
 		if len(blobs) > 0:
-			_update_blob(_blobs_ragdoll(blobs[0]), userdata);
+			_update_blob(_blobs_ragdoll(blobs[0]), userdata.merged({
+				Ability.ANIM_HEAL: blobs,
+			}));
 	
 	func _update_blob(ragdoll: AmalgamDisplay, userdata: Dictionary):
 		battle_screen.player_health.update_health_slow(battle_screen.player);
@@ -445,10 +453,12 @@ func enemy_turn() -> void:
 
 func _apply_start_of_turn(on: Amalgam, displayed_on: AmalgamDisplay) -> void:
 	var poison_spreader: Array[Blob] = [];
+	var updated: bool = false;
 	for blob in on.blobs:
 		if blob.poison() <= 0:
 			continue;
 		
+		updated = true;
 		blob._health -= blob.poison();
 		
 		if blob.health() <= 0:
@@ -458,6 +468,11 @@ func _apply_start_of_turn(on: Amalgam, displayed_on: AmalgamDisplay) -> void:
 		for linked_blob in on.linked_blobs(spreader):
 			linked_blob._poision += spreader.poison();
 	
+	if updated:
+		if on == player:
+			player_health.update_health_slow(player);
+		else:
+			enemy_health.update_health_slow(enemy);
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:

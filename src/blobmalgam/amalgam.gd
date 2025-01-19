@@ -84,16 +84,23 @@ func combat_display_actions_simult_flattened(
 
 func full_heal() -> void:
 	for blob in blobs:
-		blob._health = Blob.MAX_HEALTH;
+		if blob._health > 0:
+			blob._health = Blob.MAX_HEALTH;
+		blob._stun = 0;
+		blob._poision = 0;
 
 func total_global_health() -> float:
-	return len(blobs) * Blob.MAX_HEALTH;
+	if len(blobs) <= 2:
+		return len(blobs) * Blob.MAX_HEALTH;
+	else:
+		return len(blobs) * Blob.MAX_HEALTH * 0.6667;
 
 func current_global_health() -> float:
 	var total: float = 0;
 	for blob in blobs:
 		total += blob.health();
-	return total;
+	
+	return total / (len(blobs) * Blob.MAX_HEALTH) * total_global_health();
 
 func alive_limbs_flat() -> Array[Limb]:
 	var arr: Array[Limb] = [];

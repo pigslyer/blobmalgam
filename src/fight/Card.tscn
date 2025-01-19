@@ -53,6 +53,7 @@ poison_icon = NodePath("PreviewIcons/Poison")
 poison_label = NodePath("PreviewIcons/Poison/Amount")
 
 [node name="TopBorder" type="VBoxContainer" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
