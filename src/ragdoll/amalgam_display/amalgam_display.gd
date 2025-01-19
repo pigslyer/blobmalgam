@@ -50,7 +50,12 @@ func _init_limb(limb: PositionedLimb) -> LimbDisplay:
 	limb_display.name = name + "_limb_" + str(limb.get_instance_id());
 	limb_display.card = limb.limb;
 	limb_display.position = limb.position;
-	limb_display.image = limb.limb.tags["blob_images"];
+	if limb.limb.tags.has("blob_images"):
+		if limb.limb.tags["blob_images"] is Array:
+			# TODO: add both for eyes
+			limb_display.image = limb.limb.tags["blob_images"][0];
+		else:
+			limb_display.image = limb.limb.tags["blob_images"];
 	return limb_display;
 
 # Called when redraw needed (state change, e.g. blob has died, limb has changed)
@@ -64,13 +69,15 @@ func display_amalgam(amalgam: Amalgam) -> void:
 		var blob_display := _init_blob(blob);
 		add_child(blob_display);
 		connect_blob_signals(blob_display);
+		blob_display.freeze = true;
 
 		var limbs_node = blob_display.get_node("Limbs");
 		for positioned_limb in blob.limbs:
 			var limb_display := _init_limb(positioned_limb);
 			limbs_node.add_child(limb_display);
 			connect_limb_signals(limb_display);
-
+			limb_display.freeze = true;
+			
 
 func idle(kind: IdleKinds) -> void:
 	pass ;

@@ -913,6 +913,7 @@ grow_vertical = 0
 
 [node name="EnemyAmalgam" parent="EnemyRagdollArea/StaticBody2D/Origin" instance=ExtResource("5_vdmff")]
 unique_name_in_owner = true
+position = Vector2(4, -96.6)
 
 [connection signal="selected" from="ExchangeCard/Card" to="." method="_on_player_card_selected"]
 [connection signal="selected" from="BodySlamCard/Card" to="." method="_on_player_card_selected"]
