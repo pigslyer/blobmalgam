@@ -1,6 +1,6 @@
 extends Control
 
-const FIGHTS_UNTIL_BOSS = 2;
+const FIGHTS_UNTIL_BOSS = 7;
 
 var player: Amalgam;
 var boss: Amalgam;
