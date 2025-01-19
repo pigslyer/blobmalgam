@@ -214,6 +214,10 @@ static func generate_enemy(str: EnemyStrength, rng: RandomNumberGenerator) -> Am
 		
 		amalgam.blobs.append(generated_blob);
 	
+	if str == Utils.EnemyStrength.Weak:
+		for blob in amalgam.blobs:
+			blob._health *= 0.3;
+	
 	return amalgam;
 
 static func blob_count() -> Dictionary:
@@ -227,8 +231,8 @@ static func blob_count() -> Dictionary:
 static func limb_count() -> Dictionary:
 	return {
 		EnemyStrength.Weak : [1, 2],
-		EnemyStrength.Average : [2, 4],
-		EnemyStrength.Strong : [4, 6],
+		EnemyStrength.Average : [2, 3],
+		EnemyStrength.Strong : [3, 5],
 		EnemyStrength.Boss : [6, 6],
 	}
 

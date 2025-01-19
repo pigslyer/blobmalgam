@@ -18,6 +18,7 @@ var rng := RandomNumberGenerator.new();
 
 @onready var music_intro: AudioStreamPlayer = $Music/TrackIntro;
 @onready var music_loop: AudioStreamPlayer = $Music/TrackLoop;
+@onready var record_scratch: AudioStreamPlayer = $Music/RecordScratch;
 
 class Background:
 	var texture: Texture;
@@ -39,9 +40,9 @@ class Background:
 
 
 func _ready():
-	_apply_volume_to_bus("Master", 1);
-	_apply_volume_to_bus("Effects", 1);
-	_apply_volume_to_bus("Music", 1);
+	_apply_volume_to_bus("Master", 0.5);
+	_apply_volume_to_bus("Effects", 0.5);
+	_apply_volume_to_bus("Music", 0.5);
 	
 	var bckg := menu_background();
 	current_background.texture = bckg.texture;
@@ -142,6 +143,8 @@ func _next_fight() -> void:
 	fight.begin_fight(player, enemy);
 
 func _return_to_main_menu() -> void:
+	var bckg := menu_background();
+	
 	const FADE_OUT_TIME = 0.4;
 	
 	_fade_out_music();
@@ -153,9 +156,11 @@ func _return_to_main_menu() -> void:
 	tween.tween_property(fight, "anchor_bottom", 2.2, FADE_OUT_TIME);
 	tween.tween_property(fight, "modulate", Color.TRANSPARENT, FADE_OUT_TIME);
 	
+	_shift_backgrounds(bckg.texture);
 	await tween.finished;
 	fight.hide();
 	main_menu.show();
+	_play_background_music(bckg);
 
 func _player_lost() -> void:
 	fight.player_won.disconnect(_player_won);
@@ -168,7 +173,7 @@ func _game_over() -> void:
 	const SHRINK_TIME = 0.3;
 	const FADE_TIME = 0.8;
 	
-	# record screech
+	record_scratch.play();
 	
 	_fade_out_music();
 	var tween := create_tween().set_parallel();
@@ -320,7 +325,7 @@ static func _enemy_strength(won_count: int, _rng: RandomNumberGenerator) -> Util
 	return Utils.EnemyStrength.Boss;
 
 static func menu_background() -> Background:
-	return Background.looping(preload("res://assets/ozadje2.png"), preload("res://assets/music/mushroom music.mp3"));
+	return Background.looping(preload("res://assets/ozadje2.png"), preload("res://assets/music/Titanic_Blues.mp3"));
 
 static func upgrade_background() -> Background:
 	return Background.looping(null, preload("res://assets/music/mushroom music.mp3"));

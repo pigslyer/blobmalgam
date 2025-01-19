@@ -22,18 +22,23 @@ var _content: Dictionary;
 func display_card(def: Dictionary, caster: Amalgam, enemy: Amalgam) -> void:
 	set_selected(false);
 	
-	_content = def.duplicate();
-	_content.make_read_only();
-	
-	title.text = def.get(Ability.NAME, "<missing name>");
-	short_desc.text = def.get(Ability.DESC_SHORT, "");
-	tooltip_text = def.get(Ability.DESC, "");
-	art.texture = def.get(Ability.ABILITY_IMAGE, preload("res://assets/card - card.png"));
-	
 	var desc := Ability.DescBuilder.new();
 	desc.tags = def;
 	desc.me = caster;
 	desc.them = enemy;
+	
+	_content = def.duplicate();
+	_content.make_read_only();
+	
+	var title_text = def.get(Ability.NAME, "<missing name>");
+	if title_text is Callable:
+		title_text = title_text.call(desc);
+	
+	title.text = title_text;
+	short_desc.text = def.get(Ability.DESC_SHORT, "");
+	tooltip_text = def.get(Ability.DESC, "");
+	art.texture = def.get(Ability.ABILITY_IMAGE, preload("res://assets/card - card.png"));
+	
 	
 	var no_op = func(d: Ability.DescBuilder): return "";
 	

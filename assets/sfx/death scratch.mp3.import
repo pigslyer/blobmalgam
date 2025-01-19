@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ex0aekuu30vt"
+path="res://.godot/imported/death scratch.mp3-9d80c13b60ed46f3e5279e7eb1d6d61d.mp3str"
+
+[deps]
+
+source_file="res://assets/sfx/death scratch.mp3"
+dest_files=["res://.godot/imported/death scratch.mp3-9d80c13b60ed46f3e5279e7eb1d6d61d.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

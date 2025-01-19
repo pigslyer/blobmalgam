@@ -210,7 +210,7 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 		battle_screen.player_ragdoll.effect(AmalgamDisplay.EffectKind.Selectable, selectable);
 		battle_screen.enemy_ragdoll.effect(AmalgamDisplay.EffectKind.Selectable, selectable);
 		
-		_valid_selection = selectable;
+		_valid_selection.assign(selectable);
 		_currently_selected.clear();
 		_required_count = count;
 		
@@ -237,7 +237,7 @@ class PlayerEffectResolver extends Ability.EffectResolver:
 		if is_finished:
 			var selected: Array = _currently_selected;
 			_currently_selected = [];
-			_valid_selection.clear();
+			_valid_selection = [];
 			
 			selection_finished.emit(selected);
 	
@@ -277,6 +277,7 @@ func _on_player_card_selected(card: Dictionary, card_display: ExportedCard):
 	print("wrapping up ability ", card)
 	if is_same_ability:
 		card_display.set_selected(false);
+	
 	if is_same_ability && resolver.had_side_effects():
 		_end_player_turn();
 
@@ -299,9 +300,6 @@ func _end_player_turn() -> void:
 	
 	var player_died := player.current_global_health() <= 0;
 	var enemy_died := enemy.current_global_health() <= 0;
-	
-	_enemy_lost();
-	return;
 	
 	if player_died:
 		_player_lost();
@@ -416,22 +414,22 @@ func enemy_turn() -> void:
 		
 		await get_tree().create_timer(1).timeout;
 		
-		var chosen: int = rng.randi() % len(abilities);
-		var card: ExportedCard = enemy_cards.get_child(chosen);
-		
-		card.modulate = Color.RED;
-		await get_tree().create_timer(0.3).timeout;
-		
-		var resolver := EnemyResolver.new();
-		resolver.battle_screen = self;
-		resolver.rng = rng;
-		
-		var effector := Ability.Effector.new(resolver, enemy, player, abilities[chosen]);
-		await abilities[chosen][Ability.EFFECT].call(effector);
-		
-		for child in enemy_cards.get_children():
-			child.hide();
-			child.modulate = Color.WHITE;
+		if len(abilities) > 0:
+			var chosen: int = rng.randi() % len(abilities);
+			var card: ExportedCard = enemy_cards.get_child(chosen);
+			
+			card.set_selected(true);
+			await get_tree().create_timer(0.3).timeout;
+			
+			var resolver := EnemyResolver.new();
+			resolver.battle_screen = self;
+			resolver.rng = rng;
+			
+			var effector := Ability.Effector.new(resolver, enemy, player, abilities[chosen]);
+			await abilities[chosen][Ability.EFFECT].call(effector);
+			
+			for child in enemy_cards.get_children():
+				child.hide();
 	
 	var player_died := player.current_global_health() <= 0;
 	var enemy_died := enemy.current_global_health() <= 0;
@@ -480,16 +478,3 @@ func _player_lost() -> void:
 
 func _enemy_lost() -> void:
 	player_won.emit();
-
-
-func _on_player_amalgam_blob_hovered(which: Blob, state: bool) -> void:
-	print_debug("player amalgam hovered");
-	pass # Replace with function body.
-
-
-func _on_player_amalgam_blob_pressed(which: Blob) -> void:
-	print_debug("player amalgam pressed");
-
-
-func _on_player_amalgam_limb_pressed(which: Limb) -> void:
-	print_debug("player limb pressed");
