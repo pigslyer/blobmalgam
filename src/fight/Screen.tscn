@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://src/fight/screen.gd" id="1_15obj"]
 [ext_resource type="PackedScene" uid="uid://b8pepwnkg674s" path="res://src/fight/Card.tscn" id="1_e7pql"]
-[ext_resource type="Texture2D" uid="uid://c15oryw451pir" path="res://assets/pixel.png" id="2_gv4ll"]
 [ext_resource type="Script" path="res://src/fight/health.gd" id="3_g5crb"]
+[ext_resource type="PackedScene" uid="uid://bxtfxhv5poscb" path="res://src/fight/HealthBar.tscn" id="5_ityqo"]
 [ext_resource type="PackedScene" uid="uid://uw564dostwoo" path="res://src/ragdoll/amalgam_display/amalgam_display.tscn" id="5_vdmff"]
 
 [sub_resource type="Theme" id="Theme_wupdr"]
@@ -150,34 +150,14 @@ offset_top = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_g5crb")
-_global = NodePath("Global")
+_global = NodePath("HealthBar")
 _limbs_container = NodePath("Limbs/VBoxContainer")
 
-[node name="Global" type="TextureProgressBar" parent="PlayerHealth"]
+[node name="HealthBar" parent="PlayerHealth" instance=ExtResource("5_ityqo")]
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 1.0
 anchor_bottom = 0.1
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
-
-[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Global"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
+grow_vertical = 1
 
 [node name="Limbs" type="ReferenceRect" parent="PlayerHealth"]
 layout_mode = 1
@@ -196,256 +176,47 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 7
 
-[node name="Blob1" type="TextureProgressBar" parent="PlayerHealth/Limbs/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
+[node name="HealthBar" parent="PlayerHealth/Limbs/VBoxContainer" instance=ExtResource("5_ityqo")]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
 
-[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Limbs/VBoxContainer/Blob1"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
-
-[node name="Blob2" type="TextureProgressBar" parent="PlayerHealth/Limbs/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
+[node name="HealthBar2" parent="PlayerHealth/Limbs/VBoxContainer" instance=ExtResource("5_ityqo")]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
 
-[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Limbs/VBoxContainer/Blob2"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
-
-[node name="Blob3" type="TextureProgressBar" parent="PlayerHealth/Limbs/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
+[node name="HealthBar3" parent="PlayerHealth/Limbs/VBoxContainer" instance=ExtResource("5_ityqo")]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
 
-[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Limbs/VBoxContainer/Blob3"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
-
-[node name="Blob4" type="TextureProgressBar" parent="PlayerHealth/Limbs/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
+[node name="HealthBar4" parent="PlayerHealth/Limbs/VBoxContainer" instance=ExtResource("5_ityqo")]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
 
-[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Limbs/VBoxContainer/Blob4"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
-
-[node name="Blob5" type="TextureProgressBar" parent="PlayerHealth/Limbs/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
+[node name="HealthBar5" parent="PlayerHealth/Limbs/VBoxContainer" instance=ExtResource("5_ityqo")]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
 
-[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Limbs/VBoxContainer/Blob5"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
-
-[node name="Blob6" type="TextureProgressBar" parent="PlayerHealth/Limbs/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
+[node name="HealthBar6" parent="PlayerHealth/Limbs/VBoxContainer" instance=ExtResource("5_ityqo")]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
 
-[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Limbs/VBoxContainer/Blob6"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
-
-[node name="Blob7" type="TextureProgressBar" parent="PlayerHealth/Limbs/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
+[node name="HealthBar7" parent="PlayerHealth/Limbs/VBoxContainer" instance=ExtResource("5_ityqo")]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
 
-[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Limbs/VBoxContainer/Blob7"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
-
-[node name="Blob8" type="TextureProgressBar" parent="PlayerHealth/Limbs/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
+[node name="HealthBar8" parent="PlayerHealth/Limbs/VBoxContainer" instance=ExtResource("5_ityqo")]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
 
-[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Limbs/VBoxContainer/Blob8"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
-
-[node name="Blob9" type="TextureProgressBar" parent="PlayerHealth/Limbs/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
+[node name="HealthBar9" parent="PlayerHealth/Limbs/VBoxContainer" instance=ExtResource("5_ityqo")]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
 
-[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Limbs/VBoxContainer/Blob9"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
-
-[node name="Blob10" type="TextureProgressBar" parent="PlayerHealth/Limbs/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
+[node name="HealthBar10" parent="PlayerHealth/Limbs/VBoxContainer" instance=ExtResource("5_ityqo")]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
-
-[node name="ReferenceRect" type="ReferenceRect" parent="PlayerHealth/Limbs/VBoxContainer/Blob10"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
 
 [node name="EnemyHealth" type="Control" parent="." node_paths=PackedStringArray("_global", "_limbs_container")]
 layout_mode = 1
@@ -457,34 +228,14 @@ offset_right = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_g5crb")
-_global = NodePath("Global")
+_global = NodePath("HealthBar")
 _limbs_container = NodePath("Limbs/VBoxContainer")
 
-[node name="Global" type="TextureProgressBar" parent="EnemyHealth"]
+[node name="HealthBar" parent="EnemyHealth" instance=ExtResource("5_ityqo")]
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 1.0
 anchor_bottom = 0.1
-max_value = 1.0
-step = 0.1
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
-
-[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Global"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
+fill_mode = 1
 
 [node name="Limbs" type="ReferenceRect" parent="EnemyHealth"]
 layout_mode = 1
@@ -504,256 +255,57 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 7
 
-[node name="Blob1" type="TextureProgressBar" parent="EnemyHealth/Limbs/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
+[node name="HealthBar" parent="EnemyHealth/Limbs/VBoxContainer" instance=ExtResource("5_ityqo")]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+fill_mode = 1
 
-[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Limbs/VBoxContainer/Blob1"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
-
-[node name="Blob2" type="TextureProgressBar" parent="EnemyHealth/Limbs/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
+[node name="HealthBar2" parent="EnemyHealth/Limbs/VBoxContainer" instance=ExtResource("5_ityqo")]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+fill_mode = 1
 
-[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Limbs/VBoxContainer/Blob2"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
-
-[node name="Blob3" type="TextureProgressBar" parent="EnemyHealth/Limbs/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
+[node name="HealthBar3" parent="EnemyHealth/Limbs/VBoxContainer" instance=ExtResource("5_ityqo")]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+fill_mode = 1
 
-[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Limbs/VBoxContainer/Blob3"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
-
-[node name="Blob4" type="TextureProgressBar" parent="EnemyHealth/Limbs/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
+[node name="HealthBar4" parent="EnemyHealth/Limbs/VBoxContainer" instance=ExtResource("5_ityqo")]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+fill_mode = 1
 
-[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Limbs/VBoxContainer/Blob4"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
-
-[node name="Blob5" type="TextureProgressBar" parent="EnemyHealth/Limbs/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
+[node name="HealthBar5" parent="EnemyHealth/Limbs/VBoxContainer" instance=ExtResource("5_ityqo")]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+fill_mode = 1
 
-[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Limbs/VBoxContainer/Blob5"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
-
-[node name="Blob6" type="TextureProgressBar" parent="EnemyHealth/Limbs/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
+[node name="HealthBar6" parent="EnemyHealth/Limbs/VBoxContainer" instance=ExtResource("5_ityqo")]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+fill_mode = 1
 
-[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Limbs/VBoxContainer/Blob6"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
-
-[node name="Blob7" type="TextureProgressBar" parent="EnemyHealth/Limbs/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
+[node name="HealthBar7" parent="EnemyHealth/Limbs/VBoxContainer" instance=ExtResource("5_ityqo")]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+fill_mode = 1
 
-[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Limbs/VBoxContainer/Blob7"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
-
-[node name="Blob8" type="TextureProgressBar" parent="EnemyHealth/Limbs/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
+[node name="HealthBar8" parent="EnemyHealth/Limbs/VBoxContainer" instance=ExtResource("5_ityqo")]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+fill_mode = 1
 
-[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Limbs/VBoxContainer/Blob8"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
-
-[node name="Blob9" type="TextureProgressBar" parent="EnemyHealth/Limbs/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
+[node name="HealthBar9" parent="EnemyHealth/Limbs/VBoxContainer" instance=ExtResource("5_ityqo")]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
+fill_mode = 1
 
-[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Limbs/VBoxContainer/Blob9"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
-
-[node name="Blob10" type="TextureProgressBar" parent="EnemyHealth/Limbs/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(0, 40)
+[node name="HealthBar10" parent="EnemyHealth/Limbs/VBoxContainer" instance=ExtResource("5_ityqo")]
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-max_value = 1.0
-step = 0.001
-value = 1.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_gv4ll")
-texture_progress = ExtResource("2_gv4ll")
-tint_under = Color(0.705939, 3.53761e-06, 3.85046e-07, 1)
-tint_progress = Color(0, 0.686638, 3.85046e-07, 1)
-
-[node name="ReferenceRect" type="ReferenceRect" parent="EnemyHealth/Limbs/VBoxContainer/Blob10"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-border_color = Color(3.24883e-07, 0.4224, 6.73831e-07, 1)
-border_width = 4.0
-editor_only = false
+fill_mode = 1
 
 [node name="ExchangeCard" type="ReferenceRect" parent="."]
 custom_minimum_size = Vector2(120, 120)
@@ -873,7 +425,6 @@ mouse_filter = 1
 
 [node name="PlayerAmalgam" parent="PlayerRagdollArea/Origin" instance=ExtResource("5_vdmff")]
 unique_name_in_owner = true
-mouse_filter = 2
 
 [node name="EnemyRagdollArea" type="ReferenceRect" parent="."]
 layout_mode = 1

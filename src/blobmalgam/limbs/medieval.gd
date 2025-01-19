@@ -28,20 +28,33 @@ static func arm() -> Limb:
 static func cape() -> Limb:
 	return Limb.new({
 		Ability.NAME : "Medival Cape",
-		Ability.DESC : "Is not practical in the least, but looks DAMN fabulous (increases end of fight score).",
+		Ability.DESC : "Is not practical in the least, but looks DAMN fabulous.",
 		Ability.IMAGE : preload("res://assets/medieval_misc1.png"),
 		
-		Ability.MEDIEVAL : 1,
+		Ability.MEDIEVAL : 2,
 		Ability.SCORE_MULT : 1.1,
 	})
 
+static func crown() -> Limb:
+	return Limb.new({
+		Ability.NAME : "Medieval King's Head",
+		Ability.DESC : "Looks damn fabulous, not much else though.",
+		Ability.IMAGE : preload("res://assets/medieval_misc2.png"),
+		
+		Ability.ARMOR : 10,
+		Ability.MEDIEVAL : 1,
+		Ability.EYES : 2,
+		Ability.SCORE_MULT : 1.1,
+	})
+	
 static func helmet() -> Limb:
 	return Limb.new({
 		Ability.NAME : "Medival Helmet",
-		Ability.DESC : "Is not practical in the least, but looks DAMN fabulous (increases end of fight score).",
-		Ability.IMAGE : preload("res://assets/medieval_misc2.png"),
+		Ability.DESC : "Grants excellent protection for your head, at the cost of making it harder to see.",
+		Ability.IMAGE : preload("res://assets/medieval_helmet.png"),
 		
-		Ability.ARMOR : 5,
+		Ability.ARMOR : 20,
 		Ability.MEDIEVAL : 1,
+		Ability.EYES : -2,
 		Ability.SCORE_MULT : 1.1,
 	})

@@ -63,6 +63,7 @@ func _on_start_pressed() -> void:
 	if show_anims:
 		main_menu.hide();
 		await _opening_animation();
+		Utils.play_sfx(preload("res://assets/sfx/death scratch.mp3"));
 		await _shift_backgrounds(background.texture);
 	
 	main_menu.hide();

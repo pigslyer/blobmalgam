@@ -273,7 +273,9 @@ static func limb_tiers() -> Dictionary:
 			
 			Medieval.arm(), Medieval.arm(),
 			Medieval.leg(), Medieval.leg(),
-			Medieval.cape(),
+			Medieval.cape(), 
+			Medieval.crown(),
+			Medieval.helmet(),
 		],
 		
 		EnemyStrength.Strong: [
@@ -315,6 +317,7 @@ func play_sfx(stream: AudioStream) -> void:
 	var player: AudioStreamPlayer;
 	if len(_unused_players) == 0:
 		player = AudioStreamPlayer.new();
+		player.bus = "Effects";
 		add_child(player);
 		# player.finished.connect(func(): Utils._unused_players.append(player));
 	else:

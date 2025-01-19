@@ -4,41 +4,41 @@ extends Control
 signal blob_health_hovered(blob_index: int, state: bool);
 signal blob_health_clicked(blob_index: int);
 
-@export var _global: TextureProgressBar;
+@export var _global: FightHealthbar;
 @export var _limbs_container: VBoxContainer
 
 func _ready():
 	for i in _limbs_container.get_child_count():
-		var health_bar: TextureProgressBar = _limbs_container.get_child(i);
+		var health_bar: FightHealthbar = _limbs_container.get_child(i);
 		
 		health_bar.gui_input.connect(func(ev): _health_bar_gui_input(ev, i));
 		health_bar.mouse_entered.connect(func(): blob_health_hovered.emit(i, true));
 		health_bar.mouse_entered.connect(func(): blob_health_hovered.emit(i, false));
 
 func update_health_instant(amalgam: Amalgam) -> void:
-	_global.value = amalgam.current_global_health() / amalgam.total_global_health();
+	_global.update_instant(amalgam.current_global_health(), amalgam.total_global_health(), 0, 0);
 	
 	for limb_health in _limbs_container.get_children():
 		limb_health.hide();
 	
 	for idx in len(amalgam.blobs):
-		var progress_bar: TextureProgressBar = _limbs_container.get_child(idx);
-		progress_bar.value = amalgam.blobs[idx].health() / Blob.MAX_HEALTH;
+		var progress_bar: FightHealthbar = _limbs_container.get_child(idx);
 		progress_bar.show();
+		var blob: Blob = amalgam.blobs[idx];
+		progress_bar.update_instant(blob.health(), Blob.MAX_HEALTH, blob.stun(), blob.poison());
 
-const UPDATE_TIME = 0.4;
+
 func update_health_slow(amalgam: Amalgam) -> void:
-	var tween := create_tween().set_parallel();
-	
-	tween.tween_property(_global, "value", amalgam.current_global_health() / amalgam.total_global_health(), UPDATE_TIME);
+	_global.update_slow(amalgam.current_global_health(), amalgam.total_global_health(), 0, 0);
 	
 	for limb_health in _limbs_container.get_children():
 		limb_health.hide();
 	
 	for idx in len(amalgam.blobs):
-		var progress_bar: TextureProgressBar = _limbs_container.get_child(idx);
-		tween.tween_property(progress_bar, "value", amalgam.blobs[idx].health() / Blob.MAX_HEALTH, UPDATE_TIME);
+		var progress_bar: FightHealthbar = _limbs_container.get_child(idx);
 		progress_bar.show();
+		var blob: Blob = amalgam.blobs[idx];
+		progress_bar.update_slow(blob.health(), Blob.MAX_HEALTH, blob.stun(), blob.poison());
 
 
 func _health_bar_gui_input(event: InputEvent, blob_idx: int):

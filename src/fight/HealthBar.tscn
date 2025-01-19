@@ -1,0 +1,169 @@
+[gd_scene load_steps=8 format=3 uid="uid://bxtfxhv5poscb"]
+
+[ext_resource type="Script" path="res://src/fight/health_bar.gd" id="1_23snu"]
+[ext_resource type="Texture2D" uid="uid://2qnlecsebhc6" path="res://assets/stun.png" id="1_d4vel"]
+[ext_resource type="Texture2D" uid="uid://c6d3rfk70k2m0" path="res://assets/poison.png" id="2_shbqq"]
+[ext_resource type="Texture2D" uid="uid://2v7v0gtuvsmg" path="res://assets/armor.png" id="4_twl7o"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y25k7"]
+bg_color = Color(0.643137, 0, 0.00784314, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.564706, 0, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hbi5s"]
+bg_color = Color(0, 0.568627, 0, 1)
+skew = Vector2(0.03, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0.313726, 0, 1)
+border_blend = true
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_bottom = 4.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_cc8sm"]
+font_size = 24
+
+[node name="HealthBar" type="ProgressBar"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_y25k7")
+theme_override_styles/fill = SubResource("StyleBoxFlat_hbi5s")
+max_value = 1.0
+step = 0.001
+value = 0.33
+show_percentage = false
+script = ExtResource("1_23snu")
+
+[node name="Health" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 16.0
+grow_vertical = 2
+mouse_filter = 1
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Statuses" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 2
+
+[node name="Stun" type="HBoxContainer" parent="Statuses"]
+visible = false
+layout_mode = 2
+tooltip_text = "Every time an amalgam would choose a limb from this blob, they get nothing instead."
+
+[node name="Count" type="Label" parent="Statuses/Stun"]
+layout_mode = 2
+mouse_filter = 1
+text = "5"
+label_settings = SubResource("LabelSettings_cc8sm")
+
+[node name="Icon" type="TextureRect" parent="Statuses/Stun"]
+layout_mode = 2
+texture = ExtResource("1_d4vel")
+expand_mode = 2
+
+[node name="Poison" type="HBoxContainer" parent="Statuses"]
+visible = false
+layout_mode = 2
+tooltip_text = "Blob takes this much damage every turn. When blob dies, it spreads to directly connected blobs."
+
+[node name="Count" type="Label" parent="Statuses/Poison"]
+layout_mode = 2
+mouse_filter = 1
+text = "5"
+label_settings = SubResource("LabelSettings_cc8sm")
+
+[node name="Icon" type="TextureRect" parent="Statuses/Poison"]
+layout_mode = 2
+texture = ExtResource("2_shbqq")
+expand_mode = 2
+
+[node name="HealthReversed" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_right = -16.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_filter = 1
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="StatusesReversed" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Armor" type="HBoxContainer" parent="StatusesReversed"]
+visible = false
+layout_mode = 2
+tooltip_text = "Blob takes this much damage every turn. When blob dies, it spreads to directly connected blobs."
+
+[node name="Count" type="Label" parent="StatusesReversed/Armor"]
+layout_mode = 2
+mouse_filter = 1
+text = "5"
+label_settings = SubResource("LabelSettings_cc8sm")
+
+[node name="Icon" type="TextureRect" parent="StatusesReversed/Armor"]
+layout_mode = 2
+texture = ExtResource("4_twl7o")
+expand_mode = 2
+
+[node name="Stun" type="HBoxContainer" parent="StatusesReversed"]
+visible = false
+layout_mode = 2
+tooltip_text = "Every time an amalgam would choose a limb from this blob, they get nothing instead."
+
+[node name="Count" type="Label" parent="StatusesReversed/Stun"]
+layout_mode = 2
+mouse_filter = 1
+text = "5"
+label_settings = SubResource("LabelSettings_cc8sm")
+
+[node name="Icon" type="TextureRect" parent="StatusesReversed/Stun"]
+layout_mode = 2
+texture = ExtResource("1_d4vel")
+expand_mode = 2
+
+[node name="Poison" type="HBoxContainer" parent="StatusesReversed"]
+visible = false
+layout_mode = 2
+tooltip_text = "Blob takes this much damage every turn. When blob dies, it spreads to directly connected blobs."
+
+[node name="Count" type="Label" parent="StatusesReversed/Poison"]
+layout_mode = 2
+mouse_filter = 1
+text = "5"
+label_settings = SubResource("LabelSettings_cc8sm")
+
+[node name="Icon" type="TextureRect" parent="StatusesReversed/Poison"]
+layout_mode = 2
+texture = ExtResource("2_shbqq")
+expand_mode = 2
