@@ -16,7 +16,7 @@ func _ready():
 		health_bar.mouse_entered.connect(func(): blob_health_hovered.emit(i, false));
 
 func update_health_instant(amalgam: Amalgam) -> void:
-	_global.update_instant(amalgam.current_global_health(), amalgam.total_global_health(), 0, 0);
+	_global.update_instant(amalgam.current_global_health(), amalgam.total_global_health(), 0, 0, 0);
 	
 	for limb_health in _limbs_container.get_children():
 		limb_health.hide();
@@ -25,11 +25,11 @@ func update_health_instant(amalgam: Amalgam) -> void:
 		var progress_bar: FightHealthbar = _limbs_container.get_child(idx);
 		progress_bar.show();
 		var blob: Blob = amalgam.blobs[idx];
-		progress_bar.update_instant(blob.health(), Blob.MAX_HEALTH, blob.stun(), blob.poison());
+		progress_bar.update_instant(blob.health(), Blob.MAX_HEALTH, blob.stun(), blob.poison(), blob.armor());
 
 
 func update_health_slow(amalgam: Amalgam) -> void:
-	_global.update_slow(amalgam.current_global_health(), amalgam.total_global_health(), 0, 0);
+	_global.update_slow(amalgam.current_global_health(), amalgam.total_global_health(), 0, 0, 0);
 	
 	for limb_health in _limbs_container.get_children():
 		limb_health.hide();
@@ -38,7 +38,7 @@ func update_health_slow(amalgam: Amalgam) -> void:
 		var progress_bar: FightHealthbar = _limbs_container.get_child(idx);
 		progress_bar.show();
 		var blob: Blob = amalgam.blobs[idx];
-		progress_bar.update_slow(blob.health(), Blob.MAX_HEALTH, blob.stun(), blob.poison());
+		progress_bar.update_slow(blob.health(), Blob.MAX_HEALTH, blob.stun(), blob.poison(), blob.armor());
 
 
 func _health_bar_gui_input(event: InputEvent, blob_idx: int):

@@ -3,6 +3,8 @@ extends RefCounted
 
 const MAX_HEALTH: float = 100;
 
+var texture: Texture;
+
 var _health: float = MAX_HEALTH;
 var _stun: int = 0;
 var _poision: int = 0;
@@ -23,3 +25,10 @@ func stun() -> int:
 
 func poison() -> int:
 	return _poision;
+
+func armor() -> int:
+	var total := 0;
+	for limb in limbs:
+		total += limb.limb.tags.get(Ability.ARMOR, 0);
+	
+	return total;

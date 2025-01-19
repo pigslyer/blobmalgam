@@ -9,6 +9,7 @@ var rng := RandomNumberGenerator.new();
 
 @onready var main_menu: Control = $MainMenu;
 @onready var fight: BattleScreen = $Fight;
+@onready var upgrade: UpgradeScreen = $Upgrade;
 
 @onready var fade: ColorRect = $FadeOut;
 @onready var fade_text: Label = $FadeOut/Label;
@@ -104,15 +105,45 @@ func _next_fight() -> void:
 	else:
 		enemy = Utils.generate_enemy(_enemy_strength(fight_progression, rng), rng);
 	
-	var bckg := background_fitting(enemy);
-	next_background.texture = bckg.texture;
-	
 	const TRANS_TIME = 1.2;
 	
-	_fade_out_music();
+	var upgrade_bckg := upgrade_background();
+	_play_background_music(upgrade_bckg);
+	upgrade.show();
+	
 	var tween := create_tween().set_parallel().set_trans(Tween.TRANS_CUBIC);
 	tween.tween_property(fight, "anchor_left", -1.0, TRANS_TIME);
 	tween.tween_property(fight, "anchor_right", 0.0, TRANS_TIME);
+	tween.tween_property(upgrade, "anchor_top", 0.0, TRANS_TIME).from(-1.0);
+	tween.tween_property(upgrade, "anchor_bottom", 1.0, TRANS_TIME).from(0.0);
+	
+	##########
+	# UPGRADE SCREEN
+	if true:
+		var player_upgrade_strength: Utils.EnemyStrength = _enemy_strength(fight_progression, rng);
+		var new_blob_texture: Texture = Utils.blobs().pick_random();
+		
+		var adding: Array = [];
+		var blob := Blob.new();
+		blob.texture = new_blob_texture;
+		adding.append(blob);
+		
+		var limb_pool: Array[Limb] = Utils.limb_tiers()[player_upgrade_strength]
+		for i in 5:
+			adding.append(limb_pool.pick_random());
+		
+		upgrade.upgrade(player, adding);
+		await upgrade.finished;
+	
+	tween = create_tween();
+	
+	var enemy_bckg := background_fitting(enemy);
+	next_background.texture = enemy_bckg.texture;
+	
+	_fade_out_music();
+	
+	tween.tween_property(upgrade, "anchor_top", 1.0, TRANS_TIME);
+	tween.tween_property(upgrade, "anchor_bottom", 2.0, TRANS_TIME);
 	
 	tween.tween_property(current_background, "anchor_left", -1.0, TRANS_TIME);
 	tween.tween_property(current_background, "anchor_right", 0.0, TRANS_TIME);
@@ -126,9 +157,9 @@ func _next_fight() -> void:
 	next_background = temp;
 	next_background.anchor_left = 1.0;
 	next_background.anchor_right = 2.0;
+	upgrade.hide();
 	
-	_play_background_music(bckg);
-	
+	_play_background_music(enemy_bckg);
 	fight.modulate = Color.TRANSPARENT;
 	
 	tween = create_tween().set_parallel().set_trans(Tween.TRANS_CUBIC);
